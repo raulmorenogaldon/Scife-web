@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('express-app:server');
 var http = require('http');
+var globals = require('../globals');
 
 /**
  * Get port from environment and store in Express.
@@ -89,4 +90,5 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-console.log("Aplicación ejecutándose en el puerto "+port)
+console.log("Aplicación ejecutándose en el puerto "+port);
+console.log("Address private server is: " + globals.privateServer);

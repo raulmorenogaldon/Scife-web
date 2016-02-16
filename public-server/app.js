@@ -7,6 +7,8 @@ var routerIndex = require('./routes/index');
 var routerNebula = require('./routes/opennebula');
 var routerStack = require('./routes/openstack');
 
+var privateServer = 'http://localhost:4000';
+
 var app = express();
 
 // view engine setup
