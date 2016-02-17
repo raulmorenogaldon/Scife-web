@@ -14,11 +14,11 @@ router.get('/index', function(req, res) {
 });
 
 router.get('/find/:id', function(req, res) {
-  User.findById(req.params.id, function (err, users) {
-      if(err)res.send(500, err.message);
-      
-      console.log('GET /users');
-      res.status(200).jsonp(user);
+  User.findById(req.params.id, function (err, user) {
+    if(err)res.send(500, err.message);
+    res.setHeader("Content-type", "application/json");
+    res.status(200); 
+    res.send(JSON.stringify(user));
   });
 });
 
@@ -40,7 +40,9 @@ router.post('/create', function(req, res) {
         });
 });
 
-router.get('/update/:id', function(req, res) {
+router.post('/update/:id', function(req, res) {
+    
+        console.log(req.body);
     User.findById(req.params.id, function (err, user) {
         if(err) return res.send(500, err.message);
         
@@ -50,7 +52,9 @@ router.get('/update/:id', function(req, res) {
         
         user.save(function (err) {
             if(err) return res.send(500, err.message);
-            return res.status(200).jsonp(user);
+            res.setHeader("Content-type", "application/json");
+            res.status(200); 
+            res.send(JSON.stringify(user));
         });
     });
 });
