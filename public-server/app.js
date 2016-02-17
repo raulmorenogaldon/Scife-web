@@ -1,11 +1,12 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-
-var routerIndex = require('./routes/index');
-var routerNebula = require('./routes/opennebula');
-var routerStack = require('./routes/openstack');
+var express = require('express'),
+    path = require('path'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    routerIndex = require('./routes/index'),
+    routerNebula = require('./routes/opennebula'),
+    routerStack = require('./routes/openstack'),
+    routerUsers = require('./routes/users'),
+    mongoose = require('mongoose');
 
 var privateServer = 'http://localhost:4000';
 
@@ -22,9 +23,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', routerIndex);
 app.use('/opennebula', routerNebula);
 app.use('/openstack', routerStack);
+app.use('/users', routerUsers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -57,5 +60,12 @@ app.use(function(err, req, res, next) {
   });
 });
 
+mongoose.connect('mongodb://localhost/multiclouddb', function (err, res) {
+    if(err){
+        console.log("Error: connecting to database: " + err);
+    }else{
+        console.log("Connected to database");
+    }
+});
 
 module.exports = app;
