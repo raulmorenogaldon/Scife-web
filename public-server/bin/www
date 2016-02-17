@@ -4,10 +4,18 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('express-app:server');
-var http = require('http');
-var globals = require('../globals');
+var app = require('../app'),
+    debug = require('debug')('express-app:server'),
+    http = require('http'),
+    https = require('https'),
+    fs = require('fs'),
+    globals = require('../globals');
+
+var optionsHttps = {
+    key: fs.readFileSync('certs/key.pem', 'utf8'),
+    ca: fs.readFileSync('certs/csr.pem', 'utf8'),
+    cert: fs.readFileSync('certs/cert.pem', 'utf8')
+}
 
 /**
  * Get port from environment and store in Express.
@@ -15,12 +23,14 @@ var globals = require('../globals');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+var httpsServer = https.createServer(optionsHttps,app).listen(3443, function(){
+    console.log("Aplicacion escuchando en el puerto seguro: 3443");
+});
 
 /**
  * Listen on provided port, on all network interfaces.

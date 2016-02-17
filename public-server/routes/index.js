@@ -3,6 +3,7 @@ var router= express.Router();
 var aux =  require('../bin/aux')
 var request = require("request");
 var globals = require('../globals');
+var User = require('../models/user')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -25,6 +26,32 @@ router.get('/', function(req, res, next) {
 	}
 	);
 
+});
+
+router.get('/suma', function(req, res, next) {
+	request({
+		uri: globals.privateServer+'/suma',
+        form: {num1: 1, num2: 2},
+		method: 'GET',
+		timeout: 10000
+	}, function(error, response, body){
+		res.send(body);
+		console.log("******RETURN***********\n"+error+"\n"+response+"\n"+body)
+	}
+	);
+});
+
+router.get('/login', function(req, res, next) {
+	request({
+		uri: globals.privateServer+'/suma',
+        form: {num1: 1, num2: 2},
+		method: 'GET',
+		timeout: 10000
+	}, function(error, response, body){
+		res.send(body);
+		console.log("******RETURN***********\n"+error+"\n"+response+"\n"+body)
+	}
+	);
 });
 
 module.exports = router;
