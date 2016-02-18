@@ -10,18 +10,18 @@ module.exports = {
         var html = req.indexOf('html') > -1 ? req.indexOf('html') : null;
         var json = req.indexOf('json') > -1 ? req.indexOf('json') : null;
 
-        if (html != null && json != null) {
+        if (html !== null && json !== null) {
             if (html < json) {
                 return 'html';
             } else {
                 return 'json';
             }
-        } else if (html != null) {
+        } else if (html !== null) {
             return 'html';
-        } else if (json != null) {
-            return 'json'
+        } else if (json !== null) {
+            return 'json';
         }
 
         return null;
     }
-}
+};

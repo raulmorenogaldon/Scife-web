@@ -1,0 +1,24 @@
+extends ../layout
+
+block title
+	title MC | Users
+
+block content
+	.row
+		.col-md-12
+			table.table.table-striped.table-hover
+				thead
+					tr
+						th Id
+						th UserName
+						th Email
+						th Password
+				tbody
+					- each user in users
+						tr
+							td= user.id
+							td= user.userName
+							td= user.email
+							td= user.password
+                        
+                

@@ -1,9 +1,9 @@
 var express = require('express');
 var router= express.Router();
-var aux =  require('../bin/aux')
+var aux =  require('../bin/aux');
 var request = require("request");
 var globals = require('../globals');
-var User = require('../models/user')
+var User = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
 		timeout: 10000
 	}, function(error, response, body){
 		res.send(body);
-		console.log(error+"\n"+response+"\n"+body)
+		console.log(error+"\n"+response+"\n"+body);
 	}
 	);
 
@@ -36,7 +36,7 @@ router.get('/suma', function(req, res, next) {
 		timeout: 10000
 	}, function(error, response, body){
 		res.send(body);
-		console.log("******RETURN***********\n"+error+"\n"+response+"\n"+body)
+		console.log("******RETURN***********\n"+error+"\n"+response+"\n"+body);
 	}
 	);
 });
@@ -49,7 +49,7 @@ router.get('/login', function(req, res, next) {
 		timeout: 10000
 	}, function(error, response, body){
 		res.send(body);
-		console.log("******RETURN***********\n"+error+"\n"+response+"\n"+body)
+		console.log("******RETURN***********\n"+error+"\n"+response+"\n"+body);
 	}
 	);
 });
