@@ -9,25 +9,22 @@ html(lang='en')
 		block title
 			title Multicloud
 		link(rel="stylesheet", href="/css/bootstrap.min.css")
+		link(rel="stylesheet", href="/css/my.css")
 		//if lt IE 9
 	body
 		.container
-			.masthead
-				h3.text-muted MultiCloud
-			nav
-				ul.nav.nav-justified
-					li: a(href="/") Home
-					li: a(href="opennebula") OpenNebula
-					li: a(href="openstack") OpenStack
-					li: a(href="#") About us
-					li: a(href="#") Contact
-					li: a(href="#") Iniciar Sesión
+			ul.nav.nav-tabs
+				li(role="presentation"): a(href="/") Home
+				li(role="presentation"): a(href="/users/") Users
+				li(role="presentation"): a(href="/users/") Cluster
+				li.pull-right(role="presentation"): a.btn.btn-default(href="/users/") Log in
 
 			block content
 
-			footer.footer
-				p © 2016 University of Castilla - La Mancha.
+		footer.footer
+			.container.text-muted © 2016 University of Castilla - La Mancha.
 
 
 		script(src='/js/jquery-2.2.0.min.js')
 		script(src="/js/bootstrap.min.js")
+		script(src="/js/main.js")

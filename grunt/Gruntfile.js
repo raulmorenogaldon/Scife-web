@@ -1,18 +1,10 @@
 module.exports = function (grunt) {
   grunt.initConfig({
     jshint: {
-      files: ['../public-server/*.js', '../public-server/bin/*', '../public-server/models/*.js', '../public-server/routes/*.js']
+      files: ['../public-server/*.js', '../public-server/bin/*', '../public-server/models/*.js', '../public-server/routes/*.js', '../public-server/public/js/main.js']
     },
     jade: {
-      debug: {
-        options: {
-          data: {
-            pretty: true,
-            debug: true
-          }
-        }
-      },
-      files: '../public-server/views/**/*.jade'
+      files: ['../public-server/views/**/*.jade']
     }
   });
 
