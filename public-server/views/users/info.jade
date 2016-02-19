@@ -1,0 +1,26 @@
+extends ../layout
+
+block title
+	title Users | Index
+
+block content
+	h1 User Info
+	.row
+		.col-md-12
+			table.table.table-striped.table-hover
+				thead
+					tr
+						th Id
+						th UserName
+						th Email
+						th Password
+						th Actions
+				tbody
+					tr
+						td= user.id
+						td= user.userName
+						td= user.email
+						td= user.password
+						td
+							a.btn.btn-xs.btn-warning(href='/users/update/'+user.id): span.glyphicon.glyphicon-edit
+							a.btn.btn-xs.btn-danger(href='/users/delete/'+user.id): span.glyphicon.glyphicon-trash
