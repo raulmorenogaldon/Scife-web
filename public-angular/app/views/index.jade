@@ -9,7 +9,6 @@ html(lang='en' ng-app="Multicloud")
 		block title
 			title Multicloud
 		link(rel="stylesheet", href="/lib/bootstrap/dist/css/bootstrap.min.css")
-		link(rel="stylesheet", href="/lib/angular-ui/build/angular-ui.min.css")
 		link(rel="stylesheet" href="/css/app.css")
 		//if lt IE 9
 	body
@@ -26,24 +25,19 @@ html(lang='en' ng-app="Multicloud")
 			.collapse.navbar-collapse#my-navbar-collapse
 				ul.nav.navbar-nav
 					li: a(href="/applications/") Apps
-					li.dropdown
-						a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false") Experiments
-							span.caret
-						ul.dropdown-menu
-							li: a(href="/experiments") List Experiments
+					li: a(href="/experiments#/") List Experiments
 				ul.nav.navbar-nav.navbar-right
 					li: a(href="/users") Users
-		.container-fluid
+		.container-fluid: .row
 			block content
 
-		footer.footer.col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2: .container: span.text-muted © 2016 University of Castilla - La Mancha.
+		footer.footer.col-sm-12.col-md-12: .container.text-center: span.text-muted © 2016 University of Castilla - La Mancha.
 
 		script(type="text/javascript" src="/lib/jquery/dist/jquery.min.js")
 		script(type="text/javascript" src="/lib/bootstrap/dist/js/bootstrap.min.js")
 		script(type="text/javascript" src="/lib/angular/angular.min.js")
 		script(type="text/javascript" src="/lib/angular-route/angular-route.min.js")
-		script(type="text/javascript" src="/lib/angular-ui/build/angular-ui.min.js")
 		script(type="text/javascript" src="/users/user-module.js")
 		block scripts
-		
+	
 		script(type="text/javascript" src="/js/application.js")

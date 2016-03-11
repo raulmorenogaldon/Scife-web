@@ -1,0 +1,85 @@
+<div class="col-sm-3 col-md-2 sidebar" ng-controller="SidebarCtrl as sidebarCtrl">
+	<ul class="nav nav-sidebar">
+		<li ng-repeat="link in sidebarCtrl.links" ng-class="{active:sidebarCtrl.isActive(link.url)}">
+			<a href="#{{link.url}}"> {{link.name}}</a></li>
+	</ul>
+</div>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<h1>Overview</h1>
+<div class="row">
+	<hr>
+	<div class="col-md-offset-1 col-md-10">
+		<h3 class="text-center">{{experiment.name}}</h3>
+		<div class="row">
+			<div class="panel panel-success">
+				<div class="panel-heading text-center">
+					<strong>Experiment Information</strong>
+				</div>
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Concept</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Id</td>
+							<td>{{experiment.id}}</td>
+						</tr>
+						<tr>
+							<td>Description</td>
+							<td>{{experiment.desc}}</td>
+						</tr>
+						<tr>
+							<td>Application ID</td>
+							<td>{{experiment.app_id}}</td>
+						</tr>
+						<tr>
+							<td>Public URL</td>
+							<td>{{experiment.public_url}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel panel-primary">
+				<div class="panel-heading text-center">
+					<strong>Execution Environments</strong>
+				</div>
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Concept</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Input Path</td>
+							<td>{{exp.exec_env.inputpath}}</td>
+						</tr>
+						<tr>
+							<td>Temp Path</td>
+							<td>{{exp.exec_env.tmppath}}</td>
+						</tr>
+						<tr>
+							<td>Nº Nodes</td>
+							<td>{{exp.exec_env.nodes}}</td>
+						</tr>
+						<tr>
+							<td>Public URL</td>
+							<td>{{exp.exec_env.cpus}}</td>
+						</tr>
+						<tr>
+							<td>Library Path</td>
+							<td>{{exp.exec_env.libpath}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

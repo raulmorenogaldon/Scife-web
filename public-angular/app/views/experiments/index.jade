@@ -1,8 +1,12 @@
 extends ../index
 
-block content
-	.col-md-12(ng-controller="ExperimentsIndexCtrl")
+block content		
+	.col-sm-12.col-md-12(ng-controller="IndexCtrl")
 		div(ng-view)
 
 block scripts
-	script(type="text/javascript" src="/experiments/js/module.js")
+	script(type="text/javascript" src="/lib/angular-animate/angular-animate.min.js")
+	script(type="text/javascript" src="/lib/angular-touch/angular-touch.min.js")
+	script(type="text/javascript" src="/experiments/js/controllers.js")
+	script(type="text/javascript" src="/experiments/js/routes.js")
+	script(type="text/javascript" src="/experiments/js/services.js")

@@ -25,6 +25,31 @@ exports.getExperiments = function (req, res) {
 	});
 };
 
+
+exports.details = function (req, res) {
+		request({
+		url: privateServer + '/cloud/experiments/'+req.params.experimentId,
+		methos: 'GET'
+	}, function (err, response, body) {
+		if (err) {
+			res.json({ errors: err });
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json({ errors: body });
+					break;
+				case 200:
+					res.status(response.statusCode).json(JSON.parse(body));
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+};
+
 exports.create = function (req, res) {
 	if (!req.body.name || !req.body.applicationId) {
 		res.render('experiments/create', { err: "Name and Application Id are required", name: req.body.name, desc: req.body.desc, applicationId: req.body.applicationId, labels: req.body.labels });
@@ -61,9 +86,6 @@ exports.create = function (req, res) {
 	}
 };
 
-exports.get = function (req, res) {
-
-};
 
 exports.getUpdate = function (req, res) {
 	request({
