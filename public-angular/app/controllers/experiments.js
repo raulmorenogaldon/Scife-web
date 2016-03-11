@@ -27,8 +27,8 @@ exports.getExperiments = function (req, res) {
 
 
 exports.details = function (req, res) {
-		request({
-		url: privateServer + '/cloud/experiments/'+req.params.experimentId,
+	request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 		methos: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -51,32 +51,27 @@ exports.details = function (req, res) {
 };
 
 exports.create = function (req, res) {
-	if (!req.body.name || !req.body.applicationId) {
+	if (!req.body.name || !req.body.app_id) {
 		res.render('experiments/create', { err: "Name and Application Id are required", name: req.body.name, desc: req.body.desc, applicationId: req.body.applicationId, labels: req.body.labels });
 	} else {
 		request({
 			url: privateServer + '/cloud/experiments',
 			method: 'POST',
-			json: {
-				name: req.body.name,
-				desc: req.body.desc,
-				app_id: req.body.applicationId,
-				labels: req.body.labels
-			}
+			json: req.body
 		}, function (err, response, body) {
 			console.log(response.statusCode);
 			console.log(JSON.stringify(body));
 			if (err) {
-				res.render('experiments/create', { err: err, name: req.body.name, desc: req.body.desc, applicationId: req.body.applicationId, labels: req.body.labels });
+				res.status(505).json({ errors: err });
 			} else {
 				switch (response.statusCode) {
 					case 500:
 					case 404:
 					case 400:
-						res.status(response.statusCode).json({ errors: body.errors, name: req.body.name, desc: req.body.desc, applicationId: req.body.applicationId, labels: req.body.labels });
+						res.status(response.statusCode).json({ errors: body.errors, experiment: req.body });
 						break;
 					case 200:
-						res.status(response.statusCode).json({message:"Experiment created sucessfully, ID experiment: " + body});
+						res.status(response.statusCode).json({ message: "Experiment created sucessfully, ID experiment: " + body });
 						break;
 					default:
 						res.send("There is no status code from the internal server.");

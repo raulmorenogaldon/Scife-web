@@ -1,1 +1,1 @@
-angular.module('Multicloud', ['users', 'Experiments', 'ngRoute']);
+angular.module('Multicloud', ['users', 'Experiments']);

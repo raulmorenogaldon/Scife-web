@@ -56,18 +56,19 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$routeParams', 'ExperimentData
 	}
 }]);
 
-app.controller('NewExperimentCtrl', ['$scope','$http', function ($scope, $http) {
-	$scope.nombre = "hola";
+app.controller('NewExperimentCtrl', ['$scope', '$http', function ($scope, $http) {
 
-	console.log($scope.nombre);
-	$http.get('/applications/getjson/')
-		.then(function (response) {
-			$scope.applications = response.data;
-		}, function (response) {
-			$scope.errors = response.data.errors;
-		});
+	(function () {
+		$http.get('/applications/getjson/')
+			.then(function (response) {
+				$scope.applications = response.data;
+			}, function (response) {
+				$scope.errors = response.data.errors;
+			});
+	})();
 
-			$scope.submitForm = function () {
+	$scope.submit = function () {
+		console.log($scope.experiment);
 		$scope.msg = null;
 		$scope.errors = null;
 		$http.post('/experiments/create', $scope.experiment)

@@ -4,8 +4,8 @@ var app = angular.module('Experiments');
 app.config(function ($routeProvider) {
 	$routeProvider
 		.when('/', {
-			controller: "IndexCtrl",
-			templateUrl: "experiments/views/index.html"
+			templateUrl: "experiments/views/index.html",
+			controller: "IndexCtrl"
 		})
 		.when('/overview/:experimentId', {
 			controller: "OverviewCtrl",
@@ -24,8 +24,8 @@ app.config(function ($routeProvider) {
 			templateUrl: "experiments/views/sources.html"
 		})
 		.when('/newexperiment', {
-			controller: "NewExperimentCtrl",
-			templateUrl: "experiments/views/newexperiment.html"
+			templateUrl: "experiments/views/newexperiment.html",
+			controller: "NewExperimentCtrl"
 		})
 		.otherwise({
 			redirectTo: '/'

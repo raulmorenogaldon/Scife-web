@@ -1,22 +1,36 @@
-<h2>New Experiment</h2>
-{{NewExperimentCtrl.nombre}}
+<div class="page-header">
+	<h2>New Experiment</h2>
+</div>
+<div class="alert alert-danger col-md-10 col-md-offset-1" ng-show="errors.length > 0">
+	<p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
+</div>
+
+<div class="alert alert-success text-justify col-md-10 col-md-offset-1" ng-show="message != null">
+	<p class="text-center">
+		{{message}}
+		<br>
+		<a href="/experiments#/" class="btn btn-sucess">Return to Index</a>
+	</p>
+</div>
 <div class="row">
 	<div class="col-md-10 col-md-offset-1">
-		<form class="form form-horizontal" action="">
+		<form class="form form-horizontal" ng-submit="submit()">
 			<div class="form-group">
 				<label for="name">Name</label>
-				<input type="text" class="form-control" data-ng-model="experiment.name" placeholder="Name">
+				<input type="text" class="form-control" ng-model="experiment.name" placeholder="Name">
 			</div>
 			<div class="form-group">
 				<label for="desc">Description</label>
-				<textarea type="text" class="form-control" data-ng-model="experiment.desc" placeholder="Description"></textarea>
+				<textarea type="text" class="form-control" ng-model="experiment.desc" placeholder="Description"></textarea>
 			</div>
 			<div class="form-group">
 				<label for="app">Application</label>
-				<select class="form-control" data-ng-model="experiment.app">
-					<option ng-repeat="app in NewExperimentCtrl.applications" value="{{app.id}}">{{app.name}}</option>
+				<select class="form-control" ng-model="experiment.app_id">
+					<option ng-repeat="app in applications" value="{{app.id}}">{{app.name}}</option>
 				</select>
 			</div>
+			<button type="submit" class="btn btn-default">Create</button>
+			<a class="btn btn-warning" href="/experiments#/">Cancel</a>
 		</form>
 	</div>
 </div>
