@@ -1,0 +1,33 @@
+extends ../index
+
+block content
+	h1 Create Experiment
+	if(err)
+		.alert.alert-danger.col-md-8.col-md-offset-2 !{err}
+	
+	div(ng-controller="CreateExperimentController")
+		.alert.alert-danger.col-md-12(ng-show="errors.length > 0" ng-repeat="err in errors")
+			p.text-justify {{err.message}}
+		.alert.alert-success.text-justify.col-md-12(ng-show="message != null") {{message}}
+		form.form-horizontal( ng-submit="submitForm()")
+			.form-group
+				label.control-label.col-sm-2(for="name") Name
+				.col-sm-8: input.form-control(type="text" placeholder="Name" name="name" required ng-model="name")
+			.form-group
+				label.control-label.col-sm-2(for="desc") Description
+				.col-sm-8: textarea.form-control(type="text" placeholder="Introduce your description" name="desc" ng-model="desc")
+			.form-group
+				label.control-label.col-sm-2(for="applicationId") Application Id
+				.col-sm-8
+					select.form-control(name="applicationId" required ng-model="applicationId" ng-change="applicationIdSelected()")
+						option(ng-repeat="app in applications" value="{{app.id}}") {{app.name}}
+			.col-md-12.animate-show(ng-show="labelsDefined.length > 0")
+				h3.text-center Labels
+				.form-group(ng-repeat="label in labelsDefined ")
+					label.control-label.col-sm-3(for="{{label}}") {{label}}
+					.col-sm-7: input.form-control(type="text" ng-model="labels[label]")
+			.col-md-4.col-md-offset-4
+				button.btn.btn-primary(type="submit") Create
+				a.btn.btn-warning(href="/experiments") Cancel
+block scripts
+	script(type="text/javascript" src="/experiments/js/module.js")

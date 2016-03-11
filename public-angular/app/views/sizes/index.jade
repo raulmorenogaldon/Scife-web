@@ -1,0 +1,37 @@
+extends ../index
+
+block content
+	h1 List Sizes
+	hr
+	if(err)
+		.alert.alert-danger.col-md-8.col-md-offset-2= err
+	if(!sizes)
+		.alert.alert-danger.col-md-8.col-md-offset-2 There are no sizes yet.
+		a.btn.btn-primary(href="/sizes/create") New Size
+	-else
+		a.btn.btn-primary(href="/sizes/create") New Size
+		.row
+			.col-md-10.col-md-offset-1
+				table.table.table-striped.table-hover.table-bordered
+					thead
+						tr
+							th Id
+							th Name
+							th Description
+							th CPUs
+							th RAM (Mb)
+							th Actions
+					tbody
+						- for size in sizes
+							tr
+								td(data-toogle="tooltip" data-container="body" data-placement="top" title=size.id)= size.id.substring(0,10) + "..."
+								td= size.name
+								td= size.desc
+								td= size.cpus
+								td= size.ram
+								td: a.btn.btn-default.btn-xs(href="/sizes/details/"+size.id): span.glyphicon.glyphicon-eye-open(aria-hidden="true")
+block scripts
+	script(type="text/javascript").
+		$(document).ready(function() {
+			$('[data-toogle="tooltip"]').tooltip()
+		});

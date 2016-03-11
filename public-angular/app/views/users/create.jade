@@ -1,0 +1,23 @@
+extends ../index
+
+block content
+	div(ng-controller="UserController")
+		form(method="POST" ng-submit="create(user)")
+			.form-group
+				label(for="firstName") FirstName
+				input.form-control(type="text" name="firstName" required ng-model="user.firstName" placeholder="FirstName")
+			.form-group
+				label(for="lastName") LastName:
+				input.form-control(type="text" name="lastName" required ng-model="user.lastName" placeholder="LastName")
+			.form-group
+				label(for="email") Email:
+				input.form-control(type="email" name="email" required ng-model="user.email" placeholder="miemail@example.com")
+			.form-group
+				label(for="userName") UserName:
+				input.form-control(type="text" name="userName" required ng-model="user.userName" placeholder="UserName")
+			.form-group
+				label(for="password") Password:
+				input.form-control(type="password" name="password" ng-model="user.password" required placeholder="password")
+			.alert.alert-danger(ng-show="err" ng-data-bind="err")
+			input.btn.btn-default(type="submit")
+		.alert.alert-success(ng-show="msg" ng-data-bind="msg"){{msg}}

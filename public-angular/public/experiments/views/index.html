@@ -1,0 +1,84 @@
+<h1>Experiments</h1>
+<div class="row" ng-repeat="exp in experiments">
+	<div class="col-md-offset-1 col-md-10">
+		<h3 class="text-center">{{exp.name}}</h3>
+		<hr>
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-success">
+				<div class="panel-heading text-center">
+					<strong>Experiment Information</strong>
+				</div>
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Concept</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Id</td>
+							<td>{{exp.id}}</td>
+						</tr>
+						<tr>
+							<td>Description</td>
+							<td>{{exp.desc}}</td>
+						</tr>
+						<tr>
+							<td>Application ID</td>
+							<td>{{exp.app_id}}</td>
+						</tr>
+						<tr>
+							<td>Public URL</td>
+							<td>{{exp.public_url}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-primary">
+				<div class="panel-heading text-center">
+					<strong>Execution Environments</strong>
+				</div>
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Concept</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Input Path</td>
+							<td>{{exp.exec_env.inputpath}}</td>
+						</tr>
+						<tr>
+							<td>Temp Path</td>
+							<td>{{exp.exec_env.tmppath}}</td>
+						</tr>
+						<tr>
+							<td>Nº Nodes</td>
+							<td>{{exp.exec_env.nodes}}</td>
+						</tr>
+						<tr>
+							<td>Public URL</td>
+							<td>{{exp.exec_env.cpus}}</td>
+						</tr>
+						<tr>
+							<td>Library Path</td>
+							<td>{{exp.exec_env.libpath}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--
+<accordion class="accordion" close-others="true">
+	<accordion-group>
+	</accordion-group>
+</accordion>
+-->

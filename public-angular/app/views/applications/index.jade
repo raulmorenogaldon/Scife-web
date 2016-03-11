@@ -1,0 +1,48 @@
+extends ../index
+
+block content
+	h1 List Applications
+	-if(err)
+		.alert.alert-danger.col-md-8.col-md-offset-2= err
+	-if(!applications)
+		.alert.alert-danger.col-md-8.col-md-offset-2 There are no applications yet.
+		a.btn.btn-primary(href="/applications/create") New Application
+	-else
+		a.btn.btn-primary(href="/applications/create") New Application
+		.row.col-md-12
+			table.table.table-striped.table-hover.table-bordered
+				thead
+					tr
+						th Id
+						th Name
+						th Description
+						th Creation Script
+						th Execution Script
+						th Labels
+						th Actions
+				tbody
+					- var i = 0
+					- for app in applications
+						tr
+							td(data-toogle="tooltip" data-container="body" data-placement="top" title=app.id)= app.id.substring(0,10) + "..."
+							td= app.name
+							td= app.desc
+							td= app.creation_script
+							td= app.execution_script
+							td
+								.dropdown
+									button.btn.btn-primary.dropdown-toggle(id="dropdown"+i type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true") Labels
+										span.caret
+									ul.dropdown-menu(aria-labelledby="dropdown"+i)
+										- for label in app.labels
+											li: a(href="#")= label
+							td: .btn-group
+								a.btn.btn-default.btn-xs(href="/applications/details/"+app.id title="Details"): span.glyphicon.glyphicon-eye-open(aria-hidden="true")
+								a.btn.btn-warning.btn-xs(href="/applications/update/"+app.id title="Update"): span.glyphicon.glyphicon-pencil(aria-hidden="true")
+								a.btn.btn-danger.btn-xs(href="/applications/delete/"+app.id title="Delete"): span.glyphicon.glyphicon-trash(aria-hidden="true")
+						- i++
+block scripts
+	script(type="text/javascript").
+		$(document).ready(function() {
+			$('[data-toogle="tooltip"]').tooltip()
+		});

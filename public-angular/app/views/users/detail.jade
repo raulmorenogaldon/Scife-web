@@ -1,0 +1,17 @@
+extends ../index
+block content
+	.row
+		.col-md-12
+			h1 User detail
+			.row: dl.dl-horizontal.col-md-offset-3.col-md-6
+				dt Id
+				dd= user.id
+				dt FirstName
+				dd= user.firstName
+				dt lastName
+				dd= user.lastName
+				dt UserName
+				dd= user.userName
+				dt Email
+				dd= user.email
+				

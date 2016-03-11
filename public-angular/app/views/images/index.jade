@@ -1,0 +1,24 @@
+extends ../index
+
+block content
+	h1 List Images
+	hr
+	-if(err)
+		.alert.alert-danger.col-md-8.col-md-offset-2= err
+	-if(!images)
+		.alert.alert-danger.col-md-8.col-md-offset-2 There are no images yet.
+	-else
+		.row
+			.col-md-10.col-md-offset-1
+				table.table.table-striped.table-hover
+					thead
+						tr
+							th Id
+							th Name
+							th Description
+					tbody
+						- for image in images
+							tr
+								td= image.id
+								td= image.name
+								td= image.desc

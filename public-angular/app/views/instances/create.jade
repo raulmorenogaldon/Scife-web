@@ -1,0 +1,23 @@
+extends ../index
+
+block content
+	h1 Create Instance
+	if(err)
+		.alert.alert-danger.col-md-8.col-md-offset-2 !{err}
+	.row.col-md-10
+		form.form-horizontal(method="post" action="/instances/create")
+			.form-group
+				label.control-label.col-sm-2(for="name") Name
+				.col-sm-8: input.form-control(type="text" placeholder="Name" name="name" required)
+			.form-group
+				label.control-label.col-sm-2(for="desc") Description
+				.col-sm-8: textarea.form-control(type="text" placeholder="Introduce your description" name="desc" required)
+			.form-group
+				label.control-label.col-sm-2(for="imageId") Image Id
+				.col-sm-8: input.form-control(type="text" placeholder="image-id" name="imageId" required)
+			.form-group
+				label.control-label.col-sm-2(for="sizeId") Size ID
+				.col-sm-8: input.form-control(type="text" placeholder="size-id" name="sizeId" required)
+			.tex-center.col-md-8.col-md-offset-2
+				button.btn.btn-primary(type="submit") Create
+				a.btn.btn-warning(href="/instances/") Cancel
