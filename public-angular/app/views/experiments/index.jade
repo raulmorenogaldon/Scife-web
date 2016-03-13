@@ -1,7 +1,8 @@
 extends ../index
 
 block content
-		div(ng-view)
+	div(ui-view="sidebar")
+	div(ui-view="content")
 
 block scripts
 	script(type="text/javascript" src="/lib/angular-animate/angular-animate.min.js")

@@ -1,4 +1,4 @@
-var app = angular.module('Experiments', ['ngRoute']);
+var app = angular.module('Experiments', ['ui.router']);
 
 app.controller('IndexCtrl', ['$scope', '$http', 'ExperimentData',
 	function ($scope, $http, ExperimentData) {
@@ -17,25 +17,25 @@ app.controller('IndexCtrl', ['$scope', '$http', 'ExperimentData',
 	}]);
 
 
-app.controller('SidebarCtrl', ['$location', '$routeParams', function ($location, $routeParams) {
-	this.links = [
-		{ name: "Overview", url: "/overview/" + $routeParams.experimentId },
-		{ name: "Labels", url: "/labels/" + $routeParams.experimentId },
-		{ name: "Input Data", url: "/inputdata/" + $routeParams.experimentId },
-		{ name: "Sources", url: "/sources/" + $routeParams.experimentId }
+app.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function ($scope, $location, $stateParams) {
+	$scope.links = [
+		{ name: "Overview", url: "/overview/" + $stateParams.experimentId },
+		{ name: "Labels", url: "/labels/" + $stateParams.experimentId },
+		{ name: "Input Data", url: "/inputdata/" + $stateParams.experimentId },
+		{ name: "Sources", url: "/sources/" + $stateParams.experimentId }
 	];
 
-	this.isActive = function (route) {
+	$scope.isActive = function (route) {
 		return route === $location.path();
 	};
 
 }]);
 
-app.controller('OverviewCtrl', ['$scope', '$http', '$routeParams', 'ExperimentData', function ($scope, $http, $routeParams, ExperimentData) {
+app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExperimentData', function ($scope, $http, $stateParams, ExperimentData) {
 
 	$scope.experiment = ExperimentData.getExperiment();
 	if (!$scope.experiment) {
-		$http.get('/experiments/details/' + $routeParams.experimentId)
+		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
 				$scope.experiment = response.data[0];
 			}, function (response) {
@@ -44,19 +44,29 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$routeParams', 'ExperimentDa
 	}
 }]);
 
-app.controller('LabelsCtrl', ['$scope', '$http', '$routeParams', 'ExperimentData', function ($scope, $http, $routeParams, ExperimentData) {
+app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExperimentData', function ($scope, $http, $stateParams, ExperimentData) {
 	$scope.experiment = ExperimentData.getExperiment();
 	if (!$scope.experiment) {
-		$http.get('/experiments/details/' + $routeParams.experimentId)
+		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
 				$scope.experiment = response.data[0];
 			}, function (response) {
 				$scope.error = response.data.errors;
 			});
 	}
+	
+	$scope.editLabels = function(){
+		$scope.allLabels = [];
+		$http.get('/applications/details/'+$scope.experiment.app_id)
+			.then(function(response){
+				console.log(response.data);
+			}, function (response){
+				console.log(response.data);
+			});
+	};
 }]);
 
-app.controller('NewExperimentCtrl', ['$scope', '$http', function ($scope, $http) {
+app.controller('CreateCtrl', ['$scope', '$http', function ($scope, $http) {
 
 	(function () {
 		$http.get('/applications/getjson/')
