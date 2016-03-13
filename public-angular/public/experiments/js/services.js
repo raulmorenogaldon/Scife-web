@@ -1,3 +1,5 @@
+'use strict';
+
 var app = angular.module('Experiments');
 
 app.service('ExperimentData', function () {

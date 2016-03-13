@@ -6,17 +6,15 @@ module.exports = function (app) {
 		res.render('experiments/index');
 	});
 	
-	app.get('/experiments/getexperiments', experimentsController.getExperiments);
+	app.get('/experiments/list', experimentsController.list);
 	
 	app.get('/experiments/details/:experimentId', experimentsController.details);
 	
-	app.get('/experiments/create', function (req, res) {
-		res.render('experiments/create');
-	});
-	
 	app.post('/experiments/create', experimentsController.create);
 	
+	/*
 	app.get('/experiments/update/:experimentId', experimentsController.getUpdate);
 	
-	app.post('/experiments/update/', experimentsController.postUpdate);
+	app.post('/experiments/update/:experimentId', experimentsController.postUpdate);
+	*/
 };

@@ -157,3 +157,12 @@ body {
     display: flex;
     align-items: center;
 }
+
+
+.ng-invalid.ng-invalid-required{
+	border-color: #FA787E;
+}
+
+.ng-valid.ng-dirty{
+	border-color: #78FA89
+}

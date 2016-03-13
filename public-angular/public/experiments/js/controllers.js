@@ -1,16 +1,17 @@
+'use strict';
+
 var app = angular.module('Experiments', ['ui.router']);
 
 app.controller('IndexCtrl', ['$scope', '$http', 'ExperimentData',
 	function ($scope, $http, ExperimentData) {
 		(function () {
-			$http.get('/experiments/getexperiments/')
+			$http.get('/experiments/list/')
 				.then(function (response) {
 					$scope.experiments = response.data;
 				}, function (response) {
 					$scope.errors = response.data.errors;
 				});
 		})();
-
 		$scope.saveExperiment = function (experiment) {
 			ExperimentData.setExperiment(experiment);
 		};
@@ -54,14 +55,14 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExperimentData
 				$scope.error = response.data.errors;
 			});
 	}
-	
-	$scope.editLabels = function(){
+
+	$scope.editLabels = function () {
 		$scope.allLabels = [];
-		$http.get('/applications/details/'+$scope.experiment.app_id)
-			.then(function(response){
-				console.log(response.data);
-			}, function (response){
-				console.log(response.data);
+		$http.get('/applications/details/' + $scope.experiment.app_id)
+			.then(function (response) {
+				console.log(response.data.labels);
+			}, function (response) {
+				console.log(response.data.labels);
 			});
 	};
 }]);
@@ -69,7 +70,7 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExperimentData
 app.controller('CreateCtrl', ['$scope', '$http', function ($scope, $http) {
 
 	(function () {
-		$http.get('/applications/getjson/')
+		$http.get('/applications/list/')
 			.then(function (response) {
 				$scope.applications = response.data;
 			}, function (response) {
@@ -78,7 +79,6 @@ app.controller('CreateCtrl', ['$scope', '$http', function ($scope, $http) {
 	})();
 
 	$scope.submit = function () {
-		console.log($scope.experiment);
 		$scope.msg = null;
 		$scope.errors = null;
 		$http.post('/experiments/create', $scope.experiment)

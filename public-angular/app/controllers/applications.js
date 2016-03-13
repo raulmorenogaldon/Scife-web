@@ -1,9 +1,34 @@
 var request = require('request'),
 	privateServer = require('../../config/env/development.js').privateServer;
 
+
 exports.list = function (req, res) {
 	request({
-		url: privateServer + '/cloud/applications',
+		url: privateServer + '/cloud/applications/',
+		methos: 'GET'
+	}, function (err, response, body) {
+		if (err) {
+			res.status(400).json({ err: err });
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json(response.statusCode, { err: body.errors });
+					break;
+				case 200:
+					res.status(response.statusCode).json(JSON.parse(body));
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+};
+
+exports.details = function (req, res) {
+	request({
+		url: privateServer + '/cloud/applications/' + req.params.applicationId,
 		methos: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -13,10 +38,10 @@ exports.list = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.render('applications/index', { err: body });
+					res.send(404, "Error reiving the data");
 					break;
 				case 200:
-					res.render('applications/index', { applications: JSON.parse(body) });
+					res.json(JSON.parse(body)[0]);
 					break;
 				default:
 					res.send("There is no status code from the internal server.");
@@ -57,57 +82,4 @@ exports.create = function (req, res) {
 			}
 		});
 	}
-};
-
-
-exports.get = function (req, res) {
-
-};
-
-exports.getListAsJson = function(req, res){
-	request({
-		url: privateServer + '/cloud/applications/',
-		methos: 'GET'
-	}, function (err, response, body) {
-		if (err) {
-			res.json(400,{ err: err });
-		} else {
-			switch (response.statusCode) {
-				case 500:
-				case 404:
-				case 400:
-					res.json(response.statusCode, {err:body.errors});
-					break;
-				case 200:
-					res.json(JSON.parse(body));
-					break;
-				default:
-					res.send("There is no status code from the internal server.");
-			}
-		}
-	});
-};
-
-exports.getApplicationAsJson = function(req, res){
-	request({
-		url: privateServer + '/cloud/applications/'+req.params.applicationId,
-		methos: 'GET'
-	}, function (err, response, body) {
-		if (err) {
-			res.render('applications/index', { err: err });
-		} else {
-			switch (response.statusCode) {
-				case 500:
-				case 404:
-				case 400:
-					res.send(404, "Error reiving the data");
-					break;
-				case 200:
-					res.json(JSON.parse(body)[0]);
-					break;
-				default:
-					res.send("There is no status code from the internal server.");
-			}
-		}
-	});
 };
