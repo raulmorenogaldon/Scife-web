@@ -80,3 +80,31 @@ exports.create = function (req, res) {
 		});
 	}
 };
+
+exports.update = function (req, res) {
+	request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
+		method: 'PUT',
+		json: req.body
+	}, function (err, response, body) {
+		console.log(response.statusCode);
+		console.log(JSON.stringify(body));
+		if (err) {
+			res.status(505).json({ errors: err });
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json({ errors: body.errors, experiment: req.body });
+					break;
+				case 200:
+					res.status(response.statusCode).json({ message: "Experiment created sucessfully, ID experiment: " + body });
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+
+};

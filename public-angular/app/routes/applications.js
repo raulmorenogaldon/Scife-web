@@ -1,4 +1,4 @@
-var ApplicationsController = require('../controllers/applications.js');
+var AppsCtrl = require('../controllers/applications.js');
 
 module.exports = function (app) {
 
@@ -6,9 +6,10 @@ module.exports = function (app) {
 		res.render('applications/index');
 	});
 	
-	app.get('/applications/list',  ApplicationsController.list);
+	app.get('/applications/list',  AppsCtrl.list);
 	
-	app.get('/applications/details/:applicationId', ApplicationsController.details);
+	app.get('/applications/details/:applicationId', AppsCtrl.details);
 	
-	app.post('/applications/create', ApplicationsController.create);
+	app.post('/applications/create', AppsCtrl.create);
+	
 };

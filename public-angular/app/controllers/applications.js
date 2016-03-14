@@ -38,10 +38,10 @@ exports.details = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.send(404, "Error reiving the data");
+					res.status(response.statusCode).json({ errors: body });
 					break;
 				case 200:
-					res.json(JSON.parse(body)[0]);
+					res.status(response.statusCode).json(JSON.parse(body));
 					break;
 				default:
 					res.send("There is no status code from the internal server.");

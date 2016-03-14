@@ -1,5 +1,3 @@
-'use strict';
-
 var app = angular.module('Experiments', ['ui.router']);
 
 app.controller('IndexCtrl', ['$scope', '$http', 'ExperimentData',
@@ -46,24 +44,41 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExperimentDa
 }]);
 
 app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExperimentData', function ($scope, $http, $stateParams, ExperimentData) {
-	$scope.experiment = ExperimentData.getExperiment();
-	if (!$scope.experiment) {
-		$http.get('/experiments/details/' + $stateParams.experimentId)
-			.then(function (response) {
-				$scope.experiment = response.data[0];
-			}, function (response) {
-				$scope.error = response.data.errors;
-			});
-	}
+	//$scope.experiment = ExperimentData.getExperiment();// Get the experiment from the service.
+	$scope.showForm = false;
+	var backup;
+
+	$http.get('/experiments/details/' + $stateParams.experimentId)
+		.then(function (response) {
+			$scope.experiment = response.data[0];
+			backup = JSON.parse(JSON.stringify(response.data[0].labels));
+			$http.get('/applications/details/' + $scope.experiment.app_id)
+				.then(function (data) {
+					$scope.application = data.data[0];
+				}, function (data) {
+					$scope.errors = response.data.errors;
+				});
+		}, function (response) {
+			$scope.errors = response.data.errors;
+		});
 
 	$scope.editLabels = function () {
-		$scope.allLabels = [];
-		$http.get('/applications/details/' + $scope.experiment.app_id)
+		$scope.showForm = true;
+	};
+
+	$scope.submit = function () {
+		$http.put('/experiments/' + $scope.experiment.id, { labels: $scope.experiment.labels })
 			.then(function (response) {
-				console.log(response.data.labels);
+				$scope.message = response.data.message;
+				$scope.showForm = false;
 			}, function (response) {
-				console.log(response.data.labels);
+				console.log(response);
 			});
+	};
+
+	$scope.cancel = function () {
+		console.log("Cancel");
+		$scope.experiment.labels = backup;
 	};
 }]);
 

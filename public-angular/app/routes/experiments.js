@@ -12,9 +12,9 @@ module.exports = function (app) {
 	
 	app.post('/experiments/create', experimentsController.create);
 	
-	/*
-	app.get('/experiments/update/:experimentId', experimentsController.getUpdate);
+	app.put('/experiments/:experimentId', experimentsController.update);
 	
+	/*
 	app.post('/experiments/update/:experimentId', experimentsController.postUpdate);
 	*/
 };
