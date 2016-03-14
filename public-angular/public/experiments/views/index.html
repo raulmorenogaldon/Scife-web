@@ -1,17 +1,21 @@
-<div class="page-header">
-	<h1>Experiments</h1>
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+		<div class="page-header">
+			<h1>Experiments</h1>
+		</div>
+		<p>
+			<a href="#/create" class="btn btn-info">New Experiment</a>
+		</p>
+	</div>
 </div>
-<p>
-	<a href="#/create" class="btn btn-info">New Experiment</a>
-</p>
 <div class="row" ng-repeat="exp in experiments">
-	<div class="col-md-offset-1 col-md-10">
+	<div class="col-md-offset-2 col-md-8">
 		<div class="panel panel-primary">
 			<div class="panel-heading text-center verticallyAdjust">
 				<div class="col-md-10">
 					<strong>{{exp.name}}</strong></div>
 				<div class="col-md-2">
-					<a href="#/overview/{{exp.id}}" class="btn btn-info" aria-label="Left Align" ng-click="saveExperiment(exp)">
+					<a href="#/overview/{{exp.id}}" class="btn btn-info btn-xs" aria-label="Left Align" ng-click="saveExperiment(exp)">
 						<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 					</a>
 				</div>
@@ -25,16 +29,12 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>Id</td>
-						<td>{{exp.id}}</td>
-					</tr>
-					<tr>
 						<td>Description</td>
 						<td>{{exp.desc}}</td>
 					</tr>
 					<tr>
-						<td>Application ID</td>
-						<td>{{exp.app_id}}</td>
+						<td>Application</td>
+						<td ng-repeat="app in applications | filter:{'id':exp.app_id}">{{app.name}}</td>
 					</tr>
 					<tr>
 						<td>Status</td>

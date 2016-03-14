@@ -2,14 +2,20 @@ var app = angular.module('Experiments', ['ui.router']);
 
 app.controller('IndexCtrl', ['$scope', '$http', 'ExperimentData',
 	function ($scope, $http, ExperimentData) {
-		(function () {
-			$http.get('/experiments/list/')
-				.then(function (response) {
-					$scope.experiments = response.data;
-				}, function (response) {
-					$scope.errors = response.data.errors;
-				});
-		})();
+		$http.get('/experiments/list/')
+			.then(function (response) {
+				$scope.experiments = response.data;
+			}, function (response) {
+				$scope.errors = response.data.errors;
+			});
+			
+		$http.get('/applications/list/')
+			.then(function (response) {
+				$scope.applications = response.data;
+			}, function (response) {
+				$scope.errors = response.data.errors;
+			});
+
 		$scope.saveExperiment = function (experiment) {
 			ExperimentData.setExperiment(experiment);
 		};
@@ -46,12 +52,11 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExperimentDa
 app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExperimentData', function ($scope, $http, $stateParams, ExperimentData) {
 	//$scope.experiment = ExperimentData.getExperiment();// Get the experiment from the service.
 	$scope.showForm = false;
-	var backup;
 
 	$http.get('/experiments/details/' + $stateParams.experimentId)
 		.then(function (response) {
 			$scope.experiment = response.data[0];
-			backup = JSON.parse(JSON.stringify(response.data[0].labels));
+			$scope.oldLabels = JSON.parse(JSON.stringify(response.data[0].labels));
 			$http.get('/applications/details/' + $scope.experiment.app_id)
 				.then(function (data) {
 					$scope.application = data.data[0];
@@ -71,14 +76,15 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExperimentData
 			.then(function (response) {
 				$scope.message = response.data.message;
 				$scope.showForm = false;
+				$scope.oldLabels = JSON.parse(JSON.stringify($scope.experiment.labels));
 			}, function (response) {
 				console.log(response);
 			});
 	};
 
 	$scope.cancel = function () {
-		console.log("Cancel");
-		$scope.experiment.labels = backup;
+		$scope.showForm = false;
+		$scope.experiment.labels = $scope.oldLabels;
 	};
 }]);
 

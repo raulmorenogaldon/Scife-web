@@ -8,3 +8,8 @@ block scripts
 	script(type="text/javascript" src="/experiments/js/controllers.js")
 	script(type="text/javascript" src="/experiments/js/routes.js")
 	script(type="text/javascript" src="/experiments/js/services.js")
+	script(type="text/javascript").
+		angular.element(document).ready(function() {
+			angular.bootstrap(document, ['Experiments']);
+		});
+	
