@@ -1,4 +1,4 @@
-var app = angular.module('Experiments', ['ui.router']);
+var app = angular.module('Experiments', ['ui.router','angularTreeview']);
 
 app.controller('IndexCtrl', ['$scope', '$http', 'ExperimentData',
 	function ($scope, $http, ExperimentData) {
@@ -42,7 +42,7 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExperimentDa
 	if (!$scope.experiment) {
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
-				$scope.experiment = response.data[0];
+				$scope.experiment = response.data;
 			}, function (response) {
 				$scope.error = response.data.errors;
 			});
@@ -55,11 +55,11 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExperimentData
 
 	$http.get('/experiments/details/' + $stateParams.experimentId)
 		.then(function (response) {
-			$scope.experiment = response.data[0];
-			$scope.oldLabels = JSON.parse(JSON.stringify(response.data[0].labels));
+			$scope.experiment = response.data;
+			$scope.oldLabels = JSON.parse(JSON.stringify(response.data.labels));
 			$http.get('/applications/details/' + $scope.experiment.app_id)
 				.then(function (data) {
-					$scope.application = data.data[0];
+					$scope.application = data.data;
 				}, function (data) {
 					$scope.errors = response.data.errors;
 				});
@@ -90,14 +90,12 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExperimentData
 
 app.controller('CreateCtrl', ['$scope', '$http', function ($scope, $http) {
 
-	(function () {
 		$http.get('/applications/list/')
 			.then(function (response) {
 				$scope.applications = response.data;
 			}, function (response) {
 				$scope.errors = response.data.errors;
 			});
-	})();
 
 	$scope.submit = function () {
 		$scope.msg = null;
@@ -115,6 +113,27 @@ app.controller('InputDataCtrl', ['$scope', function ($scope) {
 
 }]);
 
-app.controller('SourcesData', ['$scope', function ($scope) {
-
+app.controller('SourcesCtrl', ['$scope','$http','$stateParams', function ($scope, $http, $stateParams) {
+	
+	$http.get('/experiments/details/'+$stateParams.experimentId)
+			.then(function (response) {
+				$scope.experiment = response.data;
+				console.log($scope.experiment);
+			}, function (response) {
+				$scope.errors = response.data.errors;
+			});
+	
+	$scope.treedata = [
+    { "label" : "Grandes Exitos", "id" : "role1", "children" : [
+        { "label" : "El Fari", "id" : "role11", "children" : [] },
+        { "label" : "Mis preferidos", "id" : "role12", "children" : [
+            { "label" : "Antiguos", "id" : "role121", "children" : [
+                { "label" : "Pinpinela", "id" : "role1211", "children" : [] },
+                { "label" : "Chayane", "id" : "role1212", "children" : [] }
+            ]}
+        ]}
+    ]},
+    { "label" : "Lista de la compra", "id" : "role2", "children" : [] },
+    { "label" : "Calendario", "id" : "role3", "children" : [] }
+];
 }]);

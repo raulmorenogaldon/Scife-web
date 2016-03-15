@@ -15,11 +15,11 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-1 main">
+		<div class="col-md-12">
 			<h3>Labels of the experiment <strong>{{experiment.name}}</strong></h3>
 			<hr>
 			<div class="row">
-				<div class="col-md-offset-1 col-md-10">
+				<div class="col-md-12">
 					<div class="panel panel-success">
 						<div class="panel-heading verticallyAdjust">
 							<div class="col-md-11 text-center">
@@ -54,21 +54,23 @@
 			</div>
 		</div>
 	</div>
-	<div class="row cssSlideUp" ng-show="showForm && (application.labels.length > 0)">
-		<div class="text-center">
-			<h4 text-center>Update Labels</h4>
-		</div>
-		<form ng-submit="submit()" class="form-horizontal">
-			<div class="form-group" ng-repeat="label in application.labels">
-				<label class="col-md-3 control-label" for="{{label}}">{{label}}</label>
-				<div class="col-md-9">
-					<input type="text" class="form-control" ng-model="experiment.labels[label]">
-				</div>
-			</div>
+	<div class="row" ng-show="showForm && (application.labels.length > 0)">
+		<div class="col-md-12">
 			<div class="text-center">
-				<input type="submit" class="btn btn-primary" value="Save Changes">
-				<div class="btn btn-warning" ng-click="cancel()">Cacel Changes</div>
+				<h4>Update Labels</h4>
 			</div>
-		</form>
+			<form ng-submit="submit()" class="form-horizontal">
+				<div class="form-group" ng-repeat="label in application.labels">
+					<label class="col-md-3 control-label" for="{{label}}">{{label}}</label>
+					<div class="col-md-9">
+						<input type="text" class="form-control" ng-model="experiment.labels[label]">
+					</div>
+				</div>
+				<div class="text-center">
+					<input type="submit" class="btn btn-primary" value="Save Changes">
+					<div class="btn btn-warning" ng-click="cancel()">Cacel Changes</div>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>

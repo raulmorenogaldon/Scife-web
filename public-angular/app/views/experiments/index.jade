@@ -1,5 +1,8 @@
 extends ../index
 
+block stylesheets
+	link(rel="stylesheet" href="lib/tree-view/css/treeview.css")
+
 block content
 	div(ui-view="sidebar")
 	div(ui-view="content")
@@ -12,4 +15,5 @@ block scripts
 		angular.element(document).ready(function() {
 			angular.bootstrap(document, ['Experiments']);
 		});
+	script(type="text/javascript" src="lib/tree-view/js/treeview.min.js")
 	

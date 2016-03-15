@@ -51,4 +51,18 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
 				}
 			}
 		});
+		
+		$stateProvider.state('sources',{
+			url: '/sources/:experimentId',
+			views: {
+				'content': {
+					templateUrl: "experiments/views/sources.html",
+					controller: "SourcesCtrl"
+				},
+				'sidebar': {
+					controller: "SidebarCtrl",
+					templateUrl: "experiments/views/sidebar.html"
+				}
+			}
+		});
 }]);

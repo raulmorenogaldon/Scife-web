@@ -40,7 +40,7 @@ module.exports = function () {
 */
 
 	require('../app/routes/index.js')(app);
-	require('../app/routes/users.js')(app);
+	//require('../app/routes/users.js')(app);
 	//require('../app/routes/cloud.js')(app);
 	require('../app/routes/sizes.js')(app);
 	require('../app/routes/images.js')(app);
