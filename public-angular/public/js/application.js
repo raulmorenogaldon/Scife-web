@@ -1,1 +1,1 @@
-angular.module('Multicloud', ['users', 'Experiments']);
+angular.module('Multicloud', ['Experiments']);
