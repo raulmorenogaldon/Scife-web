@@ -1,10 +1,10 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	<div class="page-header">
-		<h2>Overview of the experiment <strong>{{experiment.name}}</strong></h2>
+		<h2>Overview of the experiment: <strong>{{experiment.name}}</strong></h2>
 	</div>
 	<div class="row">
-		<div class="text-center">
-			<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#launchModal">Launch</button>
+		<div class="text-center col-md-12">
+			<button class="btn btn-success btn-lg" ng-disabled="experiment.status != 'created'" data-toggle="modal" data-target="#launchModal" ng-click="launchModal()">Launch</button>
 			<div class="btn btn-warning btn-lg">Reset</div>
 		</div>
 	</div>
@@ -15,22 +15,41 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="launchModalLabel">Choose the Minion</h4>
+						<h4 class="modal-title" id="launchModalLabel">Launch Configure</h4>
 					</div>
 					<div class="modal-body">
-						
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Launch</button>
+						<div class="row">
+							<form ng-submit="launchSubmit()" class="form form-horizontal col-md-12">
+								<div class="form-group col-md-12">
+									<label for="nodes">Nodes</label>
+									<input type="number" class="form-control" ng-model="launchData.nodes" placeholder="3" min="1" required>
+								</div>
+								<div class="form-group col-md-12">
+									<label for="image">Image</label>
+									<select class="form-control" ng-model="launchData.image_id" required>
+						<option ng-repeat="image in images" value="{{image.id}}">{{image.name}}</option>
+					</select>
+								</div>
+								<div class="form-group col-md-12">
+									<label for="size">Size</label>
+									<select class="form-control" ng-model="launchData.size_id" required>
+						<option ng-repeat="size in sizes" value="{{size.id}}">{{size.name}} ({{size.cpus}} CPUs and {{size.ram}} RAM )</option>
+					</select>
+								</div>
+								<div class="col-md-12 text-center">
+									<input type="submit" class="btn btn-success" value="Launch">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<hr>
 	<div class="row">
 		<div class="col-md-offset-1 col-md-10">
-			<h3 class="text-center">{{experiment.name}}</h3>
 			<div class="row">
 				<div class="panel panel-primary">
 					<div class="panel-heading text-center">
