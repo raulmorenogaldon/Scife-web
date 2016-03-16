@@ -2,18 +2,32 @@
 
 var app = angular.module('Experiments');
 
-app.service('ExperimentData', function () {
-	var experiment;
+app.service('ExpDataService', function () {
+	var exp;
 	return {
-		getExperiment: function () {
-			return experiment;
+		get: function () {
+			return exp;
 		},
-		setExperiment: function (newExperiment) {
-			experiment = newExperiment;
+		set: function (newExp) {
+			exp = newExp;
 		},
-		cleanExperiment: function () {
-			experiment = {};
+		clean: function () {
+			exp = {};
 		}
 	};
+});
 
+app.service('AppDataService', function () {
+	var app;
+	return {
+		get: function () {
+			return app;
+		},
+		set: function (newApp) {
+			app = newApp;
+		},
+		clean: function () {
+			app = {};
+		}
+	};
 });
