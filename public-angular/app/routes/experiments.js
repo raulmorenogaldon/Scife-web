@@ -1,4 +1,4 @@
-var experimentsController = require('../controllers/experiments.js');
+var expCtrl = require('../controllers/experiments.js');
 
 module.exports = function (app) {
 	
@@ -6,15 +6,17 @@ module.exports = function (app) {
 		res.render('experiments/index');
 	});
 	
-	app.get('/experiments/list', experimentsController.list);
+	app.get('/experiments/list', expCtrl.list);
 	
-	app.get('/experiments/details/:experimentId', experimentsController.details);
+	app.get('/experiments/details/:experimentId', expCtrl.details);
 	
-	app.post('/experiments/create', experimentsController.create);
+	app.post('/experiments/create', expCtrl.create);
 	
-	app.put('/experiments/:experimentId', experimentsController.update);
+	app.put('/experiments/:experimentId', expCtrl.update);
+	
+	app.post('/experiments/launch/:experimentId', expCtrl.launch);
 	
 	/*
-	app.post('/experiments/update/:experimentId', experimentsController.postUpdate);
+	app.post('/experiments/update/:experimentId', expCtrl.postUpdate);
 	*/
 };

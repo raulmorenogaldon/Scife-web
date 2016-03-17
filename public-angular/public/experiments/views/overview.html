@@ -26,14 +26,13 @@
 								</div>
 								<div class="form-group col-md-12">
 									<label for="image">Image</label>
-									<select class="form-control" ng-model="launchData.image_id" required>
-						<option ng-repeat="image in images" value="{{image.id}}">{{image.name}}</option>
+									<select class="form-control" ng-model="launchData.image_id" required ng-options="image.id as image.name for image in images">
 					</select>
 								</div>
 								<div class="form-group col-md-12">
 									<label for="size">Size</label>
 									<select class="form-control" ng-model="launchData.size_id" required>
-						<option ng-repeat="size in sizes" value="{{size.id}}">{{size.name}} ({{size.cpus}} CPUs and {{size.ram}} RAM )</option>
+						<option ng-repeat="size in sizes" value="{{size.id}}">{{size.name}} ({{size.cpus}} CPUs, {{size.ram}} RAM )</option>
 					</select>
 								</div>
 								<div class="col-md-12 text-center">

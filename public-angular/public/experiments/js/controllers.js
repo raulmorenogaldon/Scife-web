@@ -48,7 +48,7 @@ app.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function($
 
 }]);
 
-app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', '$window', function($scope, $http, $stateParams, ExpDataService, $window) {
+app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', function($scope, $http, $stateParams, ExpDataService) {
 
 	$scope.experiment = ExpDataService.get();
 	if (!$scope.experiment) {
@@ -67,26 +67,31 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataServi
 	}
 
 	$scope.launchModal = function() {
+		$scope.launchData = {};
 		$http.get('/images/list')
 			.then(function(response) {
 				$scope.images = response.data;
+				$scope.launchData.image_id = response.data[0].id;
 			}, function(response) {
 				$scope.error = response.data.errors;
 			});
 		$http.get('/sizes/list')
 			.then(function(response) {
 				$scope.sizes = response.data;
+				$scope.launchData.size_id = response.data[0].id;
 			}, function(response) {
 				$scope.error = response.data.errors;
 			});
 	};
 
 	$scope.launchSubmit = function() {
-		console.log("Entra");
-		$window.alert("You will send the next information:\n" +
-			"Nodes: " + $scope.launchData.nodes + "\n" +
-			"Image: " + $scope.launchData.image_id + "\n" +
-			"Size: " + $scope.launchData.size_id);
+		console.log($scope.launchData);
+		$http.post('/experiments/launch/' + $scope.experiment.id, $scope.launchData)
+			.then(function(response) {
+				$scope.message = response.data.message;
+			}, function(response) {
+				$scope.errors = response.data.errors;
+			});
 	};
 
 }]);
