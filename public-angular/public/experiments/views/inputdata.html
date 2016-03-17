@@ -1,0 +1,23 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div class="page-header">
+		<h2>Input data of experiment <strong>{{experiment.name}}</strong></h2>
+	</div>
+	<div class="alert alert-danger col-md-10 col-md-offset-1" role="alert" ng-show="errors.length > 0">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
+	</div>
+	<div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message != null">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<p class="text-center">
+			{{message}}
+			<br>
+			<a href="/experiments#/" class="btn btn-sucess">Return to Index</a>
+		</p>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div data-angular-treeview="true" data-tree-id="abc" data-tree-model="experiment.input_tree" data-node-id="id" data-node-label="label" data-node-children="children">
+			</div>
+		</div>
+	</div>
+</div>

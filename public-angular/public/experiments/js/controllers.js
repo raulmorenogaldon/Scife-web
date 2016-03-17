@@ -1,5 +1,28 @@
 var app = angular.module('Experiments', ['ui.router', 'angularTreeview']);
 
+app.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function($scope, $location, $stateParams) {
+	$scope.links = [{
+		name: "Overview",
+		url: "/overview/" + $stateParams.experimentId
+	}, {
+		name: "Labels",
+		url: "/labels/" + $stateParams.experimentId
+	}, {
+		name: "Input Data",
+		url: "/inputdata/" + $stateParams.experimentId
+	}, {
+		name: "Sources",
+		url: "/sources/" + $stateParams.experimentId
+	}, {
+		name: "Logs",
+		url: "/logs/" + $stateParams.experimentId
+	}];
+
+	$scope.isActive = function(route) {
+		return route === $location.path();
+	};
+
+}]);
 app.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService',
 	function($scope, $http, ExpDataService) {
 		$http.get('/experiments/list/')
@@ -25,36 +48,10 @@ app.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService',
 	}
 ]);
 
-
-app.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function($scope, $location, $stateParams) {
-	$scope.links = [{
-		name: "Overview",
-		url: "/overview/" + $stateParams.experimentId
-	}, {
-		name: "Labels",
-		url: "/labels/" + $stateParams.experimentId
-	}, {
-		name: "Input Data",
-		url: "/inputdata/" + $stateParams.experimentId
-	}, {
-		name: "Sources",
-		url: "/sources/" + $stateParams.experimentId
-	}];
-
-	$scope.isActive = function(route) {
-		return route === $location.path();
-	};
-
-}]);
-
-app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', function($scope, $http, $stateParams, ExpDataService) {
-
+app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', '$interval', function($scope, $http, $stateParams, ExpDataService, $interval) {
+	var timer;
 	$scope.experiment = ExpDataService.get();
 	if (!$scope.experiment) {
-		refresh();
-	}
-
-	function refresh() {
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function(response) {
 				$scope.experiment = response.data;
@@ -68,6 +65,17 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataServi
 				$scope.error = response.data.errors;
 			});
 	}
+
+	$scope.refreshStatus = function() {
+		console.log("hola");
+		$http.get('/experiments/details/' + $stateParams.experimentId)
+			.then(function(response) {
+				$scope.experiment.status = response.data.status;
+			}, function(response) {
+				$scope.error = response.data.errors;
+			});
+	};
+
 
 	$scope.launchModal = function() {
 		$scope.launchData = {};
@@ -91,21 +99,24 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataServi
 		$http.post('/experiments/launch/' + $scope.experiment.id, $scope.launchData)
 			.then(function(response) {
 				$scope.message = response.data.message;
-				refresh();
+				$scope.refreshStatus();
 			}, function(response) {
 				$scope.errors = response.data.errors;
 			});
 		jQuery('#launchModal').modal('hide');
+
+		timer = $interval($scope.refreshStatus, 10000);
 	};
 
 	$scope.reset = function() {
 		$http.post('/experiments/reset/' + $scope.experiment.id, $scope.launchData)
 			.then(function(response) {
 				$scope.message = response.data.message;
-				refresh();
+				$scope.refreshStatus();
 			}, function(response) {
 				$scope.errors = response.data.errors;
 			});
+		$interval.cancel(timer);
 	};
 
 }]);
@@ -177,8 +188,13 @@ app.controller('CreateCtrl', ['$scope', '$http', '$location', function($scope, $
 	};
 }]);
 
-app.controller('InputDataCtrl', ['$scope', function($scope) {
-
+app.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
+	$http.get('/experiments/details/' + $stateParams.experimentId)
+		.then(function(response) {
+			$scope.experiment = response.data;
+		}, function(response) {
+			$scope.errors = response.data.errors;
+		});
 }]);
 
 app.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
@@ -189,38 +205,4 @@ app.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', function($scop
 		}, function(response) {
 			$scope.errors = response.data.errors;
 		});
-
-	$scope.treedata = [{
-		"label": "Grandes Exitos",
-		"id": "role1",
-		"children": [{
-			"label": "El Fari",
-			"id": "role11",
-			"children": []
-		}, {
-			"label": "Mis preferidos",
-			"id": "role12",
-			"children": [{
-				"label": "Antiguos",
-				"id": "role121",
-				"children": [{
-					"label": "Pinpinela",
-					"id": "role1211",
-					"children": []
-				}, {
-					"label": "Chayane",
-					"id": "role1212",
-					"children": []
-				}]
-			}]
-		}]
-	}, {
-		"label": "Lista de la compra",
-		"id": "role2",
-		"children": []
-	}, {
-		"label": "Calendario",
-		"id": "role3",
-		"children": []
-	}];
 }]);
