@@ -145,8 +145,6 @@ exports.launch = function(req, res) {
 			method: 'POST',
 			json: data
 		}, function(err, response, body) {
-			console.log(response.statusCode);
-			console.log(JSON.stringify(body));
 			if (err) {
 				res.status(505).json({
 					errors: err
@@ -162,7 +160,7 @@ exports.launch = function(req, res) {
 						break;
 					case 200:
 						res.status(response.statusCode).json({
-							message: "Experiment created sucessfully, ID experiment: " + body
+							message: "Experiment launched sucessfully."
 						});
 						break;
 					default:
@@ -171,4 +169,37 @@ exports.launch = function(req, res) {
 			}
 		});
 	}
+};
+
+exports.reset = function(req, res) {
+	request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
+		method: 'POST',
+		json: {
+			op: 'reset'
+		}
+	}, function(err, response, body) {
+		if (err) {
+			res.status(505).json({
+				errors: err
+			});
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json({
+						errors: body.errors
+					});
+					break;
+				case 200:
+					res.status(response.statusCode).json({
+						message: "Experiment reset sucessfully."
+					});
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
 };

@@ -16,7 +16,5 @@ module.exports = function (app) {
 	
 	app.post('/experiments/launch/:experimentId', expCtrl.launch);
 	
-	/*
-	app.post('/experiments/update/:experimentId', expCtrl.postUpdate);
-	*/
+	app.post('/experiments/reset/:experimentId', expCtrl.reset);
 };

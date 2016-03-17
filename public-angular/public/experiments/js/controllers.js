@@ -6,10 +6,9 @@ app.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService',
 			.then(function(response) {
 				$scope.experiments = response.data;
 				$http.get('/applications/list/')
-					.then(function(response) {
-						var applications = response.data;
+					.then(function(data) {
 						$scope.experiments.forEach(function(exp) {
-							exp.app = angular.copy(applications.find(function(app) {
+							exp.app = angular.copy(data.data.find(function(app) {
 								return app.id === exp.app_id;
 							}));
 						});
@@ -52,6 +51,10 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataServi
 
 	$scope.experiment = ExpDataService.get();
 	if (!$scope.experiment) {
+		refresh();
+	}
+
+	function refresh() {
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function(response) {
 				$scope.experiment = response.data;
@@ -85,10 +88,21 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataServi
 	};
 
 	$scope.launchSubmit = function() {
-		console.log($scope.launchData);
 		$http.post('/experiments/launch/' + $scope.experiment.id, $scope.launchData)
 			.then(function(response) {
 				$scope.message = response.data.message;
+				refresh();
+			}, function(response) {
+				$scope.errors = response.data.errors;
+			});
+		jQuery('#launchModal').modal('hide');
+	};
+
+	$scope.reset = function() {
+		$http.post('/experiments/reset/' + $scope.experiment.id, $scope.launchData)
+			.then(function(response) {
+				$scope.message = response.data.message;
+				refresh();
 			}, function(response) {
 				$scope.errors = response.data.errors;
 			});
@@ -172,7 +186,6 @@ app.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', function($scop
 	$http.get('/experiments/details/' + $stateParams.experimentId)
 		.then(function(response) {
 			$scope.experiment = response.data;
-			console.log($scope.experiment);
 		}, function(response) {
 			$scope.errors = response.data.errors;
 		});
