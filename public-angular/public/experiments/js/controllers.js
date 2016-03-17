@@ -156,7 +156,7 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService
 	};
 }]);
 
-app.controller('CreateCtrl', ['$scope', '$http', function($scope, $http) {
+app.controller('CreateCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
 
 	$http.get('/applications/list/')
 		.then(function(response) {
@@ -170,7 +170,7 @@ app.controller('CreateCtrl', ['$scope', '$http', function($scope, $http) {
 		$scope.errors = null;
 		$http.post('/experiments/create', $scope.experiment)
 			.then(function(response) {
-				$scope.message = response.data.message;
+				$location.path('overview/' + response.data.experimentId);
 			}, function(response) {
 				$scope.errors = response.data.errors;
 			});

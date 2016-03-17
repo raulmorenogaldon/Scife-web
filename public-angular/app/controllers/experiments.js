@@ -60,12 +60,8 @@ exports.details = function(req, res) {
 
 exports.create = function(req, res) {
 	if (!req.body.name || !req.body.app_id) {
-		res.render('experiments/create', {
-			err: "Name and Application Id are required",
-			name: req.body.name,
-			desc: req.body.desc,
-			applicationId: req.body.applicationId,
-			labels: req.body.labels
+		res.status(404).json({
+			message: "Name and Application are required."
 		});
 	} else {
 		request({
@@ -89,7 +85,8 @@ exports.create = function(req, res) {
 						break;
 					case 200:
 						res.status(response.statusCode).json({
-							message: "Experiment created sucessfully, ID experiment: " + body
+							message: "Experiment created sucessfully, ID experiment: " + body.id,
+							experimentId: body.id
 						});
 						break;
 					default:
