@@ -22,7 +22,7 @@ var UserSchema = new mongoose.Schema({
 		required: true,
 		validate: [
 			function (password) {
-				return password && password.length > 6
+				return password && password.length > 6;
 			}, 'Password must be longer than 6 characters'
 		]
 	},

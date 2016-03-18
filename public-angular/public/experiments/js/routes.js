@@ -1,4 +1,3 @@
-'use strict';
 var app = angular.module('Experiments');
 
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
