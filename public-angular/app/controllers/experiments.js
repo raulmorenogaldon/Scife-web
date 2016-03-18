@@ -200,3 +200,32 @@ exports.reset = function(req, res) {
 		}
 	});
 };
+
+
+exports.delete = function(req, res) {
+	request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
+		method: 'DELETE'
+	}, function(err, response, body) {
+		if (err) {
+			res.status(505).json({
+				errors: err
+			});
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json({
+						errors: body.errors
+					});
+					break;
+				case 200:
+					res.status(response.statusCode).json(body);
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+};

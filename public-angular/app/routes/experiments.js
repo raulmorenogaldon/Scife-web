@@ -17,4 +17,6 @@ module.exports = function(app) {
 	app.post('/experiments/launch/:experimentId', expCtrl.launch);
 
 	app.post('/experiments/reset/:experimentId', expCtrl.reset);
+	
+	app.delete('/experiments/:experimentId', expCtrl.delete);
 };

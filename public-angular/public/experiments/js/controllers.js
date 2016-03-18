@@ -23,32 +23,53 @@ app.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function($
 	};
 
 }]);
+
 app.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService',
 	function($scope, $http, ExpDataService) {
-		$http.get('/experiments/list/')
-			.then(function(response) {
-				$scope.experiments = response.data;
-				$http.get('/applications/list/')
-					.then(function(data) {
-						$scope.experiments.forEach(function(exp) {
-							exp.app = angular.copy(data.data.find(function(app) {
-								return app.id === exp.app_id;
-							}));
+
+		function getList() {
+			$http.get('/experiments/list/')
+				.then(function(response) {
+					$scope.experiments = response.data;
+					$http.get('/applications/list/')
+						.then(function(data) {
+							$scope.experiments.forEach(function(exp) {
+								exp.app = angular.copy(data.data.find(function(app) {
+									return app.id === exp.app_id;
+								}));
+							});
+						}, function(response) {
+							$scope.errors = response.data.errors;
 						});
-					}, function(response) {
-						$scope.errors = response.data.errors;
-					});
-			}, function(response) {
-				$scope.errors = response.data.errors;
-			});
+				}, function(response) {
+					$scope.errors = response.data.errors;
+				});
+		}
+		getList();
 
 		$scope.saveExp = function(exp) {
 			ExpDataService.set(exp);
 		};
+
+		$scope.selectExpToDelete = function(exp) {
+			$scope.deleteExpSelect = exp;
+		};
+
+		$scope.deleteSubmit = function() {
+			$http.delete('/experiments/' + $scope.deleteExpSelect.id)
+				.then(function(response) {
+						getList();
+						$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
+					},
+					function(response) {
+						$scope.errors = "There is an error in the request";
+					});
+			jQuery('#deleteModal').modal('hide');
+		};
 	}
 ]);
 
-app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', '$interval', function($scope, $http, $stateParams, ExpDataService, $interval) {
+app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', '$interval', '$location', function($scope, $http, $stateParams, ExpDataService, $interval, $location) {
 	var timer;
 	$scope.experiment = ExpDataService.get();
 	if (!$scope.experiment) {
@@ -67,7 +88,6 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataServi
 	}
 
 	$scope.refreshStatus = function() {
-		console.log("hola");
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function(response) {
 				$scope.experiment.status = response.data.status;
@@ -75,7 +95,6 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataServi
 				$scope.error = response.data.errors;
 			});
 	};
-
 
 	$scope.launchModal = function() {
 		$scope.launchData = {};
@@ -119,6 +138,17 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataServi
 		$interval.cancel(timer);
 	};
 
+	$scope.deleteSubmit = function() {
+		$http.delete('/experiments/' + $scope.experiment.id)
+			.then(function(response) {
+					$location.path('/');
+				},
+				function(response) {
+					$scope.errors = "There is an error in the request";
+				});
+		jQuery('#deleteModal').modal('hide');
+	};
+
 }]);
 
 app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', function($scope, $http, $stateParams, ExpDataService) {
@@ -155,9 +185,9 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService
 			.then(function(response) {
 				$scope.message = response.data.message;
 				$scope.showForm = false;
-				$scope.oldLabels = JSON.parse(JSON.stringify($scope.experiment.labels));
+				$scope.oldLabels = angular.copy($scope.experiment.labels);
 			}, function(response) {
-				console.log(response);
+				$scope.errors = "There is an error in the request.";
 			});
 	};
 
@@ -172,6 +202,9 @@ app.controller('CreateCtrl', ['$scope', '$http', '$location', function($scope, $
 	$http.get('/applications/list/')
 		.then(function(response) {
 			$scope.applications = response.data;
+			$scope.experiment = {
+				app_id: response.data[0].id
+			};
 		}, function(response) {
 			$scope.errors = response.data.errors;
 		});

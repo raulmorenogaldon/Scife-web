@@ -6,6 +6,55 @@
 		<p>
 			<a href="#/create" class="btn btn-primary">New Experiment</a>
 		</p>
+		<div class="row">
+			<div class="alert alert-danger col-md-10 col-md-offset-1" role="alert" ng-show="errors.length > 0">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
+			</div>
+
+			<div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message != null">
+				<button type="button" class="close" ng-click="message = null" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<p class="text-center">
+					{{message}}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<!-- Modal -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="launchModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="launchModalLabel">Launch Configure</h4>
+				</div>
+				<div class="modal-body">
+					<p class="text-justified">
+						Are you sure, you want to delete the experiment?
+					</p>
+					<dl class="dl-horizontal">
+						<dt>Name</dt>
+						<dd>{{deleteExpSelect.name}}</dd>
+						<dt>Description</dt>
+						<dd>{{deleteExpSelect.desc}}</dd>
+						<dt>Application</dt>
+						<dd>{{deleteExpSelect.app.name}}</dd>
+						<dt>Status</dt>
+						<dd>{{deleteExpSelect.status}}</dd>
+					</dl>
+					<div class="modal-footer">
+						<form ng-submit="deleteSubmit()" class="form form-horizontal col-md-12">
+							<div class="col-md-12 text-center">
+								<input type="submit" class="btn btn-danger" value="I Agree">
+								<button type="button" class="btn btn-default" data-dismiss="modal">I disagree</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div class="row">
@@ -31,6 +80,9 @@
 							<a href="#/sources/{{exp.id}}" class="btn btn-info" aria-label="Left Align" ng-click="saveExp(exp)" title="Sources">
 								<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
 							</a>
+							<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="selectExpToDelete(exp)">
+								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+								</button>
 						</p>
 						<table class="table table-hover table-striped table-bordered">
 							<thead>
