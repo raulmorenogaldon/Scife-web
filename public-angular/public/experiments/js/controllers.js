@@ -26,7 +26,6 @@ app.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function($
 
 app.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService',
 	function($scope, $http, ExpDataService) {
-
 		function getList() {
 			$http.get('/experiments/list/')
 				.then(function(response) {
@@ -123,7 +122,6 @@ app.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataServi
 				$scope.errors = response.data.errors;
 			});
 		jQuery('#launchModal').modal('hide');
-
 		timer = $interval($scope.refreshStatus, 10000);
 	};
 
@@ -159,7 +157,7 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function(response) {
 				$scope.experiment = response.data;
-				$scope.oldLabels = JSON.parse(JSON.stringify(response.data.labels));
+				$scope.oldLabels = angular.copy(response.data.labels);
 				$http.get('/applications/details/' + $scope.experiment.app_id)
 					.then(function(data) {
 						$scope.experiment.app = data.data;
@@ -173,17 +171,12 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService
 		$scope.oldLabels = angular.copy($scope.experiment.labels);
 	}
 
-
-	$scope.editLabels = function() {
-		$scope.showForm = true;
-	};
-
 	$scope.submit = function() {
 		$http.put('/experiments/' + $scope.experiment.id, {
 				labels: $scope.experiment.labels
 			})
 			.then(function(response) {
-				$scope.message = response.data.message;
+				$scope.message = "Experiment " + $scope.experiment.name + " updated successfully.";
 				$scope.showForm = false;
 				$scope.oldLabels = angular.copy($scope.experiment.labels);
 			}, function(response) {
@@ -198,20 +191,16 @@ app.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService
 }]);
 
 app.controller('CreateCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
-
+	$scope.experiment = {};
 	$http.get('/applications/list/')
 		.then(function(response) {
 			$scope.applications = response.data;
-			$scope.experiment = {
-				app_id: response.data[0].id
-			};
+			$scope.experiment.app_id = response.data[0].id;
 		}, function(response) {
 			$scope.errors = response.data.errors;
 		});
 
 	$scope.submit = function() {
-		$scope.msg = null;
-		$scope.errors = null;
 		$http.post('/experiments/create', $scope.experiment)
 			.then(function(response) {
 				$location.path('overview/' + response.data.experimentId);
@@ -231,7 +220,6 @@ app.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', function($sc
 }]);
 
 app.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
-
 	$http.get('/experiments/details/' + $stateParams.experimentId)
 		.then(function(response) {
 			$scope.experiment = response.data;

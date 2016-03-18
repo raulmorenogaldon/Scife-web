@@ -118,9 +118,7 @@ exports.update = function(req, res) {
 					});
 					break;
 				case 200:
-					res.status(response.statusCode).json({
-						message: "Experiment updated sucessfully, ID experiment: " + body
-					});
+					res.status(response.statusCode);
 					break;
 				default:
 					res.send("There is no status code from the internal server.");

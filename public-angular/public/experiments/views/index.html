@@ -71,11 +71,14 @@
 				<div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}">
 					<div class="panel-body">
 						<p class="text-center">
-							<a href="#/overview/{{exp.id}}" class="btn btn-info" aria-label="Left Align" ng-click="saveExp(exp)" title="More Details">
+							<a href="#/overview/{{exp.id}}" class="btn btn-info" aria-label="Left Align" ng-click="saveExp(exp)" title="Overview">
 								<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 							</a>
 							<a href="#/labels/{{exp.id}}" class="btn btn-info" aria-label="Left Align" ng-click="saveExp(exp)" title="Labels">
 								<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+							</a>
+							<a href="#/inputdata/{{exp.id}}" class="btn btn-info" aria-label="Left Align" ng-click="saveExp(exp)" title="Input Data">
+								<span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
 							</a>
 							<a href="#/sources/{{exp.id}}" class="btn btn-info" aria-label="Left Align" ng-click="saveExp(exp)" title="Sources">
 								<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
