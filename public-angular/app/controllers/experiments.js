@@ -44,9 +44,7 @@ exports.details = function(req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json({
-						errors: body
-					});
+					res.status(response.statusCode).json(JSON.parse(body));
 					break;
 				case 200:
 					res.status(response.statusCode).json(JSON.parse(body));
@@ -118,7 +116,7 @@ exports.update = function(req, res) {
 					});
 					break;
 				case 200:
-					res.status(response.statusCode);
+					res.status(response.statusCode).end();
 					break;
 				default:
 					res.send("There is no status code from the internal server.");
