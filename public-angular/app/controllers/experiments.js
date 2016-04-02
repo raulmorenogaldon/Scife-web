@@ -1,11 +1,11 @@
 var request = require('request'),
 	privateServer = require('../../config/env/development.js').privateServer;
 
-exports.list = function(req, res) {
+exports.list = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments',
 		methos: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.json({
 				errors: err
@@ -15,9 +15,7 @@ exports.list = function(req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json({
-						errors: body
-					});
+					res.status(response.statusCode).json(JSON.parse(body));
 					break;
 				case 200:
 					res.status(response.statusCode).json(JSON.parse(body));
@@ -30,11 +28,11 @@ exports.list = function(req, res) {
 };
 
 
-exports.details = function(req, res) {
+exports.details = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 		methos: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.json({
 				errors: err
@@ -56,7 +54,7 @@ exports.details = function(req, res) {
 	});
 };
 
-exports.create = function(req, res) {
+exports.create = function (req, res) {
 	if (!req.body.name || !req.body.app_id) {
 		res.status(404).json({
 			message: "Name and Application are required."
@@ -66,7 +64,7 @@ exports.create = function(req, res) {
 			url: privateServer + '/cloud/experiments',
 			method: 'POST',
 			json: req.body
-		}, function(err, response, body) {
+		}, function (err, response, body) {
 			if (err) {
 				res.status(505).json({
 					errors: err
@@ -76,10 +74,7 @@ exports.create = function(req, res) {
 					case 500:
 					case 404:
 					case 400:
-						res.status(response.statusCode).json({
-							errors: body.errors,
-							experiment: req.body
-						});
+						res.status(response.statusCode).json(JSON.parse(body));
 						break;
 					case 200:
 						res.status(response.statusCode).json({
@@ -95,12 +90,12 @@ exports.create = function(req, res) {
 	}
 };
 
-exports.update = function(req, res) {
+exports.update = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 		method: 'PUT',
 		json: req.body
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.status(505).json({
 				errors: err
@@ -110,10 +105,7 @@ exports.update = function(req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json({
-						errors: body.errors,
-						experiment: req.body
-					});
+					res.status(response.statusCode).json(JSON.parse(body));
 					break;
 				case 200:
 					res.status(response.statusCode).end();
@@ -125,7 +117,7 @@ exports.update = function(req, res) {
 	});
 };
 
-exports.launch = function(req, res) {
+exports.launch = function (req, res) {
 	var data = req.body;
 	if (!data.nodes || !data.image_id || !data.size_id) {
 		res.status(404).json({
@@ -137,7 +129,7 @@ exports.launch = function(req, res) {
 			url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 			method: 'POST',
 			json: data
-		}, function(err, response, body) {
+		}, function (err, response, body) {
 			if (err) {
 				res.status(505).json({
 					errors: err
@@ -147,9 +139,7 @@ exports.launch = function(req, res) {
 					case 500:
 					case 404:
 					case 400:
-						res.status(response.statusCode).json({
-							errors: body.errors
-						});
+						res.status(response.statusCode).json(JSON.parse(body));
 						break;
 					case 200:
 						res.status(response.statusCode).json({
@@ -164,14 +154,14 @@ exports.launch = function(req, res) {
 	}
 };
 
-exports.reset = function(req, res) {
+exports.reset = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 		method: 'POST',
 		json: {
 			op: 'reset'
 		}
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.status(505).json({
 				errors: err
@@ -181,9 +171,7 @@ exports.reset = function(req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json({
-						errors: body.errors
-					});
+					res.status(response.statusCode).json(JSON.parse(body));
 					break;
 				case 200:
 					res.status(response.statusCode).json({
@@ -198,11 +186,11 @@ exports.reset = function(req, res) {
 };
 
 
-exports.delete = function(req, res) {
+exports.delete = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 		method: 'DELETE'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.status(505).json({
 				errors: err
@@ -212,12 +200,10 @@ exports.delete = function(req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json({
-						errors: body.errors
-					});
+					res.status(response.statusCode).json(JSON.parse(body));
 					break;
 				case 200:
-					res.status(response.statusCode).json(body);
+					res.status(response.statusCode).end();
 					break;
 				default:
 					res.send("There is no status code from the internal server.");
