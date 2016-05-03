@@ -1,6 +1,8 @@
 <div class="col-sm-3 col-md-2 sidebar">
 	<ul class="nav nav-sidebar">
-		<li ng-repeat="link in links" ng-class="{active:isActive(link.url)}">
-			<a href="#{{link.url}}"> {{link.name}}</a></li>
+		<li ng-repeat="link in links" ng-class="{active:isActive(link.url), disabled:link.disabled}">
+			<a ng-if="!link.disabled" href="#{{link.url}}"> {{link.name}}</a>
+			<a ng-if="link.disabled"> {{link.name}}</a>
+		</li>
 	</ul>
 </div>
