@@ -124,6 +124,7 @@
 							<td>Status</td>
 							<td>{{experiment.status}}</td>
 						</tr>
+						
 					</tbody>
 				</table>
 			</div>
@@ -131,7 +132,7 @@
 	</div>
 	<div class="row" ng-show="!errors">
 		<div class="text-center">
-			<button class="btn btn-lg btn-success disabled">Dowload Results</button>
+			<button ng-disabled='experiment.status != "done"' class="btn btn-lg btn-success" ng-click="downloadResults(experiment.id)">Dowload Results</button>
 		</div>
 	</div>
 </div>

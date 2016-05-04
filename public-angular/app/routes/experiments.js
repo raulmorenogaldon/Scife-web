@@ -9,6 +9,10 @@ module.exports = function(app) {
 	app.get('/experiments/list', expCtrl.list);
 
 	app.get('/experiments/details/:experimentId', expCtrl.details);
+	
+	app.get('/experiments/logs/:experimentId', expCtrl.logs);
+	
+	app.get('/experiments/downloadresults/:experimentId', expCtrl.downloadResults);
 
 	app.post('/experiments/create', expCtrl.create);
 

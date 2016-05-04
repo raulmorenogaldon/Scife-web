@@ -153,6 +153,13 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				});
 		$interval.cancel(timer);
 	};
+	
+	$scope.downloadResults = function (id) {
+		$http.get('/experiments/downloadresults/'+id)
+			.then(function(response) {
+			}, function(response) {
+			});
+	};
 }])
 
 .controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', function($scope, $http, $stateParams, ExpDataService) {
@@ -239,29 +246,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	*/
 
 .controller('LogsCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
-	/*
 	$http.get('/experiments/logs/' + $stateParams.experimentId)
 		.then(function (response) {
-			$scope.logs = response.data.logs;
+			$scope.logs = response.data;
 		}, function (response) {
 			$scope.errors = response.data.errors;
 		});
-		*/
-
-	$scope.logs = [{
-		name: "log1",
-		message: "este es el message"
-	}, {
-		name: "log2",
-		message: "este es el message"
-	}, {
-		name: "log3",
-		message: "este es el message"
-	}, {
-		name: "log4",
-		message: "este es el message"
-	}, {
-		name: "log5",
-		message: "este es el message"
-	}];
 }]);
