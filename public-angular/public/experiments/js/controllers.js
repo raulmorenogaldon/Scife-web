@@ -12,8 +12,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		url: "/inputdata/" + $stateParams.experimentId
 	}, {
 		name: "Sources",
-		url: "/sources/" + $stateParams.experimentId,
-		disabled: true
+		url: "/sources/" + $stateParams.experimentId
 	}, {
 		name: "Logs",
 		url: "/logs/" + $stateParams.experimentId
@@ -153,12 +152,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				});
 		$interval.cancel(timer);
 	};
-	
-	$scope.downloadResults = function (id) {
-		$http.get('/experiments/downloadresults/'+id)
-			.then(function(response) {
-			}, function(response) {
-			});
+
+	$scope.downloadResults = function(id) {
+		window.open('/experiments/downloadresults/' + id);
 	};
 }])
 
@@ -234,22 +230,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		});
 }])
 
-/* Unable because is not implemented yet
-	.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', function ($scope, $http, $stateParams) {
-		$http.get('/experiments/details/' + $stateParams.experimentId)
-			.then(function (response) {
-				$scope.experiment = response.data;
-			}, function (response) {
-				$scope.errors = response.data.errors;
-			});
-	}])
-	*/
+.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
+	$http.get('/experiments/details/' + $stateParams.experimentId)
+		.then(function(response) {
+			$scope.experiment = response.data;
+		}, function(response) {
+			$scope.errors = response.data.errors;
+		});
+}])
 
 .controller('LogsCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
 	$http.get('/experiments/logs/' + $stateParams.experimentId)
-		.then(function (response) {
+		.then(function(response) {
 			$scope.logs = response.data;
-		}, function (response) {
+		}, function(response) {
 			$scope.errors = response.data.errors;
 		});
 }]);
