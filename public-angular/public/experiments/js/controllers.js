@@ -24,8 +24,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 	}])
 
-	.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService','BgColors',
-		function ($scope, $http, ExpDataService,BgColors) {
+	.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService', 'BgColors',
+		function ($scope, $http, ExpDataService, BgColors) {
 			function getList() {
 				$http.get('/experiments/list/')
 					.then(function (response) {
@@ -158,7 +158,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.downloadResults = function (id) {
 			window.open('/experiments/downloadresults/' + id);
 		};
-		
+
 		$scope.bgColors = BgColors;
 	}])
 
@@ -185,11 +185,14 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		}
 
 		$scope.submit = function () {
-			console.log("Entra");
+			for (var i in $scope.experiment.labels) {
+				if ($scope.experiment.labels[i] === "" || $scope.experiment.labels[i] === null) {
+					delete $scope.experiment.labels[i];
+				}
+			}
 			$http.put('/experiments/' + $scope.experiment.id, {
 				labels: $scope.experiment.labels
 			}).then(function (response) {
-				console.log(response);
 				$scope.message = "Experiment " + $scope.experiment.name + " updated successfully.";
 				$scope.showForm = false;
 				$scope.oldLabels = angular.copy($scope.experiment.labels);
