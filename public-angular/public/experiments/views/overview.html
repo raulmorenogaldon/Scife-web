@@ -122,9 +122,8 @@
 						</tr>
 						<tr>
 							<td>Status</td>
-							<td>{{experiment.status}}</td>
+							<td ng-class="bgColors.getColorClass(experiment.status)">{{experiment.status}}</td>
 						</tr>
-						
 					</tbody>
 				</table>
 			</div>
