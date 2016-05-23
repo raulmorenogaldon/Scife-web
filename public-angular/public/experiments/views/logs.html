@@ -2,7 +2,7 @@
 	<div class="page-header">
 		<h1>Logs</h1>
 	</div>
-	<div class="col-md-offset-2 col-md-8">
+	<div class="col-md-offset-1 col-md-10">
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 			<div class="panel panel-default" ng-repeat="log in logs">
 				<div class="panel-heading text-center" role="tab" id="heading{{$index}}">
@@ -14,7 +14,7 @@
 				</div>
 				<div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}">
 					<div class="panel-body">
-						<p>{{log.content}}</p>
+						<p style="overflow-x:auto;">{{log.content}}</p>
 					</div>
 				</div>
 			</div>
