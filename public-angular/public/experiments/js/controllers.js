@@ -24,8 +24,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 }])
 
-.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService', 'BgColors',
-	function($scope, $http, ExpDataService, BgColors) {
+.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService', 'PanelColors',
+	function($scope, $http, ExpDataService, PanelColors) {
 		function getList() {
 			$http.get('/experiments/list/')
 				.then(function(response) {
@@ -68,11 +68,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			jQuery('#deleteModal').modal('hide');
 		};
 
-		$scope.bgColors = BgColors;
+		$scope.panelColors = PanelColors;
 	}
 ])
 
-.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', '$interval', '$location', 'BgColors', function($scope, $http, $stateParams, ExpDataService, $interval, $location, BgColors) {
+.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', '$interval', '$location', 'PanelColors', function($scope, $http, $stateParams, ExpDataService, $interval, $location, PanelColors) {
 	var timer;
 	$scope.experiment = ExpDataService.get();
 	if (!$scope.experiment) {
@@ -161,7 +161,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		window.open('/experiments/downloadresults/' + id);
 	};
 
-	$scope.bgColors = BgColors;
+	$scope.panelColors = PanelColors;
 }])
 
 .controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', function($scope, $http, $stateParams, ExpDataService) {
@@ -210,7 +210,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	};
 }])
 
-.controller('CreateCtrl', ['$scope', '$http', '$location', '$interval', function($scope, $http, $location, $interval) {
+.controller('CreateCtrl', ['$scope', '$http', '$location', '$interval', 'ExpDataService', function($scope, $http, $location, $interval, ExpDataService) {
 	$scope.experiment = {};
 	$http.get('/applications/list/')
 		.then(function(response) {
@@ -226,6 +226,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			.then(function(response) {
 				console.log("Acaba");
 				jQuery('#loadingModal').modal('hide');
+				ExpDataService.set(null);
 				$interval(function() {
 					$location.path('overview/' + response.data.experimentId);
 				}, 200, 1, true);

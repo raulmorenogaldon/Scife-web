@@ -1,44 +1,51 @@
 angular.module('Experiments')
-	.service('ExpDataService', function () {
+	.service('ExpDataService', function() {
 		var exp;
 		return {
-			get: function () {
+			get: function() {
 				return exp;
 			},
-			set: function (newExp) {
+			set: function(newExp) {
 				exp = newExp;
 			},
-			clean: function () {
+			clean: function() {
 				exp = {};
 			}
 		};
 	})
-	.service('AppDataService', function () {
+	.service('AppDataService', function() {
 		var app;
 		return {
-			get: function () {
+			get: function() {
 				return app;
 			},
-			set: function (newApp) {
+			set: function(newApp) {
 				app = newApp;
 			},
-			clean: function () {
+			clean: function() {
 				app = {};
 			}
 		};
 	})
 
-	.service('BgColors', function () {
-		return {
-			getColorClass: function (status) {
-				switch (status) {
-					case 'done':
-						return 'bg-success';
-					case 'failed':
-						return 'bg-danger';
-					default:
-						return 'bg-info';
-				}
+.service('PanelColors', function() {
+	return {
+		getColorClass: function(status) {
+			switch (status) {
+				case 'done':
+					return 'panel-success';
+				case 'launched':
+				case 'compiling':
+				case 'executing':
+					return 'panel-warning';
+				case 'failed_compilation':
+				case 'failed_execution':
+					return 'panel-danger';
+				case 'created':
+					return 'panel-info';
+				default:
+					return 'panel-info';
 			}
-		};
-	});
+		}
+	};
+});

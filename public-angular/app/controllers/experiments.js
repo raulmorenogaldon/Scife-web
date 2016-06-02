@@ -84,7 +84,7 @@ exports.downloadResults = function(req, res) {
 	//console.log(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download");
 	request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download").pipe(res);
 	//res.pipe(request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download"));
- /*
+	/*
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/download",
 		method: 'GET'
@@ -109,7 +109,7 @@ exports.downloadResults = function(req, res) {
 			}
 		}
 	});
-*/ 
+*/
 };
 
 exports.create = function(req, res) {
