@@ -27,11 +27,13 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 .controller('IndexCtrl', ['$scope', '$http', 'ExpDataService', 'PanelColors',
 	function($scope, $http, ExpDataService, PanelColors) {
 		function getList() {
+			jQuery('#loadingModal').modal('show');
 			$http.get('/experiments/list/')
 				.then(function(response) {
 					$scope.experiments = response.data;
 					$http.get('/applications/list/')
 						.then(function(data) {
+							jQuery('#loadingModal').modal('hide');
 							$scope.experiments.forEach(function(exp) {
 								exp.app = angular.copy(data.data.find(function(app) {
 									return app.id === exp.app_id;
@@ -39,9 +41,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 							});
 						}, function(response) {
 							$scope.errors = response.data.errors;
+							jQuery('#loadingModal').modal('hide');
 						});
 				}, function(response) {
 					$scope.errors = response.data.errors;
+					jQuery('#loadingModal').modal('hide');
 				});
 		}
 		getList();
