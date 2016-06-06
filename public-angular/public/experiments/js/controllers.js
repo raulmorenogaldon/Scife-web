@@ -59,13 +59,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 
 		$scope.deleteSubmit = function() {
-			jQuery('#loadingModal').modal('show');
 			$http.delete('/experiments/' + $scope.deleteExpSelect.id)
 				.then(function(response) {
 					getList();
 					$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
 					ExpDataService.set(null);
-					jQuery('#loadingModal').modal('hide');
 				}, function(response) {
 					$scope.errors = "There is an error in the request";
 				});
