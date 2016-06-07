@@ -15,9 +15,26 @@
 		</p>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
-			<div data-angular-treeview="true" data-tree-id="abc" data-tree-model="experiment.src_tree" data-node-id="id" data-node-label="label" data-node-children="children">
+		<div class="col-md-6">
+			<h4 class="text-center">Sources</h4>
+			<div class="treeview" data-angular-treeview="true" data-tree-id="abc" data-tree-model="experiment.src_tree" data-node-id="id" data-node-label="label" data-node-children="children">
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<h4 class="text-center">Text editor</h4>
+			<div id="editor" style="height: 300px;">
+function foo(items) {
+	var x = "All this is syntax highlighted";
+	return x;
+}
 			</div>
 		</div>
 	</div>
 </div>
+<script src="/lib/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	var editor = ace.edit("editor");
+	editor.setTheme("ace/theme/monokai");
+	editor.getSession().setMode("ace/mode/javascript");
+</script>

@@ -100,7 +100,7 @@
 	<hr>
 	<div class="row" ng-show="!errors">
 		<div class="col-md-offset-1 col-md-10">
-			<div class="panel panel-primary">
+			<div class="panel" ng-class="panelColors.getColorClass(experiment.status)">
 				<div class="panel-heading text-center">
 					<strong>Experiment Information</strong>
 				</div>
@@ -122,7 +122,7 @@
 						</tr>
 						<tr>
 							<td>Status</td>
-							<td ng-class="bgColors.getColorClass(experiment.status)">{{experiment.status}}</td>
+							<td>{{experiment.status}}</td>
 						</tr>
 					</tbody>
 				</table>

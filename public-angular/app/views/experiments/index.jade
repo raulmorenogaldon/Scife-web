@@ -2,6 +2,7 @@ extends ../index
 
 block stylesheets
 	link(rel="stylesheet" href="lib/tree-view/css/treeview.css")
+	link(rel="stylesheet" href="/experiments/css/experiments.css")
 
 block content
 	div(ui-view="sidebar")
@@ -16,4 +17,3 @@ block scripts
 			angular.bootstrap(document, ['Experiments']);
 		});
 	script(type="text/javascript" src="lib/tree-view/js/treeview.min.js")
-	
