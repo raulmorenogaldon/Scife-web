@@ -227,11 +227,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$http.post('/experiments/create', $scope.experiment)
 			.then(function(response) {
 				console.log("Acaba");
-				jQuery('#loadingModal').modal('hide');
+				(jQuery('#loadingModal').modal('hide')).then(
+					$interval(function() {
+						$location.path('overview/' + response.data.experimentId);
+					}, 400, 1, true)
+				);
 				ExpDataService.set(null);
-				$interval(function() {
+				/*$interval(function() {
 					$location.path('overview/' + response.data.experimentId);
-				}, 200, 1, true);
+				}, 400, 1, true);*/
 			}, function(response) {
 				$scope.errors = response.data.errors;
 			});
