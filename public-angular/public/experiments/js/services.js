@@ -48,4 +48,18 @@ angular.module('Experiments')
 			}
 		}
 	};
+})
+
+.service('TreeViewFunctions', function () {
+	function addCollapse(obj) {
+		obj.forEach(function(o){
+			if(o.children.length > 0){
+				o.collapsed = true;
+				addCollapse(o.children);
+			}
+		});
+	}
+	return {
+		addCollapsedProperty: addCollapse
+	};
 });

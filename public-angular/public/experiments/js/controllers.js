@@ -238,19 +238,22 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	};
 }])
 
-.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
+.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function($scope, $http, $stateParams, TreeViewFunctions) {
 	$http.get('/experiments/details/' + $stateParams.experimentId)
 		.then(function(response) {
 			$scope.experiment = response.data;
+			TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
+			TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
 		}, function(response) {
 			$scope.errors = response.data.errors;
 		});
 }])
 
-.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
+.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function($scope, $http, $stateParams, TreeViewFunctions) {
 	$http.get('/experiments/details/' + $stateParams.experimentId)
 		.then(function(response) {
 			$scope.experiment = response.data;
+			TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
 		}, function(response) {
 			$scope.errors = response.data.errors;
 		});
