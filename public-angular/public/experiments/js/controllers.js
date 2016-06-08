@@ -89,7 +89,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					});
 			}, function(response) {
 				$scope.errors = response.data.errors;
-				console.log($scope.errors);
 			});
 	}
 
@@ -201,7 +200,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$scope.showForm = false;
 			$scope.oldLabels = angular.copy($scope.experiment.labels);
 		}, function(response) {
-			console.log(response);
 			$scope.errors = "There is an error in the request.";
 		});
 	};
@@ -226,7 +224,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		jQuery('#loadingModal').modal('show');
 		$http.post('/experiments/create', $scope.experiment)
 			.then(function(response) {
-				console.log("Acaba");
 				(jQuery('#loadingModal').modal('hide')).then(
 					$interval(function() {
 						$location.path('overview/' + response.data.experimentId);

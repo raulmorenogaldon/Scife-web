@@ -1,5 +1,16 @@
-div.treeview{
-	height: auto;
-	max-height: 650px;
+div#editor {
+	height: 550px;
+}
+
+div.treeview {
+	height: 650px;
 	overflow: auto;
+}
+
+.vertical-align {
+	display: flex;
+	align-items: center;
+	-ms-flex-flow: row wrap;
+	flex-flow: row wrap;
+	justify-content: center;
 }

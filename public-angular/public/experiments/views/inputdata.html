@@ -15,15 +15,32 @@
 		</p>
 	</div>
 	<div class="row">
-		<div class="col-md-6">
-			<h4 class="text-center">Input data</h4>
-			<div class="treeview" data-angular-treeview="true" data-tree-id="abc" data-tree-model="experiment.input_tree" data-node-id="id" data-node-label="label" data-node-children="children">
+		<div class="col-md-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title text-center">Input data</h4>
+				</div>
+				<div class="panel-body">
+					<div class="treeview" data-angular-treeview="true" data-tree-id="input_tree" data-tree-model="experiment.input_tree" data-node-id="id" data-node-label="label" data-node-children="children">
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<h4 class="text-center">Sources</h4>
-			<div class="treeview" data-angular-treeview="true" data-tree-id="abc" data-tree-model="experiment.src_tree" data-node-id="id" data-node-label="label" data-node-children="children">
+		<div class="col-md-2 vertical-align treeview">
+			<div class="text-center" role="group">
+				<button type="button" class="btn btn-success" title="Move to sources"><span class="glyphicon glyphicon glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
+				<button type="button" class="btn btn-danger" title="Delete File"><span class="glyphicon glyphicon glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+			</div>
+		</div>
+		<div class="col-md-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title text-center">Source data</h4>
+				</div>
+				<div class="panel-body">
+					<div class="treeview" data-angular-treeview="true" data-tree-id="src_tree" data-tree-model="experiment.src_tree" data-node-id="id" data-node-label="label" data-node-children="children">
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
