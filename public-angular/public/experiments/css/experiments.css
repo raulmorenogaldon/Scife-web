@@ -14,3 +14,8 @@ div.treeview {
 	flex-flow: row wrap;
 	justify-content: center;
 }
+
+.log{
+	max-height: 650px;
+	overflow: auto;
+}

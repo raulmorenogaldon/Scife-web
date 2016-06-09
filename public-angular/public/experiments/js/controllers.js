@@ -258,6 +258,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		}, function(response) {
 			$scope.errors = response.data.errors;
 		});
+		
+		$scope.selectedNode = function(node){
+			console.log(node);
+		};
 }])
 
 .controller('LogsCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
