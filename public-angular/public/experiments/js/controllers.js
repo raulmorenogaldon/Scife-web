@@ -24,8 +24,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 }])
 
-.controller('IndexCtrl', ['$scope', '$http', 'ExpDataService', 'PanelColors',
-	function($scope, $http, ExpDataService, PanelColors) {
+.controller('IndexCtrl', ['$scope', '$http', 'PanelColors',
+	function($scope, $http, PanelColors) {
 		function getList() {
 			jQuery('#loadingModal').modal('show');
 			$http.get('/experiments/list/')
@@ -33,11 +33,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.experiments = response.data;
 					$http.get('/applications/list/')
 						.then(function(data) {
-							jQuery('#loadingModal').modal('hide');
 							$scope.experiments.forEach(function(exp) {
 								exp.app = angular.copy(data.data.find(function(app) {
 									return app.id === exp.app_id;
 								}));
+								jQuery('#loadingModal').modal('hide');
 							});
 						}, function(response) {
 							$scope.errors = response.data.errors;
@@ -50,10 +50,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		}
 		getList();
 
-		$scope.saveExp = function(exp) {
-			ExpDataService.set(exp);
-		};
-
 		$scope.selectExpToDelete = function(exp) {
 			$scope.deleteExpSelect = exp;
 		};
@@ -63,7 +59,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				.then(function(response) {
 					getList();
 					$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
-					ExpDataService.set(null);
 				}, function(response) {
 					$scope.errors = "There is an error in the request";
 				});
@@ -74,23 +69,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}
 ])
 
-.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', '$interval', '$location', 'PanelColors', function($scope, $http, $stateParams, ExpDataService, $interval, $location, PanelColors) {
+.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$interval', '$location', 'PanelColors', function($scope, $http, $stateParams, $interval, $location, PanelColors) {
 	var timer;
-	$scope.experiment = ExpDataService.get();
-	if (!$scope.experiment) {
-		$http.get('/experiments/details/' + $stateParams.experimentId)
-			.then(function(response) {
-				$scope.experiment = response.data;
-				$http.get('/applications/details/' + $scope.experiment.app_id)
-					.then(function(data) {
-						$scope.experiment.app = data.data;
-					}, function(data) {
-						$scope.errors = data.data.errors;
-					});
-			}, function(response) {
-				$scope.errors = response.data.errors;
-			});
-	}
+	$http.get('/experiments/details/' + $stateParams.experimentId)
+		.then(function(response) {
+			$scope.experiment = response.data;
+			$http.get('/applications/details/' + $scope.experiment.app_id)
+				.then(function(data) {
+					$scope.experiment.app = data.data;
+				}, function(data) {
+					$scope.errors = data.data.errors;
+				});
+		}, function(response) {
+			$scope.errors = response.data.errors;
+		});
 
 
 	$scope.refreshStatus = function() {
@@ -146,7 +138,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	$scope.deleteSubmit = function() {
 		$http.delete('/experiments/' + $scope.experiment.id)
 			.then(function(response) {
-					ExpDataService.set(null);
 					jQuery('#deleteModal').modal('hide');
 					$interval(function() {
 						$location.path('/');
@@ -165,8 +156,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	$scope.panelColors = PanelColors;
 }])
 
-.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'ExpDataService', function($scope, $http, $stateParams, ExpDataService) {
-	$scope.experiment = ExpDataService.get(); // Get the experiment from the service.
+.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
 	$scope.showForm = false;
 
 	if (!$scope.experiment) {
@@ -210,7 +200,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	};
 }])
 
-.controller('CreateCtrl', ['$scope', '$http', '$location', '$interval', 'ExpDataService', function($scope, $http, $location, $interval, ExpDataService) {
+.controller('CreateCtrl', ['$scope', '$http', '$location', '$interval', function($scope, $http, $location, $interval) {
 	$scope.experiment = {};
 	$http.get('/applications/list/')
 		.then(function(response) {
@@ -229,7 +219,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 						$location.path('overview/' + response.data.experimentId);
 					}, 400, 1, true)
 				);
-				ExpDataService.set(null);
 				/*$interval(function() {
 					$location.path('overview/' + response.data.experimentId);
 				}, 400, 1, true);*/
@@ -240,10 +229,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 }])
 
 .controller('InputDataCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function($scope, $http, $stateParams, TreeViewFunctions) {
-	$http.get('/experiments/details/' + $stateParams.experimentId)
+	$http.get('/experiments/' + $stateParams.experimentId + "/input_tree")
 		.then(function(response) {
 			$scope.experiment = response.data;
-			TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
 			TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
 		}, function(response) {
 			$scope.errors = response.data.errors;
@@ -251,24 +239,52 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 }])
 
 .controller('SourcesCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function($scope, $http, $stateParams, TreeViewFunctions) {
-	$http.get('/experiments/details/' + $stateParams.experimentId)
+	$http.get('/experiments/' + $stateParams.experimentId + "/src_tree")
 		.then(function(response) {
 			$scope.experiment = response.data;
 			TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
 		}, function(response) {
 			$scope.errors = response.data.errors;
 		});
-		
-		$scope.selectedNode = function(node){
-			console.log(node);
-		};
+
+	$scope.selectedNode = function(node) {
+		console.log(node.children.length);
+		if (node.children.length === 0) {
+			$http.get('/experiments/' + $scope.experiment.id + "/file/" + node.id)
+				.then(function(response) {
+					console.log(response.data);
+					editor.setValue(response.data);
+				}, function(response) {
+					$scope.errors = response.data.errors;
+				});
+		}
+	};
+
+	var editor = ace.edit("editor");
+	editor.setTheme("ace/theme/monokai");
+	editor.getSession().setMode("ace/mode/javascript");
+	editor.getSession().setTabSize(2);
+	editor.getSession().setUseSoftTabs(true);
 }])
 
-.controller('LogsCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
-	$http.get('/experiments/logs/' + $stateParams.experimentId)
-		.then(function(response) {
-			$scope.logs = response.data;
-		}, function(response) {
-			$scope.errors = response.data.errors;
-		});
+.controller('LogsCtrl', ['$scope', '$http', '$stateParams', '$location', function($scope, $http, $stateParams, $location) {
+
+	$scope.getLog = function() {
+		$http.get('/experiments/logs/' + $stateParams.experimentId)
+			.then(function(response) {
+				$scope.fileCode = response.data;
+			}, function(response) {
+				$scope.errors = response.data.errors;
+			});
+	};
+	$scope.getLog();
+
+	/*
+	var interval = setInterval(function() {
+		getLog();
+		if (($location.path()).indexOf("/logs/") < 0) {
+			clearInterval(interval);
+		}
+	}, 5000);
+	*/
 }]);
