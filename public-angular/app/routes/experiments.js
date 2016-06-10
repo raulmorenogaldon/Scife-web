@@ -23,4 +23,10 @@ module.exports = function(app) {
 	app.post('/experiments/reset/:experimentId', expCtrl.reset);
 	
 	app.delete('/experiments/:experimentId', expCtrl.delete);
+	
+	app.get('/experiments/:experimentId/file/:fileId', expCtrl.getFile);
+	
+	app.get('/experiments/:experimentId/src_tree', expCtrl.getSrcTree);
+	
+	app.get('/experiments/:experimentId/input_tree', expCtrl.getInputTree);
 };

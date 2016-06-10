@@ -269,3 +269,83 @@ exports.delete = function(req, res) {
 		}
 	});
 };
+
+exports.getFile = function(req, res) {
+	console.log(privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.params.fileId);
+
+	request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.params.fileId,
+		methos: 'GET'
+	}, function(err, response, body) {
+		if (err) {
+			res.json({
+				errors: err
+			});
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json(JSON.parse(body));
+					break;
+				case 200:
+					res.status(response.statusCode).json(body);
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+};
+
+exports.getSrcTree = function(req, res) {
+	request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree",
+		methos: 'GET'
+	}, function(err, response, body) {
+		if (err) {
+			res.json({
+				errors: err
+			});
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json(JSON.parse(body));
+					break;
+				case 200:
+					res.status(response.statusCode).json(JSON.parse(body));
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+};
+
+exports.getInputTree = function(req, res) {
+	request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree",
+		methos: 'GET'
+	}, function(err, response, body) {
+		if (err) {
+			res.json({
+				errors: err
+			});
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json(JSON.parse(body));
+					break;
+				case 200:
+					res.status(response.statusCode).json(JSON.parse(body));
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+};
