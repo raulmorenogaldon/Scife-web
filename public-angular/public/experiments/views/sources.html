@@ -15,23 +15,23 @@
 		</p>
 	</div>
 	<div class="row">
-		<div class="col-md-5">
+		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title text-center"><strong>Sources</strong></h4>
 				</div>
 				<div class="body">
-					<div class="treeview" data-angular-treeview="true" data-tree-id="src_tree" data-tree-model="experiment.src_tree" data-node-id="id" data-node-label="label" data-node-children="children" ng-click="selectedNode(src_tree.currentNode)">
+					<div class="treeview" data-angular-treeview="true" data-tree-id="src_tree" data-tree-model="experiment.src_tree" data-node-id="id" data-node-label="label" data-node-children="children" ng-click="select(src_tree.currentNode)">
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="col-md-7">
+		<div class="col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title text-center"><strong>Editor</strong></h4>
-					<div class="text-center">{{src_tree.currentNode.label}}</div>
+					<div class="text-center">{{selectedNode.label}}</div>
 				</div>
 				<div class="body">
 					<div id="editor">
@@ -46,3 +46,4 @@
 	</div>
 </div>
 <script src="/lib/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/lib/ace/src-min-noconflict/ext-modelist.js" type="text/javascript" charset="utf-8"></script>

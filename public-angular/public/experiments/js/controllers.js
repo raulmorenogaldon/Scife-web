@@ -1,4 +1,4 @@
-var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
+var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ui.tree'])
 
 .controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function($scope, $location, $stateParams) {
 	$scope.links = [{
@@ -247,13 +247,13 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$scope.errors = response.data.errors;
 		});
 
-	$scope.selectedNode = function(node) {
-		console.log(node.children.length);
+	$scope.select = function(node) {
 		if (node.children.length === 0) {
 			$http.get('/experiments/' + $scope.experiment.id + "/file/" + node.id)
 				.then(function(response) {
-					console.log(response.data);
+					$scope.selectedNode = node;
 					editor.setValue(response.data);
+					editor.getSession().setMode(modelist.getModeForPath(node.label).mode);
 				}, function(response) {
 					$scope.errors = response.data.errors;
 				});
@@ -261,6 +261,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	};
 
 	var editor = ace.edit("editor");
+	var modelist = ace.require("ace/ext/modelist");
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/javascript");
 	editor.getSession().setTabSize(2);
@@ -272,7 +273,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	$scope.getLog = function() {
 		$http.get('/experiments/logs/' + $stateParams.experimentId)
 			.then(function(response) {
-				$scope.fileCode = response.data;
+				$scope.logs = response.data;
 			}, function(response) {
 				$scope.errors = response.data.errors;
 			});
