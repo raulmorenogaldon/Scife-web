@@ -24,7 +24,7 @@ module.exports = function(app) {
 	
 	app.delete('/experiments/:experimentId', expCtrl.delete);
 	
-	app.get('/experiments/:experimentId/file/:fileId', expCtrl.getFile);
+	app.get('/experiments/:experimentId/file', expCtrl.getFile);
 	
 	app.get('/experiments/:experimentId/src_tree', expCtrl.getSrcTree);
 	

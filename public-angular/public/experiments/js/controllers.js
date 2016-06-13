@@ -249,10 +249,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 	$scope.select = function(node) {
 		if (node.children.length === 0) {
-			$http.get('/experiments/' + $scope.experiment.id + "/file/" + node.id)
+			console.log(node.id);
+			$http.get('/experiments/' + $scope.experiment.id + "/file?fileId=" + node.id)
 				.then(function(response) {
 					$scope.selectedNode = node;
-					editor.setValue(response.data);
+					editor.setValue(response.data,-1);
 					editor.getSession().setMode(modelist.getModeForPath(node.label).mode);
 				}, function(response) {
 					$scope.errors = response.data.errors;
@@ -266,6 +267,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	editor.getSession().setMode("ace/mode/javascript");
 	editor.getSession().setTabSize(2);
 	editor.getSession().setUseSoftTabs(true);
+	editor.getSession().setUseWrapMode(true);
+	editor.setShowPrintMargin(false);
 }])
 
 .controller('LogsCtrl', ['$scope', '$http', '$stateParams', '$location', function($scope, $http, $stateParams, $location) {

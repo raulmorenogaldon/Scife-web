@@ -271,10 +271,8 @@ exports.delete = function(req, res) {
 };
 
 exports.getFile = function(req, res) {
-	console.log(privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.params.fileId);
-
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.params.fileId,
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 		methos: 'GET'
 	}, function(err, response, body) {
 		if (err) {
