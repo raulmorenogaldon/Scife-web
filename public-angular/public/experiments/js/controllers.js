@@ -1,4 +1,4 @@
-var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ui.tree'])
+var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 .controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function($scope, $location, $stateParams) {
 	$scope.links = [{
@@ -274,11 +274,18 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ui.tre
 		$http.get('/experiments/logs/' + $stateParams.experimentId)
 			.then(function(response) {
 				$scope.logs = response.data;
+				if(response.data.length > 0 && typeof $scope.selected == 'undefined'){
+					$scope.select(0);
+				}
 			}, function(response) {
 				$scope.errors = response.data.errors;
 			});
 	};
 	$scope.getLog();
+	
+	$scope.select = function(index){
+		$scope.selected = index;
+	};
 
 	/*
 	var interval = setInterval(function() {
