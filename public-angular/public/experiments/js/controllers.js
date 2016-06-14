@@ -69,8 +69,19 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}
 ])
 
-.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$interval', '$location', 'PanelColors', function($scope, $http, $stateParams, $interval, $location, PanelColors) {
-	var timer;
+.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', function($scope, $http, $stateParams, $location, PanelColors) {
+	var interval;
+
+	function activateInterval() {
+		interval = setInterval(function() {
+			$scope.refreshStatus();
+			console.log($scope.experiment.status);
+			if ($scope.experiment.status == 'failed_compilation' || $scope.experiment.status == 'faile_execution' || $scope.experiment.status == 'done') {
+				clearInterval(interval);
+			}
+		}, 5000);
+	}
+
 	$http.get('/experiments/details/' + $stateParams.experimentId)
 		.then(function(response) {
 			$scope.experiment = response.data;
@@ -121,7 +132,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				$scope.errors = response.data.errors;
 			});
 		jQuery('#launchModal').modal('hide');
-		timer = $interval($scope.refreshStatus, 10000);
+		activateInterval();
 	};
 
 	$scope.reset = function() {
@@ -132,27 +143,24 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}, function(response) {
 				$scope.errors = response.data.errors;
 			});
-		$interval.cancel(timer);
 	};
 
 	$scope.deleteSubmit = function() {
 		$http.delete('/experiments/' + $scope.experiment.id)
 			.then(function(response) {
 					jQuery('#deleteModal').modal('hide');
-					$interval(function() {
+					setTimeout(function() {
 						$location.path('/');
-					}, 500, 1, true);
+					}, 500);
 				},
 				function(response) {
 					$scope.errors = "There is an error in the request";
 				});
-		$interval.cancel(timer);
 	};
 
 	$scope.downloadResults = function(id) {
 		window.open('/experiments/downloadresults/' + id);
 	};
-
 	$scope.panelColors = PanelColors;
 }])
 
@@ -200,7 +208,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	};
 }])
 
-.controller('CreateCtrl', ['$scope', '$http', '$location', '$interval', function($scope, $http, $location, $interval) {
+.controller('CreateCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
 	$scope.experiment = {};
 	$http.get('/applications/list/')
 		.then(function(response) {
@@ -215,13 +223,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$http.post('/experiments/create', $scope.experiment)
 			.then(function(response) {
 				(jQuery('#loadingModal').modal('hide')).then(
-					$interval(function() {
+					setInterval(function() {
 						$location.path('overview/' + response.data.experimentId);
-					}, 400, 1, true)
+					}, 400)
 				);
-				/*$interval(function() {
-					$location.path('overview/' + response.data.experimentId);
-				}, 400, 1, true);*/
 			}, function(response) {
 				$scope.errors = response.data.errors;
 			});
@@ -253,7 +258,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/experiments/' + $scope.experiment.id + "/file?fileId=" + node.id)
 				.then(function(response) {
 					$scope.selectedNode = node;
-					editor.setValue(response.data,-1);
+					editor.setValue(response.data, -1);
 					editor.getSession().setMode(modelist.getModeForPath(node.label).mode);
 				}, function(response) {
 					$scope.errors = response.data.errors;
@@ -277,7 +282,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$http.get('/experiments/logs/' + $stateParams.experimentId)
 			.then(function(response) {
 				$scope.logs = response.data;
-				if(response.data.length > 0 && typeof $scope.selected == 'undefined'){
+				if (response.data.length > 0 && typeof $scope.selected == 'undefined') {
 					$scope.select(0);
 				}
 			}, function(response) {
@@ -285,8 +290,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			});
 	};
 	$scope.getLog();
-	
-	$scope.select = function(index){
+
+	$scope.select = function(index) {
 		$scope.selected = index;
 	};
 

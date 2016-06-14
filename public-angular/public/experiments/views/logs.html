@@ -37,9 +37,9 @@
 			<ul class="pagination">
 				<li ng-repeat="log in logs track by $index" ng-class="{'active':selected==$index}"><a href="" ng-click="select($index)">{{logs[$index].name}}</a></li>
 				<li>
-					<a href="" ng-click="getLog()" title="Refresh">
+					<button class="btn btn-success" ng-click="getLog()" title="Refresh">
 						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-					</a>
+					</button>
 				</li>
 			</ul>
 		</div>
