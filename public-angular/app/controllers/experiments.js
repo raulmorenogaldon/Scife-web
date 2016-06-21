@@ -302,38 +302,38 @@ exports.saveFile = function(req, res, next) {
 		req.setEncoding('utf8');
 		req.on('data', function(chunk) {
 			data += chunk;
-			console.log(chunk);
 		});
-		req.on('end', function() {});
-	}
-
-	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
-		method: 'POST',
-		headers: {
-			'content-type': 'text/plain'
-		},
-		body: data
-	}, function(err, response, body) {
-		if (err) {
-			res.json({
-				errors: err
+		req.on('end',
+			function() {
+				request({
+					url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
+					method: 'POST',
+					headers: {
+						'content-type': 'text/plain'
+					},
+					body: data
+				}, function(err, response, body) {
+					if (err) {
+						res.json({
+							errors: err
+						});
+					} else {
+						switch (response.statusCode) {
+							case 500:
+							case 404:
+							case 400:
+								res.status(response.statusCode).json(JSON.parse(body));
+								break;
+							case 200:
+								res.status(response.statusCode).json(body);
+								break;
+							default:
+								res.send("There is no status code from the internal server.");
+						}
+					}
+				});
 			});
-		} else {
-			switch (response.statusCode) {
-				case 500:
-				case 404:
-				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
-					break;
-				case 200:
-					res.status(response.statusCode).json(body);
-					break;
-				default:
-					res.send("There is no status code from the internal server.");
-			}
-		}
-	});
+	}
 };
 
 exports.getSrcTree = function(req, res) {
