@@ -266,6 +266,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		}
 	};
 
+	$scope.saveFile = function(node) {
+		$http.post('/experiments/' + $scope.experiment.id + "/file?fileId=" + node.id,
+				editor.getValue(), {
+					headers: {
+						'content-type': 'text/plain'
+					}
+				})
+			.then(function(response) {
+				console.log(response.data);
+			}, function(response) {
+				$scope.errors = response.data.errors;
+			});
+	};
+
 	var editor = ace.edit("editor");
 	var modelist = ace.require("ace/ext/modelist");
 	editor.setTheme("ace/theme/monokai");

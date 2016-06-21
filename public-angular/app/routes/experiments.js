@@ -26,6 +26,8 @@ module.exports = function(app) {
 	
 	app.get('/experiments/:experimentId/file', expCtrl.getFile);
 	
+	app.post('/experiments/:experimentId/file', expCtrl.saveFile);
+	
 	app.get('/experiments/:experimentId/src_tree', expCtrl.getSrcTree);
 	
 	app.get('/experiments/:experimentId/input_tree', expCtrl.getInputTree);
