@@ -333,6 +333,12 @@ exports.saveFile = function(req, res, next) {
 					}
 				});
 			});
+	} else {
+		res.status(400).json({
+			'errors': {
+				message: 'Required Content-Type text/plain.'
+			}
+		});
 	}
 };
 
