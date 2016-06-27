@@ -263,8 +263,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/experiments/' + $scope.experiment.id + "/file?fileId=" + node.id)
 				.then(function(response) {
 					$scope.selectedNode = node;
-					editor.setValue(response.data, -1);
-					editor.getSession().setMode(modelist.getModeForPath(node.label).mode);
+					editor.setSession(ace.createEditSession(response.data, modelist.getModeForPath(node.label).mode));
 				}, function(response) {
 					$scope.errors = response.data.errors;
 				});
@@ -310,7 +309,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					}
 				})
 				.then(function(response) {
-					console.log('response '+response.data);
+					console.log('response ' + response.data);
 					jQuery('#newFileModal').modal('hide');
 					getTree();
 				}, function(response) {
@@ -332,11 +331,14 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		'id': 'emacs',
 		'name': 'Emacs'
 	}];
-	$scope.keyboard = $scope.keyboardList[0];
 
 	var editor = ace.edit("editor");
+	var EditSession = ace.require("ace/edit_session").EditSession;
 	var modelist = ace.require("ace/ext/modelist");
-	editor.setTheme("ace/theme/monokai");
+	$scope.themeList = ace.require("ace/ext/themelist").themes;
+	$scope.theme = $scope.themeList[24];
+	$scope.keyboard = $scope.keyboardList[0];
+	editor.setTheme($scope.theme.theme);
 	editor.getSession().setMode("ace/mode/plain_text");
 	editor.getSession().setTabSize(2);
 	editor.getSession().setUseSoftTabs(true);
@@ -346,6 +348,18 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 	$scope.setKeyboardHandler = function() {
 		editor.setKeyboardHandler('ace/keyboard/' + $scope.keyboard.id);
+	};
+
+	$scope.setTheme = function(theme) {
+		editor.setTheme($scope.theme.theme);
+	};
+	
+	$scope.undo = function(){
+		editor.undo();
+	};
+	
+	$scope.redo = function(){
+		editor.redo();
 	};
 }])
 

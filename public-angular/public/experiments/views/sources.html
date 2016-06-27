@@ -75,20 +75,31 @@
 		<div class="col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4 class="panel-title text-center"><strong>Editor</strong></h4>
-					<div class="text-center">{{selectedNode.label}}</div>
+					<div class="row">
+						<div class="col-md-7">
+							<h4 class="panel-title text-center"><strong>Editor</strong></h4>
+							<div class="text-center">{{selectedNode.label}}</div>
+						</div>
+						<div class="col-md-2">
+							<strong>Type:</strong>
+							<select class="form-control" name="keyboard" id="keyboard" ng-model="keyboard" ng-change="setKeyboardHandler(option.id)" ng-options="option as option.name for option in keyboardList track by option.id"></select>
+						</div>
+						<div class="col-md-3">
+							<strong>Theme:</strong>
+							<select class="form-control" name="theme" id="theme" ng-model="theme" ng-change="setTheme(option.theme)" ng-options="option as option.caption for option in themeList track by option.name"></select>
+						</div>
+					</div>
 				</div>
 				<div class="body">
 					<div id="editor"></div>
 				</div>
 			</div>
 			<div class="text-center">
-				<div class="col-md-10">
-				<button id="btnSaveChanges" ng-class="{disabled:!btnSaveChanges}" type="button" class="btn btn-success" title="Save Changes" ng-click="saveFile(src_tree.currentNode)"><span class="glyphicon glyphicon glyphicon-cloud-upload" aria-hidden="true"></span></button>
-				<button class="btn btn-primary" data-toggle="modal" data-target="#newFileModal" ng-click="launchModal()"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-				</div>				
-				<div class="col-md-2">
-					<select class="form-control" name="keyboard" id="keyboard" ng-model="keyboard" ng-change="setKeyboardHandler(option.id)" ng-options="option as option.name for option in keyboardList track by option.id"></select>
+				<div class="">
+					<button id="btnSaveChanges" ng-class="{disabled:!btnSaveChanges}" type="button" class="btn btn-success" title="Save Changes" ng-click="saveFile(src_tree.currentNode)"><span class="glyphicon glyphicon glyphicon-cloud-upload" aria-hidden="true"></span></button>
+					<button class="btn btn-primary" data-toggle="modal" data-target="#newFileModal" ng-click="launchModal()" title="Create a new file or folder"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+					<button class="btn btn-warning" ng-click="undo()" title="Undo"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+					<button class="btn btn-warning" ng-click="redo()" title="Redo"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
 				</div>
 			</div>
 		</div>
@@ -96,3 +107,4 @@
 </div>
 <script src="/lib/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/lib/ace/src-min-noconflict/ext-modelist.js" type="text/javascript" charset="utf-8 "></script>
+<script src="/lib/ace/src-min-noconflict/ext-themelist.js" type="text/javascript" charset="utf-8 "></script>
