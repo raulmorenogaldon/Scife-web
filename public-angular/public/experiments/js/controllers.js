@@ -246,9 +246,19 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 	$scope.btnSaveChanges = true;
 	$scope.folderModal = '';
+	$scope.currentPath = '';
+	$scope.subFolder = false;
+	var folderParentList = ['/'];
+	
+	$scope.clearMessage = function () {
+		$scope.message = null;
+	};
+	$scope.clearErrorMessages = function () {
+		$scope.errors = null;
+	};
 
 	function getTree() {
-		$http.get('/experiments/' + $stateParams.experimentId + "/src_tree")
+		$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=1")
 			.then(function(response) {
 				$scope.experiment = response.data;
 				TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
@@ -259,7 +269,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	getTree();
 
 	$scope.select = function(node) {
-		if (node.children.length === 0) {
+		if (!node.children.length) {
 			$http.get('/experiments/' + $scope.experiment.id + "/file?fileId=" + node.id)
 				.then(function(response) {
 					$scope.selectedNode = node;
@@ -267,6 +277,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				}, function(response) {
 					$scope.errors = response.data.errors;
 				});
+		} else {
+			folderParentList.push(node.id);
+			$scope.currentPath = node.id;
+			getFolderData(node.id, 1);
+			$scope.subFolder = true;
 		}
 	};
 
@@ -321,6 +336,30 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		}
 	};
 
+	$scope.folderUp = function() {
+		if (folderParentList.length > 1) {
+			folderParentList.pop();
+			$scope.currentPath = folderParentList[folderParentList.length - 1];
+			if (folderParentList[folderParentList.length - 1] === '/') {
+				getTree();
+				$scope.subFolder = false;
+			} else {
+				getFolderData(folderParentList[folderParentList.length - 1], 1);
+			}
+		}
+	};
+
+	function getFolderData(folder, depth) {
+		$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=' + depth)
+			.then(function(response) {
+				var exp = response.data;
+				TreeViewFunctions.addCollapsedProperty(exp.src_tree);
+				$scope.experiment = exp;
+			}, function(response) {
+				$scope.errors = response.data.errors;
+			});
+	}
+
 	$scope.keyboardList = [{
 		'id': 'hash_handler',
 		'name': 'Ace'
@@ -353,12 +392,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	$scope.setTheme = function(theme) {
 		editor.setTheme($scope.theme.theme);
 	};
-	
-	$scope.undo = function(){
+
+	$scope.undo = function() {
 		editor.undo();
 	};
-	
-	$scope.redo = function(){
+
+	$scope.redo = function() {
 		editor.redo();
 	};
 }])

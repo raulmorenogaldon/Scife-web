@@ -3,11 +3,11 @@
 		<h2>Sources of experiment <strong>{{experiment.name}}</strong></h2>
 	</div>
 	<div class="alert alert-danger col-md-10 col-md-offset-1" role="alert" ng-show="errors.length > 0">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<button type="button" class="close" data-ng-click="clearErrorMessages()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
 	</div>
-	<div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message != null">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message">
+		<button type="button" class="close" ng-click="clearMessage()"><span aria-hidden="true">&times;</span></button>
 		<p class="text-center">
 			{{message}}
 		</p>
@@ -64,6 +64,14 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title text-center"><strong>Sources</strong></h4>
+					<div class="row">
+						<div class="col-md-2">
+							<button data-ng-show="subFolder" class="btn btn-xs btn-primary" data-ng-click="folderUp()" title="Return"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+						</div>
+						<div data-ng-show="subFolder" class="col-md-10">
+							{{currentPath}}
+						</div>
+					</div>
 				</div>
 				<div class="body log">
 					<div class="treeview" data-angular-treeview="true" data-tree-id="src_tree" data-tree-model="experiment.src_tree" data-node-id="id" data-node-label="label" data-node-children="children" ng-click="select(src_tree.currentNode)">
