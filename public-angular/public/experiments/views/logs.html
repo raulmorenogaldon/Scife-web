@@ -1,17 +1,16 @@
 <div class="col-sm-10 col-sm-offset-2 col-md-11 col-md-offset-1 main">
-	<div class="page-header">
-		<h1>Logs</h1>
-	</div>
-	<div class="col-md-offset-1 col-md-10 alert alert-warning" ng-show="logs.length == 0">
-		No logs yet, please run the experiment before.
-	</div>
-	<!--
+    <div class="page-header">
+        <h1>Logs</h1>
+    </div>
+    <div class="col-md-offset-1 col-md-10 alert alert-warning" ng-show="logs.length == 0">
+        No logs yet, please run the experiment before.
+    </div>
+    <!--
 	<div class="text-center col-md-12">
 		<button class="btn btn-primary" data-ng-click="getLog()">Refresh logs</button>
 	</div>
 	-->
-	<div class="col-md-12">
-		<!--
+    <!--
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 			<div class="panel panel-default" ng-repeat="log in logs">
 				<div class="panel-heading text-center" role="tab" id="heading{{$index}}">
@@ -33,21 +32,27 @@
 			</div>
 		</div>
 		-->
-		<div class="text-center">
-			<ul class="pagination">
-				<li ng-repeat="log in logs track by $index" ng-class="{'active':selected==$index}"><a href="" ng-click="select($index)">{{logs[$index].name}}</a></li>
-				<li>
-					<button class="btn btn-success" ng-click="getLog()" title="Refresh">
+    <!--
+        <div class="text-center">
+            <ul class="pagination">
+                <li ng-repeat="log in logs track by $index" ng-class="{'active':selected==$index}"><a href="" ng-click="select($index)">{{logs[$index].name}}</a></li>
+                <li>
+                    <button class="btn btn-success" ng-click="getLog()" title="Refresh">
 						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 					</button>
-				</li>
-			</ul>
-		</div>
-		<div class="col-md-12 log">
-			<h4 class="text-center">{{logs[selected].content.name}}</h4>
-			<pre>
-			{{logs[selected].content}}
+                </li>
+            </ul>
+        </div>
+		  -->
+
+    <div class="col-md-6 col-md-offset-3">
+        <select class="form-control" name="logs" id="logs" ng-model="selected" ng-options="log as log.name for log in logs"></select>
+
+    </div>
+    <div class="col-md-12 log">
+        <h4 class="text-center">{{selected.content.name}}</h4>
+        <pre>
+			{{selected.content}}
 			</pre>
-		</div>
-	</div>
+    </div>
 </div>
