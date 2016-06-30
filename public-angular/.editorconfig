@@ -7,7 +7,7 @@ end_of_line = lf
 insert_final_newline = false
 
 # Default format for javascript, python and json files
-[*.{js,py,json}]
+[*.{js,py,json,css,html}]
 charset = utf-8
 indent_style = tab
 indent_size = 3

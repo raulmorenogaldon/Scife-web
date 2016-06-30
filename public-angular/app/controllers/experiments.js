@@ -81,7 +81,6 @@ exports.logs = function(req, res) {
 };
 
 exports.downloadResults = function(req, res) {
-	//console.log(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download");
 	request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download").pipe(res);
 	//res.pipe(request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download"));
 	/*
@@ -343,8 +342,19 @@ exports.saveFile = function(req, res, next) {
 };
 
 exports.getSrcTree = function(req, res) {
+	var url;
+	if (req.query.folder && req.query.depth) {
+		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree?folder=" + req.query.folder + '&depth=' + req.query.depth;
+	} else if (!req.query.folder && req.query.depth) {
+		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree?depth=" + req.query.depth;
+	} else if (req.query.folder && !req.query.depth) {
+		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree?folder=" + req.query.folder;
+	} else {
+		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree";
+	}
+
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree",
+		url: url,
 		method: 'GET'
 	}, function(err, response, body) {
 		if (err) {
