@@ -77,7 +77,7 @@ var app = angular.module('Experiments')
 				}
 			}
 		});
-		
+
 		$stateProvider.state('logs', {
 			url: '/logs/:experimentId',
 			views: {

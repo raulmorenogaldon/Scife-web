@@ -1,117 +1,122 @@
 <div class="col-sm-10 col-sm-offset-2 col-md-11 col-md-offset-1 main">
-    <div class="page-header">
-        <h2>Sources of experiment <strong>{{experiment.name}}</strong></h2>
-    </div>
-    <div class="alert alert-danger col-md-10 col-md-offset-1" role="alert" ng-show="errors.length > 0">
-        <button type="button" class="close" data-ng-click="clearErrorMessages()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
-    </div>
-    <div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message">
-        <button type="button" class="close" ng-click="clearMessage()"><span aria-hidden="true">&times;</span></button>
-        <p class="text-center">
-            {{message}}
-        </p>
-    </div>
-    <div class="row">
-        <div class="modal fade" id="newFileModal" tabindex="-1" role="dialog" aria-labelledby="newFileModalLabel">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="newFileModalLabel">Create a new File</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-info">
-                            Select in the sources tree the folder where you want to create the file or the folder. To create a folder, add to the end of the name a slash "/" (eg. "folder/").
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title text-center"><strong>Sources</strong></h4>
-                                    </div>
-                                    <div class="body log">
-                                        <div class="treeview" data-angular-treeview="true" data-tree-id="src_tree_modal" data-tree-model="experiment.src_tree" data-node-id="id" data-node-label="label" data-node-children="children" ng-click="selectModal(src_tree_modal.currentNode)">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-ms-offset-6">
-                                <form ng-submit="saveNewFile()" id="formNewFile">
-                                    <div class="form-group">
-                                        <label for="newFile">Write the name of the file or the folder to create:</label>
-                                        <input type="text" class="form-control" id="newFile" placeholder="file.c   or   folder/" ng-model="newFileName">
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        <input type="submit" class="btn btn-success" value="Create">
-                                        <button type="button " class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </form>
-                                <div class="row">
-                                    <div class="text-center" ng-if="folderModal != ''">
-                                        <strong>Folder Selected</strong><br/> {{folderModal}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title text-center"><strong>Sources</strong></h4>
-                    <div class="row">
-                        <div class="col-md-1">
-                            <button data-ng-disabled="!subFolder" class="btn btn-primary" data-ng-click="folderUp()" title="Return"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
-                        </div>
-                        <div class="col-md-10 text-center" data-toggle="tooltip" data-placement="bottom" title="/{{currentPath}}">
-                            {{currentFolder}}
-                        </div>
-                    </div>
-                </div>
-                <div class="body log">
-                    <div class="treeview" data-angular-treeview="true" data-tree-id="src_tree" data-tree-model="experiment.src_tree" data-node-id="id" data-node-label="label" data-node-children="children" ng-click="select(src_tree.currentNode)">
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div class="page-header">
+		<h2>Sources of experiment <strong>{{experiment.name}}</strong></h2>
+	</div>
+	<div class="alert alert-danger col-md-10 col-md-offset-1" role="alert" ng-show="errors.length > 0">
+		<button type="button" class="close" data-ng-click="clearErrorMessages()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
+	</div>
+	<div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message">
+		<button type="button" class="close" ng-click="clearMessage()"><span aria-hidden="true">&times;</span></button>
+		<p class="text-center">
+			{{message}}
+		</p>
+	</div>
+	<div class="row">
+		<div class="modal fade" id="newFileModal" tabindex="-1" role="dialog" aria-labelledby="newFileModalLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="newFileModalLabel">Create a new File</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-info">
+							Select in the sources tree the folder where you want to create the file or the folder. To create a folder, add to the end
+							of the name a slash "/" (eg. "folder/").
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title text-center"><strong>Sources</strong></h4>
+									</div>
+									<div class="body log">
+										<div class="treeview" data-angular-treeview="true" data-tree-id="src_tree_modal" data-tree-model="experiment.src_tree" data-node-id="id"
+											data-node-label="label" data-node-children="children" ng-click="selectModal(src_tree_modal.currentNode)">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-ms-offset-6">
+								<form ng-submit="saveNewFile()" id="formNewFile">
+									<div class="form-group">
+										<label for="newFile">Write the name of the file or the folder to create:</label>
+										<input type="text" class="form-control" id="newFile" placeholder="file.c   or   folder/" ng-model="newFileName">
+									</div>
+									<div class="col-md-12 text-center">
+										<input type="submit" class="btn btn-success" value="Create">
+										<button type="button " class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
+								</form>
+								<div class="row">
+									<div class="text-center" ng-if="folderModal != ''">
+										<strong>Folder Selected</strong><br/> {{folderModal}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title text-center"><strong>Sources</strong></h4>
+					<div class="row">
+						<div class="col-md-1">
+							<button data-ng-disabled="!subFolder" class="btn btn-primary" data-ng-click="folderUp()" title="Return"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+						</div>
+						<div class="col-md-10 text-center" data-toggle="tooltip" data-placement="bottom" title="/{{currentPath}}">
+							{{currentFolder}}
+						</div>
+					</div>
+				</div>
+				<div class="body log">
+					<div class="treeview" data-angular-treeview="true" data-tree-id="src_tree" data-tree-model="experiment.src_tree" data-node-id="id"
+						data-node-label="label" data-node-children="children" ng-click="select(src_tree.currentNode)">
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <div class="col-md-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <h4 class="panel-title text-center"><strong>Editor</strong></h4>
-                            <div class="text-center">{{selectedNode.label}}</div>
-                        </div>
-                        <div class="col-md-2">
-                            <strong>Type:</strong>
-                            <select class="form-control" name="keyboard" id="keyboard" ng-model="keyboard" ng-change="setKeyboardHandler(option.id)" ng-options="option as option.name for option in keyboardList track by option.id"></select>
-                        </div>
-                        <div class="col-md-3">
-                            <strong>Theme:</strong>
-                            <select class="form-control" name="theme" id="theme" ng-model="theme" ng-change="setTheme(option.theme)" ng-options="option as option.caption for option in themeList track by option.name"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="body">
-                    <div id="editor"></div>
-                </div>
-            </div>
-            <div class="text-center">
-                <div class="">
-                    <button id="btnSaveChanges" ng-class="{disabled:!btnSaveChanges}" type="button" class="btn btn-success" title="Save Changes" ng-click="saveFile(src_tree.currentNode)"><span class="glyphicon glyphicon glyphicon-cloud-upload" aria-hidden="true"></span></button>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#newFileModal" ng-click="launchModal()" title="Create a new file or folder"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                    <button class="btn btn-warning" ng-click="undo()" title="Undo"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
-                    <button class="btn btn-warning" ng-click="redo()" title="Redo"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-7">
+							<h4 class="panel-title text-center"><strong>Editor</strong></h4>
+							<div class="text-center">{{selectedNode.label}}</div>
+						</div>
+						<div class="col-md-2">
+							<strong>Type:</strong>
+							<select class="form-control" name="keyboard" id="keyboard" ng-model="keyboard" ng-change="setKeyboardHandler(option.id)"
+								ng-options="option as option.name for option in keyboardList track by option.id"></select>
+						</div>
+						<div class="col-md-3">
+							<strong>Theme:</strong>
+							<select class="form-control" name="theme" id="theme" ng-model="theme" ng-change="setTheme(option.theme)" ng-options="option as option.caption for option in themeList track by option.name"></select>
+						</div>
+					</div>
+				</div>
+				<div class="body">
+					<div id="editor"></div>
+				</div>
+			</div>
+			<div class="text-center">
+				<div class="">
+					<button id="btnSaveChanges" ng-class="{disabled:!btnSaveChanges}" type="button" class="btn btn-success" title="Save Changes"
+						ng-click="saveFile(src_tree.currentNode)"><span class="glyphicon glyphicon glyphicon-cloud-upload" aria-hidden="true"></span></button>
+					<button class="btn btn-primary" data-toggle="modal" data-target="#newFileModal" ng-click="launchModal()" title="Create a new file or folder"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+					<button class="btn btn-warning" ng-click="undo()" title="Undo"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+					<button class="btn btn-warning" ng-click="redo()" title="Redo"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <script src="/lib/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/lib/ace/src-min-noconflict/ext-modelist.js" type="text/javascript" charset="utf-8 "></script>
