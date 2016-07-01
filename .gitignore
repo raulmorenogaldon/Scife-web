@@ -1,0 +1,27 @@
+node_modules
+**/*node_modules
+*.pyc
+.DS_Store
+**/lib
+lib
+
+# Node and related ecosystem
+# ==========================
+.nodemonignore
+.sass-cache/
+node_modules/
+public/lib/
+app/tests/coverage/
+.bower-*/
+.idea/
+
+!overlord/public-angular/public/lib/tree-view/**/*
+!overlord/public-angular/public/lib/tree-view/js/*
+!overlord/public-angular/public/lib/tree-view/img/*
+!overlord/public-angular/public/lib/tree-view/css/*
+
+!overlord/public-elseiver/public/lib/tree-view/**/*
+!overlord/public-elseiver/public/lib/tree-view/js/*
+!overlord/public-elseiver/public/lib/tree-view/img/*
+!overlord/public-elseiver/public/lib/tree-view/css/*
+!overlord/public-elseiver/public/lib/ace/**/*
