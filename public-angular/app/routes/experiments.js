@@ -24,11 +24,13 @@ module.exports = function(app) {
 	
 	app.delete('/experiments/:experimentId', expCtrl.delete);
 	
-	app.get('/experiments/:experimentId/file', expCtrl.getFile);
+	app.get('/experiments/:experimentId/code', expCtrl.getCode);
 	
-	app.post('/experiments/:experimentId/file', expCtrl.saveFile);
+	app.post('/experiments/:experimentId/code', expCtrl.saveCode);
 	
 	app.get('/experiments/:experimentId/src_tree', expCtrl.getSrcTree);
 	
 	app.get('/experiments/:experimentId/input_tree', expCtrl.getInputTree);
+	
+	app.post('/experiments/:experimentId/input', expCtrl.uploadFile);
 };

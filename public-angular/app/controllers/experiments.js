@@ -269,7 +269,7 @@ exports.delete = function(req, res) {
 	});
 };
 
-exports.getFile = function(req, res) {
+exports.getCode = function(req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 		method: 'GET'
@@ -295,7 +295,7 @@ exports.getFile = function(req, res) {
 	});
 };
 
-exports.saveFile = function(req, res, next) {
+exports.saveCode = function(req, res) {
 	var data = '';
 	if (req.is('text/*')) {
 		req.setEncoding('utf8');
@@ -379,8 +379,18 @@ exports.getSrcTree = function(req, res) {
 };
 
 exports.getInputTree = function(req, res) {
+	var url;
+	if (req.query.folder && req.query.depth) {
+		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree?folder=" + req.query.folder + '&depth=' + req.query.depth;
+	} else if (!req.query.folder && req.query.depth) {
+		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree?depth=" + req.query.depth;
+	} else if (req.query.folder && !req.query.depth) {
+		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree?folder=" + req.query.folder;
+	} else {
+		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree";
+	}
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree",
+		url: url,
 		method: 'GET'
 	}, function(err, response, body) {
 		if (err) {
@@ -402,4 +412,8 @@ exports.getInputTree = function(req, res) {
 			}
 		}
 	});
+};
+
+exports.uploadFile = function(req, res) {
+	console.log(req.query.file);
 };

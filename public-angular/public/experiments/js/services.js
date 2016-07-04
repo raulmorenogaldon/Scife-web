@@ -59,7 +59,30 @@ angular.module('Experiments')
 				}
 			});
 		}
+
+		function getFolderFromPathFunction(path) {
+			var folders = path.split('/');
+			return folders[folders.length - 1];
+		}
+
 		return {
-			addCollapsedProperty: addCollapse
+			addCollapsedProperty: addCollapse,
+			getFolderFromPath: getFolderFromPathFunction
 		};
-	});
+	})
+
+	.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);

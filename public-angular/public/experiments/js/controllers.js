@@ -233,13 +233,93 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}])
 
 	.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
-		$http.get('/experiments/' + $stateParams.experimentId + "/input_tree")
-			.then(function (response) {
-            $scope.experiment = response.data;
-            TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
+
+		$scope.folderModal = '';
+		$scope.currentPath = '';
+		$scope.currentFolder = '/';
+		$scope.subFolder = false;
+		var folderParentList = ['/'];
+
+		function getTree() {
+			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?depth=1")
+            .then(function (response) {
+					$scope.experiment = response.data;
+					TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
+            }, function (response) {
+					$scope.errors = response.data.errors;
+            });
+		}
+		getTree();
+
+		$scope.folderUp = function () {
+			if (folderParentList.length > 1) {
+            folderParentList.pop();
+            $scope.currentPath = folderParentList[folderParentList.length - 1];
+            if (folderParentList[folderParentList.length - 1] === '/') {
+					getTree();
+					$scope.subFolder = false;
+					$scope.currentFolder = '/';
+            } else {
+					getFolderData(folderParentList[folderParentList.length - 1], 1);
+					$scope.currentFolder = TreeViewFunctions.getFolderFromPath($scope.currentPath);
+            }
+			}
+		};
+
+		function getFolderData(folder, depth) {
+			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=' + depth)
+            .then(function (response) {
+					var exp = response.data;
+					TreeViewFunctions.addCollapsedProperty(exp.input_tree);
+					$scope.experiment = exp;
+            }, function (response) {
+					$scope.errors = response.data.errors;
+            });
+		}
+
+		$scope.select = function (node) {
+			if (!node.children.length) {
+            /*
+				$http.get('/experiments/' + $scope.experiment.id + "/file?fileId=" + node.id)
+					.then(function (response) {
+						$scope.selectedNode = node;
+						editor.setSession(ace.createEditSession(response.data, modelist.getModeForPath(node.label).mode));
+					}, function (response) {
+						$scope.errors = response.data.errors;
+					});
+					*/
+			} else {
+            folderParentList.push(node.id);
+            $scope.currentPath = node.id;
+            $scope.currentFolder = node.label;
+            TreeViewFunctions.getFolderFromPath(node.id);
+            getFolderData(node.id, 1);
+            $scope.subFolder = true;
+			}
+		};
+
+		$scope.uploadFile = function () {
+			var url = '';
+			console.log('CurrentPath  ' + $scope.currentPath);
+			if ($scope.currentPath && $scope.currentPath == '/') {
+				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.fileName;
+			} else if ($scope.currentPath && $scope.currentPath != '/') {
+				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + $scope.fileName;
+			} else {
+				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.fileName;
+			}
+			var fd = new FormData();
+			fd.append('file', $scope.file);
+			$http.post(url, fd, {
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined }
+			}).then(function (response) {
+				console.log(response.data);
 			}, function (response) {
-            $scope.errors = response.data.errors;
+				console.log(response.data);
 			});
+		};
+
 	}])
 
 	.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
@@ -271,7 +351,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		$scope.select = function (node) {
 			if (!node.children.length) {
-            $http.get('/experiments/' + $scope.experiment.id + "/file?fileId=" + node.id)
+            $http.get('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id)
 					.then(function (response) {
 						$scope.selectedNode = node;
 						editor.setSession(ace.createEditSession(response.data, modelist.getModeForPath(node.label).mode));
@@ -282,7 +362,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             folderParentList.push(node.id);
             $scope.currentPath = node.id;
             $scope.currentFolder = node.label;
-            getFolderFromPath(node.id);
+            TreeViewFunctions.getFolderFromPath(node.id);
             getFolderData(node.id, 1);
             $scope.subFolder = true;
 			}
@@ -298,7 +378,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		$scope.saveFile = function (node) {
 			if ($scope.btnSaveChanges) {
-            $http.post('/experiments/' + $scope.experiment.id + "/file?fileId=" + node.id,
+            $http.post('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id,
 					editor.getValue(), {
 						headers: {
 							'content-type': 'text/plain'
@@ -317,9 +397,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			if ($scope.newFileName !== null) {
             var url;
             if ($scope.folderModal && $scope.folderModal !== '') {
-					url = '/experiments/' + $scope.experiment.id + "/file?fileId=" + $scope.folderModal + '/' + $scope.newFileName;
+					url = '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.folderModal + '/' + $scope.newFileName;
             } else {
-					url = '/experiments/' + $scope.experiment.id + "/file?fileId=" + $scope.newFileName;
+					url = '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.newFileName;
             }
             $http.post(url, '', {
 					headers: {
@@ -349,7 +429,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.currentFolder = '/';
             } else {
 					getFolderData(folderParentList[folderParentList.length - 1], 1);
-					$scope.currentFolder = getFolderFromPath($scope.currentPath);
+					$scope.currentFolder = TreeViewFunctions.getFolderFromPath($scope.currentPath);
             }
 			}
 		};
@@ -363,11 +443,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
-		}
-
-		function getFolderFromPath(path) {
-			var folders = path.split('/');
-			return folders[folders.length - 1];
 		}
 
 		$scope.keyboardList = [{
