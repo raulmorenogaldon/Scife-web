@@ -1,7 +1,6 @@
 var request = require('request'),
 	privateServer = require('../../config/env/development.js').privateServer;
 
-
 exports.get = function(req, res) {
 
 };
@@ -17,7 +16,6 @@ exports.list = function(req, res) {
 				err: err
 			});
 		} else {
-
 			switch (response.statusCode) {
 				case 500:
 				case 404:

@@ -1,11 +1,11 @@
 var request = require('request'),
 	privateServer = require('../../config/env/development.js').privateServer;
 
-exports.list = function(req, res) {
+exports.list = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments',
 		method: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.json({
 				errors: err
@@ -28,11 +28,11 @@ exports.list = function(req, res) {
 };
 
 
-exports.details = function(req, res) {
+exports.details = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 		method: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.json({
 				errors: err
@@ -54,11 +54,11 @@ exports.details = function(req, res) {
 	});
 };
 
-exports.logs = function(req, res) {
+exports.logs = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/logs",
 		method: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.json({
 				errors: err
@@ -80,8 +80,8 @@ exports.logs = function(req, res) {
 	});
 };
 
-exports.downloadResults = function(req, res) {
-	request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download").pipe(res);
+exports.downloadResults = function (req, res) {
+
 	//res.pipe(request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download"));
 	/*
 	request({
@@ -111,7 +111,7 @@ exports.downloadResults = function(req, res) {
 */
 };
 
-exports.create = function(req, res) {
+exports.create = function (req, res) {
 	if (!req.body.name || !req.body.app_id) {
 		res.status(404).json({
 			message: "Name and Application are required."
@@ -121,7 +121,7 @@ exports.create = function(req, res) {
 			url: privateServer + '/cloud/experiments',
 			method: 'POST',
 			json: req.body
-		}, function(err, response, body) {
+		}, function (err, response, body) {
 			if (err) {
 				res.status(505).json({
 					errors: err
@@ -147,12 +147,12 @@ exports.create = function(req, res) {
 	}
 };
 
-exports.update = function(req, res) {
+exports.update = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 		method: 'PUT',
 		json: req.body
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.status(505).json({
 				errors: err
@@ -174,7 +174,7 @@ exports.update = function(req, res) {
 	});
 };
 
-exports.launch = function(req, res) {
+exports.launch = function (req, res) {
 	var data = req.body;
 	if (!data.nodes || !data.image_id || !data.size_id) {
 		res.status(404).json({
@@ -186,7 +186,7 @@ exports.launch = function(req, res) {
 			url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 			method: 'POST',
 			json: data
-		}, function(err, response, body) {
+		}, function (err, response, body) {
 			if (err) {
 				res.status(505).json({
 					errors: err
@@ -211,14 +211,14 @@ exports.launch = function(req, res) {
 	}
 };
 
-exports.reset = function(req, res) {
+exports.reset = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 		method: 'POST',
 		json: {
 			op: 'reset'
 		}
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.status(505).json({
 				errors: err
@@ -243,11 +243,11 @@ exports.reset = function(req, res) {
 };
 
 
-exports.delete = function(req, res) {
+exports.delete = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
 		method: 'DELETE'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.status(505).json({
 				errors: err
@@ -269,11 +269,11 @@ exports.delete = function(req, res) {
 	});
 };
 
-exports.getCode = function(req, res) {
+exports.getCode = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 		method: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.json({
 				errors: err
@@ -295,15 +295,15 @@ exports.getCode = function(req, res) {
 	});
 };
 
-exports.saveCode = function(req, res) {
+exports.saveCode = function (req, res) {
 	var data = '';
 	if (req.is('text/*')) {
 		req.setEncoding('utf8');
-		req.on('data', function(chunk) {
+		req.on('data', function (chunk) {
 			data += chunk;
 		});
 		req.on('end',
-			function() {
+			function () {
 				request({
 					url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 					method: 'POST',
@@ -311,7 +311,7 @@ exports.saveCode = function(req, res) {
 						'content-type': 'text/plain'
 					},
 					body: data
-				}, function(err, response, body) {
+				}, function (err, response, body) {
 					if (err) {
 						res.json({
 							errors: err
@@ -341,7 +341,7 @@ exports.saveCode = function(req, res) {
 	}
 };
 
-exports.getSrcTree = function(req, res) {
+exports.getSrcTree = function (req, res) {
 	var url;
 	if (req.query.folder && req.query.depth) {
 		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree?folder=" + req.query.folder + '&depth=' + req.query.depth;
@@ -356,7 +356,7 @@ exports.getSrcTree = function(req, res) {
 	request({
 		url: url,
 		method: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.json({
 				errors: err
@@ -378,7 +378,7 @@ exports.getSrcTree = function(req, res) {
 	});
 };
 
-exports.getInputTree = function(req, res) {
+exports.getInputTree = function (req, res) {
 	var url;
 	if (req.query.folder && req.query.depth) {
 		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree?folder=" + req.query.folder + '&depth=' + req.query.depth;
@@ -392,7 +392,7 @@ exports.getInputTree = function(req, res) {
 	request({
 		url: url,
 		method: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.json({
 				errors: err
@@ -414,6 +414,30 @@ exports.getInputTree = function(req, res) {
 	});
 };
 
-exports.uploadFile = function(req, res) {
-	console.log(req.query.file);
+exports.uploadFile = function (req, res) {
+	req.pipe(request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/input?file=" + req.query.file,
+		method: 'POST'
+	},
+		function (err, response, body) {
+			if (err) {
+				res.json({
+					errors: err
+				});
+			} else {
+				switch (response.statusCode) {
+					case 500:
+					case 404:
+					case 400:
+						res.status(response.statusCode).end();
+						break;
+					case 200:
+						res.status(response.statusCode).end();
+						break;
+					default:
+						res.send("There is no status code from the internal server.");
+				}
+			}
+		}));
+	//request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/input?file").pipe(res);
 };

@@ -34,7 +34,7 @@
 								</div>
 								<div class="form-group col-md-12">
 									<label for="image">Image</label>
-									<select class="form-control" id="image" ng-model="launchData.image_id" required ng-options="image.id as image.name for image in images">
+									<select class="form-control" id="image" ng-model="launchData.image_id" required ng-options="image.id as image.name for image in images" ng-change="getSizesOfImage()">
 					</select>
 								</div>
 								<div class="form-group col-md-12">

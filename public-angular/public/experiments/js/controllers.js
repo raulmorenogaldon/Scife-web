@@ -71,6 +71,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 	.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', function ($scope, $http, $stateParams, $location, PanelColors) {
 		var interval;
+		var defaultSizes = null;
 
 		function activateInterval() {
 			interval = setInterval(function () {
@@ -110,16 +111,34 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             .then(function (response) {
 					$scope.images = response.data;
 					$scope.launchData.image_id = response.data[0].id;
+					console.log($scope.images);
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
 			$http.get('/sizes/list')
             .then(function (response) {
-					$scope.sizes = response.data;
-					$scope.launchData.size_id = response.data[0].id;
+					defaultSizes = response.data;
+					console.log(defaultSizes);
+					$scope.getSizesOfImage($scope.images[0]);
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
+		};
+
+		$scope.getSizesOfImage = function (image) {
+			$scope.sizes = [];
+			defaultSizes.forEach(function (size) {
+				image.sizes_compatible.some(function (size_id) {
+					console.log(size.id + '  ===  ' + size_id);
+					if (size.id === size_id) {
+						$scope.sizes.push(size);
+						return true;
+					}
+				});
+			});
+			if ($scope.sizes.length > 0) {
+				$scope.launchData.size_id = $scope.sizes[0].id;
+			}
 		};
 
 		$scope.launchSubmit = function () {
@@ -239,6 +258,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.currentFolder = '/';
 		$scope.subFolder = false;
 		var folderParentList = ['/'];
+		$scope.clearMessage = function () {
+			$scope.message = null;
+		};
+		$scope.clearErrorMessages = function () {
+			$scope.errors = null;
+		};
 
 		function getTree() {
 			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?depth=1")
@@ -278,17 +303,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		}
 
 		$scope.select = function (node) {
-			if (!node.children.length) {
-            /*
-				$http.get('/experiments/' + $scope.experiment.id + "/file?fileId=" + node.id)
-					.then(function (response) {
-						$scope.selectedNode = node;
-						editor.setSession(ace.createEditSession(response.data, modelist.getModeForPath(node.label).mode));
-					}, function (response) {
-						$scope.errors = response.data.errors;
-					});
-					*/
-			} else {
+			if (node.children.length) {
             folderParentList.push(node.id);
             $scope.currentPath = node.id;
             $scope.currentFolder = node.label;
@@ -304,19 +319,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			if ($scope.currentPath && $scope.currentPath == '/') {
 				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.fileName;
 			} else if ($scope.currentPath && $scope.currentPath != '/') {
-				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + $scope.fileName;
+				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + '/' + $scope.fileName;
 			} else {
 				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.fileName;
 			}
 			var fd = new FormData();
-			fd.append('file', $scope.file);
+			fd.append('inputFile', $scope.file);
 			$http.post(url, fd, {
             transformRequest: angular.identity,
             headers: { 'Content-Type': undefined }
 			}).then(function (response) {
-				console.log(response.data);
+				getFolderData($scope.currentPath, 1);
+				$scope.message = "Your file " + $scope.fileName + ' has been saved succesfuly.'
 			}, function (response) {
-				console.log(response.data);
+
 			});
 		};
 

@@ -26,3 +26,9 @@ form.bordered{
 	border: 2px solid #74B0C4;
 	border-radius: 5px;
 }
+
+form.bordered p{
+	font-family: cursive,Courier New, Courier, monospace;
+	font-size: 14px;
+	color: #0098ff;
+}
