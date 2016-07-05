@@ -41,7 +41,7 @@
 						<div class="form-group">
 							<label for="fileName" class="col-md-4">File Name:</label>
 							<div class="col-md-8">
-								<input type="text" id="fileName" data-ng-model="fileName" required="required">
+								<input type="text" id="fileName" data-ng-model="fileName" required="required" title="Input Name for the file">
 							</div>
 						</div>
 						<div class="form-group">
@@ -74,3 +74,13 @@
 			</div>
 		</div>
 	</div>
+</div>
+<script>
+$(document).ready(function(){
+	$('input#fileName').keydown(function(e) {
+		if (e.keyCode == 32) {
+			return false;
+		}
+	});
+});
+</script>

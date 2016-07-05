@@ -76,7 +76,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		function activateInterval() {
 			interval = setInterval(function () {
             $scope.refreshStatus();
-            if ($scope.experiment.status == 'failed_compilation' || $scope.experiment.status == 'faile_execution' || $scope.experiment.status == 'done') {
+            if ($scope.experiment.status == 'failed_compilation' || $scope.experiment.status == 'faile_execution' || $scope.experiment.status == 'done' || $scope.experiment.status == 'created') {
 					clearInterval(interval);
             }
 			}, 5000);
