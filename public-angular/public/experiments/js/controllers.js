@@ -111,14 +111,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             .then(function (response) {
 					$scope.images = response.data;
 					$scope.launchData.image_id = response.data[0].id;
-					console.log($scope.images);
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
 			$http.get('/sizes/list')
             .then(function (response) {
 					defaultSizes = response.data;
-					console.log(defaultSizes);
 					$scope.getSizesOfImage($scope.images[0]);
             }, function (response) {
 					$scope.errors = response.data.errors;
@@ -129,7 +127,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$scope.sizes = [];
 			defaultSizes.forEach(function (size) {
 				image.sizes_compatible.some(function (size_id) {
-					console.log(size.id + '  ===  ' + size_id);
 					if (size.id === size_id) {
 						$scope.sizes.push(size);
 						return true;
@@ -315,7 +312,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		$scope.uploadFile = function () {
 			var url = '';
-			console.log('CurrentPath  ' + $scope.currentPath);
 			if ($scope.currentPath && $scope.currentPath == '/') {
 				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.fileName;
 			} else if ($scope.currentPath && $scope.currentPath != '/') {
@@ -423,14 +419,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					}
 				})
 					.then(function (response) {
-						console.log('response ' + response.data);
 						jQuery('#newFileModal').modal('hide');
 						getTree();
 					}, function (response) {
 						jQuery('#newFileModal').modal('hide');
 						$scope.errors = response.data.errors;
-						console.log('Error:');
-						console.log(response.data);
 					});
 			}
 		};
