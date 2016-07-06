@@ -28,7 +28,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		function ($scope, $http, PanelColors) {
 			function getList() {
             jQuery('#loadingModal').modal('show');
-            $http.get('/experiments/list/')
+            $http.get('/experiments/list')
 					.then(function (response) {
 						$scope.experiments = response.data;
 						$http.get('/applications/list/')

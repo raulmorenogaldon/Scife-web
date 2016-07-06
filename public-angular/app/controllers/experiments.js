@@ -82,33 +82,6 @@ exports.logs = function (req, res) {
 
 exports.downloadResults = function (req, res) {
 	request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download").pipe(res);
-	//res.pipe(request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download"));
-	/*
-	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/download",
-		method: 'GET'
-	}, function(err, response, body) {
-		if (err) {
-			res.status(505).json({
-				errors: err
-			});
-		} else {
-			switch (response.statusCode) {
-				case 500:
-				case 404:
-				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
-					break;
-				case 200:
-					res.pipe(response);
-					response.pipe(res);
-					break;
-				default:
-					res.send("There is no status code from the internal server.");
-			}
-		}
-	});
-*/
 };
 
 exports.create = function (req, res) {
@@ -439,5 +412,4 @@ exports.uploadFile = function (req, res) {
 				}
 			}
 		}));
-	//request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/input?file").pipe(res);
 };
