@@ -254,7 +254,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
 
 		$scope.folderModal = '';
-		$scope.currentPath = '';
+		$scope.currentPath = '/';
 		$scope.currentFolder = '/';
 		$scope.subFolder = false;
 		var folderParentList = ['/'];
@@ -269,6 +269,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?depth=1")
             .then(function (response) {
 					$scope.experiment = response.data;
+					console.log($scope.experiment);
 					TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
