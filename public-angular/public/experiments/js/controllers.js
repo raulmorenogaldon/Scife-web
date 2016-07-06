@@ -123,10 +123,13 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             });
 		};
 
-		$scope.getSizesOfImage = function (image) {
+		$scope.getSizesOfImage = function () {
+			var img = $scope.images.find(function (img) {
+				return img.id == $scope.launchData.image_id;
+			});
 			$scope.sizes = [];
 			defaultSizes.forEach(function (size) {
-				image.sizes_compatible.some(function (size_id) {
+				img.sizes_compatible.some(function (size_id) {
 					if (size.id === size_id) {
 						$scope.sizes.push(size);
 						return true;
@@ -403,7 +406,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					});
 			}
 		};
-
 
 		$scope.saveNewFile = function () {
 			if ($scope.newFileName !== null) {
