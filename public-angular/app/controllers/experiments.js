@@ -81,7 +81,7 @@ exports.logs = function (req, res) {
 };
 
 exports.downloadResults = function (req, res) {
-
+	request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download").pipe(res);
 	//res.pipe(request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download"));
 	/*
 	request({
