@@ -1,10 +1,11 @@
 var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 	.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function ($scope, $location, $stateParams) {
-		$scope.links = [{
-			name: "Overview",
-			url: "/overview/" + $stateParams.experimentId
-		}, {
+		$scope.links = [
+			{
+				name: "Overview",
+				url: "/overview/" + $stateParams.experimentId
+			}, {
 				name: "Labels",
 				url: "/labels/" + $stateParams.experimentId
 			}, {
@@ -330,7 +331,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             headers: { 'Content-Type': undefined }
 			}).then(function (response) {
 				getFolderData($scope.currentPath, 1);
-				$scope.message = "Your file " + $scope.fileName + ' has been saved succesfuly.'
+				$scope.message = "Your file " + $scope.fileName + ' has been saved succesfuly.';
 			}, function (response) {
 
 			});
@@ -385,9 +386,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 
 		$scope.selectModal = function (selected) {
-			if (selected.children.length > 0) {
+			if (selected.children.length) {
             $scope.folderModal = selected.id;
-			} else if (selected.children.length === 0) {
+			} else if (!selected.children.length) {
             $scope.folderModal = '';
 			}
 		};
@@ -456,6 +457,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.errors = response.data.errors;
             });
 		}
+
+		$scope.launchModal = function () {
+			$scope.folderModal = $scope.currentPath;
+		};
 
 		$scope.keyboardList = [{
 			'id': 'hash_handler',
