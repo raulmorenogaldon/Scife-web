@@ -168,9 +168,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.delete('/experiments/' + $scope.experiment.id)
             .then(function (response) {
 					jQuery('#deleteModal').modal('hide');
-					setTimeout(function () {
-						$location.path('/');
-					}, 500);
+					jQuery('#deleteModal').on('hidden.bs.modal', function () {
+						$scope.$apply(function () { $location.path('/'); });
+					});
 				},
 				function (response) {
 					$scope.errors = "There is an error in the request";
@@ -241,11 +241,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			jQuery('#loadingModal').modal('show');
 			$http.post('/experiments/create', $scope.experiment)
             .then(function (response) {
-					(jQuery('#loadingModal').modal('hide')).then(
-						setInterval(function () {
-							$location.path('overview/' + response.data.experimentId);
-						}, 400)
-					);
+					jQuery('#loadingModal').modal('hide');
+					jQuery('#loadingModal').on('hidden.bs.modal', function () {
+						$scope.$apply(function () {
+							$location.path('/overview/' + response.data.experimentId);
+						});
+					});
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
@@ -333,7 +334,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				getFolderData($scope.currentPath, 1);
 				$scope.message = "Your file " + $scope.fileName + ' has been saved succesfuly.';
 			}, function (response) {
-
+				$scope.errors = response.data.errors;
 			});
 		};
 
