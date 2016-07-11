@@ -341,7 +341,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 
 		$scope.createNewFolder = function () {
-			$http.post('/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + $scope.folderName + '/').then(function (response) {
+			var url = $scope.currentPath == '/' ? '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.folderName + '/' : '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + $scope.folderName + '/';
+
+			$http.post(url).then(function (response) {
 				jQuery('#newFolderModal').modal('hide');
 				getFolderData($scope.currentPath);
 				$scope.folderName = '';
