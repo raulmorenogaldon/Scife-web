@@ -13,6 +13,45 @@
 		</p>
 	</div>
 	<div class="row">
+		<div class="modal fade" id="newFolderModal" tabindex="-1" role="dialog" aria-labelledby="newFolderModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="newFolderModalLabel">Create a new Folder</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="alert alert-info col-md-10 col-md-offset-1">
+								You'll create the folder in the place you are in the Input Data tree view.
+							</div>
+							<div class="col-md-12">
+								<form class="form-horizontal" name="createNewFolerForm" data-ng-submit="createNewFolerForm.$valid && createNewFolder()">
+									<div class="form-group">
+										<label for="path" class="col-md-3">Path:</label>
+										<div class="col-md-9">
+											<input type="text" id="path" class="form-control" disabled value="{{currentPath}}{{folderName}}">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="folderName" class="col-md-3">Folder Name:</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control" id="folderName" data-ng-model="folderName" required="required" title="Input Name for the folder" placeholder="myFolder">
+										</div>
+									</div>
+									<div class="text-center">
+										<button class="btn btn-primary" type="submit">Submit</button>
+										<button class="btn btn-warning" type="button" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -24,6 +63,7 @@
 						<div class="col-md-8 text-center" data-toggle="tooltip" data-placement="bottom" title="{{currentPath}}">
 							{{currentFolder}}
 						</div>
+						<button class="btn btn-primary" data-ng-click="launchCreateFolderModal()" title="New Folder"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -47,7 +87,8 @@
 						<div class="form-group">
 							<label for="fileName" class="col-md-3">File Name:</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" id="fileName" data-ng-model="fileName" required="required" title="Input Name for the file" placeholder="myFile.js">
+								<input type="text" class="form-control" id="fileName" data-ng-model="fileName" required="required" title="Input Name for the file"
+									placeholder="myFile.js">
 							</div>
 						</div>
 						<div class="form-group">

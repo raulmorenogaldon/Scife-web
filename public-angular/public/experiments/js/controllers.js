@@ -271,7 +271,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?depth=1")
             .then(function (response) {
 					$scope.experiment = response.data;
-					console.log($scope.experiment);
 					TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
@@ -297,16 +296,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		function getFolderData(folder, depth) {
 			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=' + depth)
             .then(function (response) {
-					var exp = response.data;
-					TreeViewFunctions.addCollapsedProperty(exp.input_tree);
-					$scope.experiment = exp;
+					$scope.experiment = response.data;
+					TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
 		}
 
 		$scope.select = function (node) {
-			if (node.children.length) {
+			if (node.children.length || node.id.slice(-1) == '/') {
             folderParentList.push(node.id);
             $scope.currentPath = node.id;
             $scope.currentFolder = node.label;
@@ -338,13 +336,31 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			});
 		};
 
+		$scope.launchCreateFolderModal = function () {
+			jQuery('#newFolderModal').modal('show');
+		};
+
+		$scope.createNewFolder = function () {
+			$http.post('/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + $scope.folderName + '/').then(function (response) {
+				jQuery('#newFolderModal').modal('hide');
+				getFolderData($scope.currentPath);
+				$scope.folderName = '';
+				jQuery('#newFolderModal').on('hidden.bs.modal', function () {
+					$scope.message = 'The folder ' + $scope.currentPath + $scope.folderName + ' has been created succesfully.';
+				});
+			}, function (response) {
+				$scope.errors = response.data.errors;
+				jQuery('#newFolderModal').modal('hide');
+			});
+		};
+
 	}])
 
 	.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
 
 		$scope.btnSaveChanges = true;
 		$scope.folderModal = '';
-		$scope.currentPath = '';
+		$scope.currentPath = '/';
 		$scope.currentFolder = '/';
 		$scope.subFolder = false;
 		var folderParentList = ['/'];
@@ -368,7 +384,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		getTree();
 
 		$scope.select = function (node) {
-			if (!node.children.length) {
+			if (!node.children.length && node.id.slice(-1) != '/') {
             $http.get('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id)
 					.then(function (response) {
 						$scope.selectedNode = node;
@@ -451,9 +467,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		function getFolderData(folder, depth) {
 			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=' + depth)
             .then(function (response) {
-					var exp = response.data;
-					TreeViewFunctions.addCollapsedProperty(exp.src_tree);
-					$scope.experiment = exp;
+					$scope.experiment = response.data;
+					TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
             });

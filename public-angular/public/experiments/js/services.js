@@ -61,7 +61,7 @@ angular.module('Experiments')
 		}
 
 		function getFolderFromPathFunction(path) {
-			var folders = path.split('/');
+			var folders = path.substring(0, path.length -1).split('/');
 			return folders[folders.length - 1];
 		}
 

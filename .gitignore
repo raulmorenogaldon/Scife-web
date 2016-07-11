@@ -20,4 +20,4 @@ app/tests/coverage/
 !overlord/public-angular/public/lib/tree-view/img/*
 !overlord/public-angular/public/lib/tree-view/css/*
 
-**./vscode/
+**.vscode/
