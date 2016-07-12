@@ -58,12 +58,14 @@
 					<h4 class="panel-title text-center"><strong>Input Data</strong></h4>
 					<div class="row">
 						<div class="col-md-2">
-							<button data-ng-disabled="!subFolder" class="btn btn-primary" data-ng-click="folderUp()" title="Return"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+							<button data-ng-disabled="!subFolder" class="btn btn-primary btn-xs" data-ng-click="folderUp()" title="Return"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
 						</div>
 						<div class="col-md-8 text-center" data-toggle="tooltip" data-placement="bottom" title="{{currentPath}}">
 							{{currentFolder}}
 						</div>
-						<button class="btn btn-primary" data-ng-click="launchCreateFolderModal()" title="New Folder"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+						<div class="col-md-2">
+						<button class="btn btn-primary btn-xs" data-ng-click="launchCreateFolderModal()" title="New Folder"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+						</div>
 					</div>
 				</div>
 				<div class="panel-body">
