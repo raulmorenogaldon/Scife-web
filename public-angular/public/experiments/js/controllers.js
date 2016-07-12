@@ -30,18 +30,23 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             $http.get('/experiments/list')
 					.then(function (response) {
 						$scope.experiments = response.data;
-						$http.get('/applications/list/')
-							.then(function (data) {
-								$scope.experiments.forEach(function (exp) {
-									exp.app = angular.copy(data.data.find(function (app) {
-										return app.id === exp.app_id;
-									}));
+						console.log(response.data);
+						if (response.data.length) {
+							$http.get('/applications/list/')
+								.then(function (data) {
+									$scope.experiments.forEach(function (exp) {
+										exp.app = angular.copy(data.data.find(function (app) {
+											return app.id === exp.app_id;
+										}));
+										jQuery('#loadingModal').modal('hide');
+									});
+								}, function (response) {
+									$scope.errors = response.data.errors;
 									jQuery('#loadingModal').modal('hide');
 								});
-							}, function (response) {
-								$scope.errors = response.data.errors;
-								jQuery('#loadingModal').modal('hide');
-							});
+						} else {
+							jQuery('#loadingModal').modal('hide');
+						}
 					}, function (response) {
 						$scope.errors = response.data.errors;
 						jQuery('#loadingModal').modal('hide');
@@ -290,7 +295,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
-		function getFolderData(folder, depth=0) {
+		function getFolderData(folder, depth = 0) {
 			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=' + depth)
             .then(function (response) {
 					$scope.experiment = response.data;
@@ -464,7 +469,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
-		function getFolderData(folder, depth=0) {
+		function getFolderData(folder, depth = 0) {
 			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=' + depth)
             .then(function (response) {
 					$scope.experiment = response.data;
