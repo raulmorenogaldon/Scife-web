@@ -18,11 +18,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				name: "Logs",
 				url: "/logs/" + $stateParams.experimentId
 			}];
-
 		$scope.isActive = function (route) {
 			return route === $location.path();
 		};
-
 	}])
 
 	.controller('IndexCtrl', ['$scope', '$http', 'PanelColors',
@@ -254,7 +252,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}])
 
 	.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
-
 		$scope.folderModal = '';
 		$scope.currentPath = '/';
 		$scope.currentFolder = '/';
@@ -268,10 +265,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 
 		function getTree() {
-			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?depth=1")
+			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?depth=0")
             .then(function (response) {
 					$scope.experiment = response.data;
-					TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
+					//TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
@@ -287,17 +284,17 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.subFolder = false;
 					$scope.currentFolder = '/';
             } else {
-					getFolderData(folderParentList[folderParentList.length - 1], 1);
+					getFolderData(folderParentList[folderParentList.length - 1], 0);
 					$scope.currentFolder = TreeViewFunctions.getFolderFromPath($scope.currentPath);
             }
 			}
 		};
 
-		function getFolderData(folder, depth) {
+		function getFolderData(folder, depth=0) {
 			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=' + depth)
             .then(function (response) {
 					$scope.experiment = response.data;
-					TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
+					//TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
@@ -309,7 +306,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             $scope.currentPath = node.id;
             $scope.currentFolder = node.label;
             TreeViewFunctions.getFolderFromPath(node.id);
-            getFolderData(node.id, 1);
+            getFolderData(node.id);
             $scope.subFolder = true;
 			}
 		};
@@ -329,7 +326,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             transformRequest: angular.identity,
             headers: { 'Content-Type': undefined }
 			}).then(function (response) {
-				getFolderData($scope.currentPath, 1);
+				getFolderData($scope.currentPath);
+				$scope.fileName = '';
 				$scope.message = "Your file " + $scope.fileName + ' has been saved succesfuly.';
 			}, function (response) {
 				$scope.errors = response.data.errors;
@@ -375,10 +373,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 
 		function getTree() {
-			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=1")
+			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=0")
             .then(function (response) {
 					$scope.experiment = response.data;
-					TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
+					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
@@ -399,7 +397,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             $scope.currentPath = node.id;
             $scope.currentFolder = node.label;
             TreeViewFunctions.getFolderFromPath(node.id);
-            getFolderData(node.id, 1);
+            getFolderData(node.id);
             $scope.subFolder = true;
 			}
 		};
@@ -460,17 +458,17 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.subFolder = false;
 					$scope.currentFolder = '/';
             } else {
-					getFolderData(folderParentList[folderParentList.length - 1], 1);
+					getFolderData(folderParentList[folderParentList.length - 1]);
 					$scope.currentFolder = TreeViewFunctions.getFolderFromPath($scope.currentPath);
             }
 			}
 		};
 
-		function getFolderData(folder, depth) {
+		function getFolderData(folder, depth=0) {
 			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=' + depth)
             .then(function (response) {
 					$scope.experiment = response.data;
-					TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
+					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
@@ -536,12 +534,4 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             });
 		};
 		$scope.getLog();
-		/*
-		var interval = setInterval(function() {
-			 getLog();
-			 if (($location.path()).indexOf("/logs/") < 0) {
-					clearInterval(interval);
-			 }
-		}, 5000);
-		*/
 	}]);
