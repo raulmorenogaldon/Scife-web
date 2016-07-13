@@ -544,9 +544,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/experiments/logs/' + $stateParams.experimentId)
             .then(function (response) {
 					$scope.logs = response.data;
-					if (response.data.length > 0 && typeof $scope.selected == 'undefined') {
+					//if (response.data.length && !$scope.selected) {
 						$scope.selected = $scope.logs[0];
-					}
+					//}
             }, function (response) {
 					$scope.errors = response.data.errors;
             });

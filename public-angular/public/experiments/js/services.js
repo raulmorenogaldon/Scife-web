@@ -31,6 +31,9 @@ angular.module('Experiments')
 	.service('PanelColors', function () {
 		return {
 			getColorClass: function (status) {
+				if (/^failed.*/.test(status)) {
+					return 'panel-danger';
+				}
 				switch (status) {
 					case 'done':
 						return 'panel-success';
@@ -38,9 +41,9 @@ angular.module('Experiments')
 					case 'compiling':
 					case 'executing':
 						return 'panel-warning';
-					case 'failed_compilation':
-					case 'failed_execution':
-						return 'panel-danger';
+					//case 'failed_compilation':
+					//case 'failed_execution':
+					//	return 'panel-danger';
 					case 'created':
 						return 'panel-info';
 					default:
@@ -61,7 +64,7 @@ angular.module('Experiments')
 		}
 
 		function getFolderFromPathFunction(path) {
-			var folders = path.substring(0, path.length -1).split('/');
+			var folders = path.substring(0, path.length - 1).split('/');
 			return folders[folders.length - 1];
 		}
 
@@ -72,17 +75,17 @@ angular.module('Experiments')
 	})
 
 	.directive('fileModel', ['$parse', function ($parse) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
+		return {
+			restrict: 'A',
+			link: function (scope, element, attrs) {
             var model = $parse(attrs.fileModel);
             var modelSetter = model.assign;
-            
-            element.bind('change', function(){
-                scope.$apply(function(){
-                    modelSetter(scope, element[0].files[0]);
-                });
+
+            element.bind('change', function () {
+					scope.$apply(function () {
+						modelSetter(scope, element[0].files[0]);
+					});
             });
-        }
-    };
-}]);
+			}
+		};
+	}]);
