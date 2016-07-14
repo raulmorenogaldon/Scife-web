@@ -30,7 +30,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             $http.get('/experiments/list')
 					.then(function (response) {
 						$scope.experiments = response.data;
-						console.log(response.data);
 						if (response.data.length) {
 							$http.get('/applications/list/')
 								.then(function (data) {

@@ -2,16 +2,7 @@
 	<div class="page-header">
 		<h2>Sources of experiment <strong>{{experiment.name}}</strong></h2>
 	</div>
-	<div class="alert alert-danger col-md-10 col-md-offset-1" role="alert" ng-show="errors.length > 0">
-		<button type="button" class="close" data-ng-click="clearErrorMessages()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
-	</div>
-	<div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message">
-		<button type="button" class="close" ng-click="clearMessage()"><span aria-hidden="true">&times;</span></button>
-		<p class="text-center">
-			{{message}}
-		</p>
-	</div>
+	<alert-messages></alert-messages>
 	<div class="row">
 		<div class="modal fade" id="newFileModal" tabindex="-1" role="dialog" aria-labelledby="newFileModalLabel">
 			<div class="modal-dialog" role="document">
@@ -121,12 +112,12 @@
 						</div>
 						<div class="text-center col-md-6">
 							<h5 class="panel-title text-center"><strong>Functions</strong></h5>
-								<button id="btnSaveChanges" ng-class="{disabled:!btnSaveChanges}" type="button" class="btn btn-success" title="Save Changes"
-									ng-click="saveFile(src_tree.currentNode)"><span class="glyphicon gglyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
-								<button class="btn btn-primary" data-toggle="modal" data-target="#newFileModal" ng-click="launchModal()" title="Create a new file"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"></span></button>
-								<button class="btn btn-warning" ng-click="undo()" title="Undo"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
-								<button class="btn btn-warning" ng-click="redo()" title="Redo"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
-							</div>
+							<button id="btnSaveChanges" ng-class="{disabled:!btnSaveChanges}" type="button" class="btn btn-success" title="Save Changes"
+								ng-click="saveFile(src_tree.currentNode)"><span class="glyphicon gglyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
+							<button class="btn btn-primary" data-toggle="modal" data-target="#newFileModal" ng-click="launchModal()" title="Create a new file"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"></span></button>
+							<button class="btn btn-warning" ng-click="undo()" title="Undo"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+							<button class="btn btn-warning" ng-click="redo()" title="Redo"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
+						</div>
 					</div>
 				</div>
 				<div class="body">

@@ -169,7 +169,7 @@ exports.launch = function (req, res) {
 					case 500:
 					case 404:
 					case 400:
-						res.status(response.statusCode).json(JSON.parse(body));
+						res.status(response.statusCode).json(body);
 						break;
 					case 200:
 						res.status(response.statusCode).json({

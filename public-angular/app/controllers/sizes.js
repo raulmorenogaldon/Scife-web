@@ -1,11 +1,11 @@
 var request = require('request'),
 	privateServer = require('../../config/env/development.js').privateServer;
 
-exports.list = function(req, res) {
+exports.list = function (req, res) {
 	request({
 		url: privateServer + '/cloud/sizes',
 		methos: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.status(400).json({
 				err: err
@@ -15,9 +15,7 @@ exports.list = function(req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(response.statusCode, {
-						err: body.errors
-					});
+					res.status(response.statusCode).json(JSON.parse(body.errors));
 					break;
 				case 200:
 					res.status(response.statusCode).json(JSON.parse(body));
@@ -29,7 +27,7 @@ exports.list = function(req, res) {
 	});
 };
 
-exports.create = function(req, res) {
+exports.create = function (req, res) {
 	if (!req.body.name || !req.body.desc || !req.body.cpus || !req.body.ram) {
 		res.render('sizes/create', {
 			err: "Name, description, CPUs and RAM are required",
@@ -48,7 +46,7 @@ exports.create = function(req, res) {
 				cpus: req.body.cpus,
 				ram: req.body.ram
 			}
-		}, function(err, response, body) {
+		}, function (err, response, body) {
 			if (err) {
 				res.render('sizes/create', {
 					err: err,
@@ -81,11 +79,11 @@ exports.create = function(req, res) {
 	}
 };
 
-exports.get = function(req, res) {
+exports.get = function (req, res) {
 	request({
 		url: privateServer + '/cloud/sizes/' + req.params.sizeId,
 		methos: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.render('sizes/details', {
 				err: err

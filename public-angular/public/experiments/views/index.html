@@ -7,17 +7,7 @@
 			<a href="#/create" class="btn btn-primary">New Experiment</a>
 		</p>
 		<div class="row">
-			<div class="alert alert-danger col-md-10 col-md-offset-1" role="alert" ng-show="errors.length > 0">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
-			</div>
-
-			<div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message != null">
-				<button type="button" class="close" ng-click="message = null" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<p class="text-center">
-					{{message}}
-				</p>
-			</div>
+			<alert-messages></alert-messages>
 		</div>
 	</div>
 </div>

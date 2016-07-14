@@ -3,19 +3,7 @@
 		<h2>Overview of the experiment: <strong>{{experiment.name}}</strong></h2>
 	</div>
 	<div class="row">
-		<div class="alert alert-danger col-md-10 col-md-offset-1" role="alert" ng-show="errors.length > 0">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
-		</div>
-
-		<div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message != null">
-			<button type="button" class="close" ng-click="message = null" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<p class="text-center">
-				{{message}}
-				<br>
-				<a href="/experiments#/" class="btn btn-sucess">Return to Index</a>
-			</p>
-		</div>
+		<alert-messages ></alert-messages>
 	</div>
 	<div class="row">
 		<div class="modal fade" id="launchModal" tabindex="-1" role="dialog" aria-labelledby="launchModalLabel">
@@ -89,7 +77,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="row" ng-show="!errors">
+	<div class="row">
 		<div class="text-center col-md-12">
 			<button class="btn btn-success btn-lg" ng-disabled="experiment.status != 'created'" data-toggle="modal" data-target="#launchModal"
 				ng-click="launchModal()">Launch</button>
@@ -99,7 +87,7 @@
 		</div>
 	</div>
 	<hr>
-	<div class="row" ng-show="!errors">
+	<div class="row">
 		<div class="col-md-offset-1 col-md-10">
 			<div class="panel" ng-class="panelColors.getColorClass(experiment.status)">
 				<div class="panel-heading text-center">

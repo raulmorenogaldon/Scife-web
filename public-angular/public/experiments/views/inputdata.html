@@ -2,16 +2,7 @@
 	<div class="page-header">
 		<h2>Input data of experiment <strong>{{experiment.name}}</strong></h2>
 	</div>
-	<div class="alert alert-danger col-md-10 col-md-offset-1" role="alert" ng-show="errors.length > 0">
-		<button type="button" class="close" data-ng-click="clearErrorMessages()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<p class="text-justify" ng-repeat="err in errors">{{err.message}}</p>
-	</div>
-	<div class="alert alert-success text-justify col-md-10 col-md-offset-1" role="alert" ng-show="message">
-		<button type="button" class="close" ng-click="clearMessage()"><span aria-hidden="true">&times;</span></button>
-		<p class="text-center">
-			{{message}}
-		</p>
-	</div>
+	<alert-messages></alert-messages>
 	<div class="row">
 		<div class="modal fade" id="newFolderModal" tabindex="-1" role="dialog" aria-labelledby="newFolderModalLabel">
 			<div class="modal-dialog" role="document">
@@ -36,7 +27,8 @@
 									<div class="form-group">
 										<label for="folderName" class="col-md-3">Folder Name:</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="folderName" data-ng-model="folderName" required="required" title="Input Name for the folder" placeholder="myFolder">
+											<input type="text" class="form-control" id="folderName" data-ng-model="folderName" required="required" title="Input Name for the folder"
+												placeholder="myFolder">
 										</div>
 									</div>
 									<div class="text-center">
@@ -64,7 +56,7 @@
 							{{currentFolder}}
 						</div>
 						<div class="col-md-2">
-						<button class="btn btn-primary btn-xs" data-ng-click="launchCreateFolderModal()" title="New Folder"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+							<button class="btn btn-primary btn-xs" data-ng-click="launchCreateFolderModal()" title="New Folder"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 						</div>
 					</div>
 				</div>
