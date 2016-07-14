@@ -122,7 +122,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					defaultSizes = response.data;
 					$scope.getSizesOfImage($scope.images[0]);
             }, function (response) {
-					$scope.errors = response.data.errors;
+					$scope.errors = response.data.err;
             });
 		};
 
@@ -294,8 +294,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
-		function getFolderData(folder, depth = 0) {
-			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/input_tree?depth=" + depth : '/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=' + depth;
+		function getFolderData(folder) {
+			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/input_tree?depth=" + depth : '/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=0';
 
 			$http.get(url)
             .then(function (response) {
@@ -458,8 +458,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
-		function getFolderData(folder, depth = 0) {
-			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/src_tree?depth=" + depth : '/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=' + depth;
+		function getFolderData(folder) {
+			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/src_tree?depth=" + depth : '/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=0';
 			$http.get(url)
             .then(function (response) {
 					$scope.experiment = response.data;
@@ -544,7 +544,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             .then(function (response) {
 					$scope.logs = response.data;
 					//if (response.data.length && !$scope.selected) {
-						$scope.selected = $scope.logs[0];
+					$scope.selected = $scope.logs[0];
 					//}
             }, function (response) {
 					$scope.errors = response.data.errors;
