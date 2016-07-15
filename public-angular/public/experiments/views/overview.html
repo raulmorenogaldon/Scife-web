@@ -1,6 +1,6 @@
 <div class="col-sm-10 col-sm-offset-2 col-md-11 col-md-offset-1 main">
 	<div class="page-header">
-		<h2>Overview of the experiment: <strong>{{experiment.name}}</strong></h2>
+		<h3><strong>{{experiment.name}}</strong> - Overview</h3>
 	</div>
 	<div class="row">
 		<alert-messages ></alert-messages>
@@ -86,7 +86,7 @@
 			<button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deleteModal">Delete</button>
 		</div>
 	</div>
-	<hr>
+	<br>
 	<div class="row">
 		<div class="col-md-offset-1 col-md-10">
 			<div class="panel" ng-class="panelColors.getColorClass(experiment.status)">

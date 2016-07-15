@@ -322,7 +322,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			if ($scope.currentPath && $scope.currentPath == '/') {
 				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.fileName;
 			} else if ($scope.currentPath && $scope.currentPath != '/') {
-				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + '/' + $scope.fileName;
+				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + $scope.fileName;
 			} else {
 				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.fileName;
 			}
@@ -428,7 +428,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			if ($scope.newFileName !== null) {
             var url = $scope.currentPath == '/' ? '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.newFileName : '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.currentPath + $scope.newFileName;
 
-            $http.post(url, ' ', {
+            $http.post(url, editor.getValue(), {
 					headers: {
 						'content-type': 'text/plain'
 					}
@@ -538,14 +538,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}])
 
 	.controller('LogsCtrl', ['$scope', '$http', '$stateParams', '$location', function ($scope, $http, $stateParams, $location) {
-
 		$scope.getLog = function () {
 			$http.get('/experiments/logs/' + $stateParams.experimentId)
             .then(function (response) {
-					$scope.logs = response.data;
-					//if (response.data.length && !$scope.selected) {
-					$scope.selected = $scope.logs[0];
-					//}
+					$scope.experiment = response.data;
+					$scope.selected = $scope.experiment.logs[0];
             }, function (response) {
 					$scope.errors = response.data.errors;
             });

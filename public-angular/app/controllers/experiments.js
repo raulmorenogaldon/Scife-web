@@ -18,7 +18,8 @@ exports.list = function (req, res) {
 					res.status(response.statusCode).json(JSON.parse(body));
 					break;
 				case 200:
-					res.status(response.statusCode).json(JSON.parse(body));
+					//res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				default:
 					res.send("There is no status code from the internal server.");
@@ -42,10 +43,10 @@ exports.details = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				case 200:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				default:
 					res.send("There is no status code from the internal server.");
@@ -68,10 +69,10 @@ exports.logs = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				case 200:
-					res.status(response.statusCode).json(JSON.parse(body).logs);
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				default:
 					res.send("There is no status code from the internal server.");
@@ -104,7 +105,7 @@ exports.create = function (req, res) {
 					case 500:
 					case 404:
 					case 400:
-						res.status(response.statusCode).json(JSON.parse(body));
+						res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 						break;
 					case 200:
 						res.status(response.statusCode).json({
@@ -135,7 +136,7 @@ exports.update = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				case 200:
 					res.status(response.statusCode).end();
@@ -169,7 +170,7 @@ exports.launch = function (req, res) {
 					case 500:
 					case 404:
 					case 400:
-						res.status(response.statusCode).json(body);
+						res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 						break;
 					case 200:
 						res.status(response.statusCode).json({
@@ -201,7 +202,7 @@ exports.reset = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				case 200:
 					res.status(response.statusCode).json({
@@ -230,7 +231,7 @@ exports.delete = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				case 200:
 					res.status(response.statusCode).end();
@@ -256,7 +257,7 @@ exports.getCode = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				case 200:
 					res.status(response.statusCode).json(body);
@@ -284,10 +285,10 @@ exports.saveCode = function (req, res) {
 					case 500:
 					case 404:
 					case 400:
-						res.status(response.statusCode).json(JSON.parse(body));
+						res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 						break;
 					case 200:
-						res.status(response.statusCode).json(body);
+						res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 						break;
 					default:
 						res.send("There is no status code from the internal server.");
@@ -320,10 +321,10 @@ exports.saveCode = function (req, res) {
 								case 500:
 								case 404:
 								case 400:
-									res.status(response.statusCode).json(JSON.parse(body));
+									res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 									break;
 								case 200:
-									res.status(response.statusCode).json(body);
+									res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 									break;
 								default:
 									res.send("There is no status code from the internal server.");
@@ -366,10 +367,10 @@ exports.getSrcTree = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				case 200:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				default:
 					res.send("There is no status code from the internal server.");
@@ -402,10 +403,10 @@ exports.getInputTree = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				case 200:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				default:
 					res.send("There is no status code from the internal server.");
