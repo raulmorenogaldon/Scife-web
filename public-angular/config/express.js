@@ -4,7 +4,7 @@ var config = require('./config'),
 	morgan = require('morgan'),
 	compress = require('compression'),
 	bodyParser = require('body-parser');
-	
+
 /*
 flash = require('connect-flash'),
 passport = require('passport');
@@ -31,7 +31,7 @@ module.exports = function () {
 
 	app.set('views', './app/views');
 	app.set('view engine', 'jade');
-	
+
 	/*
 	//Passport
 	app.use(flash());
@@ -50,5 +50,6 @@ module.exports = function () {
 
 	app.use(express.static('./public'));
 
+	app.listen(config.publicServerPort);
 	return app;
 };

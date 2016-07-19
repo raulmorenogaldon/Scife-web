@@ -1,6 +1,10 @@
 var request = require('request'),
 	privateServer = require('../../config/env/development.js').privateServer;
 
+/** 
+ * Method: GET
+ * Return a json list with the brief info of the expreiments
+*/
 exports.list = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments',
@@ -28,7 +32,10 @@ exports.list = function (req, res) {
 	});
 };
 
-
+/**
+ * Method: GET
+ * Get the details of the experiment as a Json object
+ */
 exports.details = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
@@ -55,6 +62,10 @@ exports.details = function (req, res) {
 	});
 };
 
+/**
+ * Method: GET
+ * Get a brief info of the experiment and its logs
+ */
 exports.logs = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/logs",
@@ -81,10 +92,18 @@ exports.logs = function (req, res) {
 	});
 };
 
+/**
+ * Method: GET
+ * Redirect the experiment results from the private server as a stream
+ */
 exports.downloadResults = function (req, res) {
 	request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download").pipe(res);
 };
 
+/**
+ * Method: POST
+ * Get the create experiment request with the basic data to create a new experiment.
+ */
 exports.create = function (req, res) {
 	if (!req.body.name || !req.body.app_id) {
 		res.status(404).json({
@@ -121,6 +140,10 @@ exports.create = function (req, res) {
 	}
 };
 
+/**
+ * Method: PUT
+ * Get the data to update the info of an experiment
+ */
 exports.update = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
@@ -148,6 +171,10 @@ exports.update = function (req, res) {
 	});
 };
 
+/**
+ * Method: PUT
+ * Get the request to launch an experiment.
+ */
 exports.launch = function (req, res) {
 	var data = req.body;
 	if (!data.nodes || !data.image_id || !data.size_id) {
@@ -185,6 +212,10 @@ exports.launch = function (req, res) {
 	}
 };
 
+/**
+ * Method: POST
+ * Get the request to reset the experiment execution.
+ */
 exports.reset = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
@@ -216,7 +247,10 @@ exports.reset = function (req, res) {
 	});
 };
 
-
+/**
+ * Method: DELETE
+ * Get the request to delete an experiment by ID.
+ */
 exports.delete = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
@@ -243,6 +277,10 @@ exports.delete = function (req, res) {
 	});
 };
 
+/**
+ * Method: GET
+ * Return the file code asked by the path of the file.
+ */
 exports.getCode = function (req, res) {
 	request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
@@ -269,6 +307,10 @@ exports.getCode = function (req, res) {
 	});
 };
 
+/**
+ * Method: POST
+ * Save a file pased as text-plain in the body, this file will be saved in the path indicated by the "file"" var. This method also serves to create a folder in the path indicated by the "file" var, to create a folder, the path must finish with a slash "/", if not, then a file will be created.
+ */
 exports.saveCode = function (req, res) {
 	//Check if the user wants to create a folder (path ends with '/')
 	if (req.query.fileId.slice(-1) == '/') {
@@ -342,6 +384,10 @@ exports.saveCode = function (req, res) {
 	}
 };
 
+/**
+ * Method: GET
+ * Get the experiment brief info and the sources tree as a JSon object.
+ */
 exports.getSrcTree = function (req, res) {
 	var url;
 	if (req.query.folder && req.query.depth) {
@@ -379,6 +425,10 @@ exports.getSrcTree = function (req, res) {
 	});
 };
 
+/**
+ * Method: GET
+ * Get the experiment brief info and the input tree as a JSon object.
+ */
 exports.getInputTree = function (req, res) {
 	var url;
 	if (req.query.folder && req.query.depth) {
@@ -415,6 +465,10 @@ exports.getInputTree = function (req, res) {
 	});
 };
 
+/**
+ * Method: POST
+ * This method sends a file to te private server as a stream.
+ */
 exports.uploadFile = function (req, res) {
 	req.pipe(request({
 		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/input?file=" + req.query.file,

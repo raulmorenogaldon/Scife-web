@@ -1,11 +1,11 @@
 <div class="col-sm-10 col-sm-offset-2 col-md-11 col-md-offset-1 main">
+	<h3><strong>{{experiment.name}}</strong> - Labels</h3>
+	<hr>
 	<div class="row">
 		<alert-messages></alert-messages>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
-			<h3><strong>{{experiment.name}}</strong> - Labels</h3>
-			<hr>
+		<div class="col-md-offset-1 col-md-10">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="panel panel-default">
@@ -42,8 +42,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="row" ng-show="showForm && (experiment.app.labels.length > 0)">
-		<div class="col-md-12">
+	<div class="row" data-ng-show="showForm && (experiment.app.labels.length)">
+		<div class="col-md-offset-1 col-md-10">
 			<div class="text-center">
 				<h4>Update Labels</h4>
 			</div>

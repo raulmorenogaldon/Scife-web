@@ -9,7 +9,6 @@ passport = require('./config/passport');
 
 //var db = mongoose();
 var app = express();
-app.listen(3000);
 module.exports = app;
 
 console.log('Server running in the port 3000');
