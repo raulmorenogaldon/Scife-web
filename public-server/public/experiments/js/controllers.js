@@ -93,7 +93,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
             $scope.experiment = response.data;
-            $http.get('/applications/details/' + $scope.experiment.app_id)
+            $http.get('/applications/details/' + response.data.app_id)
 					.then(function (data) {
 						$scope.experiment.app = data.data;
 					}, function (data) {
@@ -129,16 +129,17 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/images/list')
             .then(function (response) {
 					$scope.images = response.data;
+					console.log($scope.images)
 					$scope.launchData.image_id = response.data[0].id;
+					$http.get('/sizes/list')
+						.then(function (response) {
+							defaultSizes = response.data;
+							$scope.getSizesOfImage();//Leaves only the sizes available for this image.
+						}, function (response) {
+							$scope.errors = response.data.err;
+						});
             }, function (response) {
 					$scope.errors = response.data.errors;
-            });
-			$http.get('/sizes/list')
-            .then(function (response) {
-					defaultSizes = response.data;
-					$scope.getSizesOfImage();//Leaves only the sizes available for this image.
-            }, function (response) {
-					$scope.errors = response.data.err;
             });
 		};
 
