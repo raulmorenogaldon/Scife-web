@@ -395,8 +395,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 	}])
 
+	//This controller runs in the sources view
 	.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
-
 		$scope.btnSaveChanges = true;
 		$scope.folderModal = '';
 		$scope.currentPath = '/';
@@ -404,6 +404,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.subFolder = false;
 		var folderParentList = ['/'];
 
+		//The next two method delete the error and info messages hidding the alerts
 		$scope.clearMessage = function () {
 			$scope.message = null;
 		};
@@ -411,6 +412,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$scope.errors = null;
 		};
 
+		//Gets the initial sources tree root
 		function getTree() {
 			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=0")
             .then(function (response) {
@@ -422,6 +424,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		}
 		getTree();
 
+		//This function runs when the user selects an element (file or folder) in the sources tree. If selects a file, the function requests the file data to te server, if no (it's a folder) the function requests to te server the elements cotained in the folder selected.
 		$scope.select = function (node) {
 			if (!node.children.length && node.id.slice(-1) != '/') {
             $http.get('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id)
@@ -441,6 +444,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
+		//This function is executed when the user click the button saveFile, then the contain of the editor will be sent to the server to be saved
 		$scope.saveFile = function (node) {
 			if ($scope.btnSaveChanges) {
             $http.post('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id,
@@ -457,6 +461,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
+		//This function runs when the user wants to create a new file, the file will be created with the info contained in the editor
 		$scope.saveNewFile = function () {
 			if ($scope.newFileName !== null) {
             var url = $scope.currentPath == '/' ? '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.newFileName : '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.currentPath + $scope.newFileName;
@@ -476,6 +481,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
+		//This funciton is executed when the user wants return to the parent folder in the sources tree. The function updates the different vars (currentFolder, currentPath, etc.)
 		$scope.folderUp = function () {
 			if (folderParentList.length > 1) {
             folderParentList.pop();
@@ -491,6 +497,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
+		//Gets the file and folder contained in the folder passed as parameter
 		function getFolderData(folder) {
 			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/src_tree?depth=" + depth : '/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=0';
 			$http.get(url)
@@ -510,6 +517,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			jQuery('#newFolderModal').modal('show');
 		};
 
+		//Runs when the user wants to create a new folder.
 		$scope.createNewFolder = function () {
 			var url = $scope.currentPath == '/' ? '/experiments/' + $stateParams.experimentId + "/code?fileId=" + $scope.folderName + '/' : '/experiments/' + $stateParams.experimentId + "/code?fileId=" + $scope.currentPath + $scope.folderName + '/';
 
@@ -528,6 +536,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			});
 		};
 
+		//The next lines in this controller configure the editor
 		$scope.keyboardList = [{
 			'id': 'hash_handler',
 			'name': 'Ace'
@@ -570,7 +579,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 	}])
 
+	//Runs in the logs view
 	.controller('LogsCtrl', ['$scope', '$http', '$stateParams', '$location', function ($scope, $http, $stateParams, $location) {
+		//Get the experiment info and its logs
 		$scope.getLog = function () {
 			$http.get('/experiments/logs/' + $stateParams.experimentId)
             .then(function (response) {
