@@ -1,0 +1,89 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{fancybox,graphicx}
+\usepackage{subfig}
+\usepackage{fancyhdr}
+\usepackage[left=3.7cm,top=4cm,right=3.7cm,bottom=4cm]{geometry} 
+\usepackage{url}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{caption}
+
+\hypersetup{
+	plainpages = false, pdfpagelabels,
+	bookmarks,
+	bookmarksopen = true,
+	bookmarksnumbered = true,
+	linktocpage,
+	% pagebackref,
+	colorlinks = true,
+	linkcolor = blue,
+	urlcolor  = blue,
+	citecolor = green,
+	anchorcolor = green,
+	hyperindex = true,
+	hyperfigures,
+	pdfauthor={Francisco Javier Pérez Gil},
+	pdfcreator={Francisco Javier Pérez Gil},
+	pdftitle={Trabajo de Interacción y Visualización de la Información: Tableau}
+}
+
+\DeclareFontFamily{\encodingdefault}{\ttdefault}{\hyphenchar\font=`\-}
+\graphicspath{{./img/}}
+
+\lhead{}
+\chead{\textsc{Scife User Guide}}
+\rhead{}
+\lfoot{Fco. Javier Pérez Gil \& Raúl Moreno Galdón}
+\cfoot{}
+\rfoot{\thepage}
+
+\renewcommand{\headrulewidth}{0.5pt} 
+\renewcommand{\footrulewidth}{0.4pt} 
+\pagestyle{fancy}
+
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelitemiii}{$\triangleright$}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\thispagestyle{empty}
+\begin{titlepage}
+	\begin{center}
+		\textsc{\Huge Scife User Guide}
+		\vspace*{0.5in}\\
+		\huge{\textsc{Universidad de Castilla-La Mancha}}
+		\vspace*{0.6in}\\
+		\begin{figure}[h!]
+			\centering
+			\subfloat{
+				\includegraphics[scale=0.40]{logo_esii}}
+			\hspace{.5cm}
+			\subfloat{
+				\includegraphics[scale=0.60]{uclm.jpg}}
+		\end{figure}
+		\vspace{0.6in}
+		\huge{\textbf{Authors:}\\Francisco Javier Pérez Gil\\Raúl Moreno Galdón}
+	\end{center}
+\end{titlepage}
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+\clearpage
+\thispagestyle{empty}
+\listoffigures
+\clearpage
+\setcounter{page}{1}
+
+\section{Introduction}
+This document contains a user manual that explains the user how to use the SCIFE application. Information is structured in different sections, each one contains the instructions of a subject: experiment, applications, and so one.
+
+\section{Experiments}
+This section explains the user how to operate with the experiment functionality offered in the SCIFE application.
+
+
+\end{document}

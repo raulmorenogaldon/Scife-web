@@ -1,0 +1,67 @@
+<div class="col-sm-10 col-sm-offset-2 col-md-11 col-md-offset-1 main">
+	<div class="page-header">
+		<h3><strong>{{experiment.name}}</strong> - Logs</h3>
+	</div>
+	<alert-messages></alert-messages>
+	<div class="col-md-offset-1 col-md-10 alert alert-warning" ng-show="!experiment.logs.length">
+		No logs yet, please run the experiment before.
+	</div>
+
+	<!--
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			<div class="panel panel-default" ng-repeat="log in logs">
+				<div class="panel-heading text-center" role="tab" id="heading{{$index}}">
+					<h3 class="panel-title">
+						<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="false" aria-controls="collapse{{$index}}">
+							<strong>{{log.name}}</strong>
+						</a>
+      			</h3>
+				</div>
+				<div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}">
+					<div class="panel-body">
+						<p>
+							<pre class="log">
+							{{log.content}}
+							</pre>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		-->
+	<!--
+        <div class="text-center">
+            <ul class="pagination">
+                <li ng-repeat="log in logs track by $index" ng-class="{'active':selected==$index}"><a href="" ng-click="select($index)">{{logs[$index].name}}</a></li>
+                <li>
+                    <button class="btn btn-success" ng-click="getLog()" title="Refresh">
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+					</button>
+                </li>
+            </ul>
+        </div>
+		  
+
+	<div class="col-md-6 col-md-offset-3" data-ng-show="logs.length">
+		<select class="form-control" name="logs" id="logs" ng-model="selected" ng-options="log as log.name for log in logs"></select>
+
+	</div>
+	<div class="col-md-2">
+		<button class="btn btn-primary" data-ng-click="getLog()">Refresh logs</button>
+	</div>
+	-->
+	<div class="col-md-6 col-md-offset-3 text-center">
+		<div class="input-group ">
+			<select class="form-control" data-ng-show="experiment.logs.length" name="logs" id="logs" ng-model="selected" ng-options="log as log.name for log in experiment.logs"></select>
+			<span class="input-group-btn">
+			<button class="btn btn-primary" data-ng-click="getLog()">Refresh logs</button>
+		</span>
+		</div>
+	</div>
+	<div class="col-md-12 max-height-650" data-ng-show="experiment.logs.length">
+		<h4 class="text-center">{{selected.content.name}}</h4>
+		<pre>
+			{{selected.content}}
+		</pre>
+	</div>
+</div>
