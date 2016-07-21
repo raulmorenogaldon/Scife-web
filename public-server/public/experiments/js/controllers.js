@@ -38,6 +38,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             $http.get('/experiments/list')
 					.then(function (response) {
 						$scope.experiments = response.data;
+						console.log(response.data);
 						if (response.data.length) {
 							$http.get('/applications/list/')
 								.then(function (data) {
@@ -93,6 +94,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
             $scope.experiment = response.data;
+				console.log(response.data);
             $http.get('/applications/details/' + response.data.app_id)
 					.then(function (data) {
 						$scope.experiment.app = data.data;
@@ -105,10 +107,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//This function starts the counter to run the function $scope.refreshStatus() each 5 seconds while the experiment status wouldn't be "failed_*", "done" or "created"
 		function activateInterval() {
-			interval = setInterval(function () {
+			interval = window.setInterval(function () {
             $scope.refreshStatus();
+				console.log($scope.experiment.status);
             if (/^failed.*/.test($scope.experiment.status) || $scope.experiment.status == 'done' || $scope.experiment.status == 'created') {
-					clearInterval(interval);
+					console.log("Entra");
+					window.clearInterval(interval);
             }
 			}, 5000);
 		}
@@ -125,12 +129,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Launch the modal that allow the user execute an experiment. Also it gets the image list and the sizes available of each image
 		$scope.launchModal = function () {
-			$scope.launchData = {};
 			$http.get('/images/list')
             .then(function (response) {
 					$scope.images = response.data;
-					console.log($scope.images)
-					$scope.launchData.image_id = response.data[0].id;
+					$scope.imageSelected = response.data[0];
 					$http.get('/sizes/list')
 						.then(function (response) {
 							defaultSizes = response.data;
@@ -145,12 +147,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Fileter the sizes and leaves only the sizes compatible with the image selected
 		$scope.getSizesOfImage = function () {
-			var img = $scope.images.find(function (img) {
-				return img.id == $scope.launchData.image_id;
-			});
+			$scope.nodesWidth = ($scope.imageSelected.quotas.cores.in_use / $scope.imageSelected.quotas.cores.limit)*100;
+			$scope.ramWidth = ($scope.imageSelected.quotas.ram.in_use / $scope.imageSelected.quotas.ram.limit)*100;
+			$scope.floatingIpsWidth = ($scope.imageSelected.quotas.floating_ips.in_use / $scope.imageSelected.quotas.floating_ips.limit)*100;
 			$scope.sizes = [];
 			defaultSizes.forEach(function (size) {
-				img.sizes_compatible.some(function (size_id) {
+				$scope.imageSelected.sizes_compatible.some(function (size_id) {
 					if (size.id === size_id) {
 						$scope.sizes.push(size);
 						return true;
@@ -158,16 +160,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				});
 			});
 			if ($scope.sizes.length > 0) {
-				$scope.launchData.size_id = $scope.sizes[0].id;
+				$scope.sizeSelected = $scope.sizes[0];
 			}
 		};
 
 		//Sends the request to launch an experiment by its ID, the data required to launch the experiment (nodes, image and size) is passed in the body.
 		$scope.launchSubmit = function () {
-			$http.post('/experiments/launch/' + $scope.experiment.id, $scope.launchData)
+			$http.post('/experiments/launch/' + $scope.experiment.id, {
+				'nodes': $scope.nodesSelected,
+				'image_id': $scope.imageSelected.id,
+				'size_id': $scope.sizeSelected.id
+			})
             .then(function (response) {
 					$scope.message = response.data.message;
-					$scope.refreshStatus();
+					activateInterval()
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
@@ -180,7 +186,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.post('/experiments/reset/' + $scope.experiment.id)
             .then(function (response) {
 					$scope.message = response.data.message;
-					$scope.refreshStatus();
+					activateInterval();
             }, function (response) {
 					$scope.errors = response.data.errors;
             });

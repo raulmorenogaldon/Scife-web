@@ -34,3 +34,10 @@ form.bordered p{
 	max-height: 650px;
 	overflow: auto;
 }
+
+.progress, .progress-bar-launch{
+    height: 28px;
+}
+.progress-bar-info{
+	padding: 4px;
+}
