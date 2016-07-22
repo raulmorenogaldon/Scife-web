@@ -148,9 +148,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Fileter the sizes and leaves only the sizes compatible with the image selected
 		$scope.getSizesOfImage = function () {
-			$scope.nodesWidth = ($scope.imageSelected.quotas.cores.in_use / $scope.imageSelected.quotas.cores.limit) * 100;
+			console.log($scope.imageSelected);
+			$scope.coresWidth = ($scope.imageSelected.quotas.cores.in_use / $scope.imageSelected.quotas.cores.limit) * 100;
 			$scope.ramWidth = ($scope.imageSelected.quotas.ram.in_use / $scope.imageSelected.quotas.ram.limit) * 100;
-			$scope.floatingIpsWidth = ($scope.imageSelected.quotas.floating_ips.in_use / $scope.imageSelected.quotas.floating_ips.limit) * 100;
+			$scope.instancesWidth = ($scope.imageSelected.quotas.instances.in_use / $scope.imageSelected.quotas.instances.limit) * 100;
 			$scope.sizes = [];
 			defaultSizes.forEach(function (size) {
 				$scope.imageSelected.sizes_compatible.some(function (size_id) {

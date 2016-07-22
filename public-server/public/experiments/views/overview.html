@@ -18,7 +18,7 @@
 							<div class="col-md-12">
 								<form ng-submit="launchSubmit()" class="form form-horizontal">
 									<div class="form-group">
-										<label class="col-md-2" for="nodes">Nodes</label>
+										<label class="col-md-2" for="nodes">Nodes:</label>
 										<div class="col-md-10">
 											<div class="input-group">
 												<input type="number" id="nodes" class="form-control" ng-model="nodesSelected" placeholder="3" min="1" max="{{limitNodes}}"
@@ -28,14 +28,14 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2" for="image">Image</label>
+										<label class="col-md-2" for="image">Image:</label>
 										<div class="col-md-10">
 											<select class="form-control" id="image" ng-model="imageSelected" required ng-options="image as image.name for image in images"
 												ng-change="getSizesOfImage()"></select>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2" for="size">Size</label>
+										<label class="col-md-2" for="size">Size:</label>
 										<div class="col-md-10">
 											<select class="form-control" id="size" ng-model="sizeSelected" ng-options="size as (size.name + ' (' +size.cpus + ' CPUs, ' + size.ram + 'Mb RAM)' ) for size in sizes"
 												ng-change="calculateLimitNodes()" required></select>
@@ -58,7 +58,7 @@
 									<div class="input-group">
 										<div class="input-group-addon" style="width:105px;">Nº nodes:</div>
 										<div class="progress-bar progress-bar-launch progress-bar-success" id="progressNodes" role="progressbar" aria-valuenow="{{imageSelected.quotas.cores.in_use}}"
-											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.cores.limit}}" style="width:{{nodesWidth}}%;min-width: 2em;">
+											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.cores.limit}}" style="width:{{coresWidth}}%;min-width: 2em;">
 											<span>{{imageSelected.quotas.cores.in_use}}</span>
 										</div>
 										<span class="input-group-addon">Max. {{imageSelected.quotas.cores.limit}}</span>
@@ -68,24 +68,24 @@
 							<div class="col-md-12">
 								<div class="progress">
 									<div class="input-group">
-										<div class="input-group-addon" style="width:105px;">RAM (Mb):</div>
-										<div class="progress-bar progress-bar-launch progress-bar-primary" id="progressNodes" role="progressbar" aria-valuenow="{{imageSelected.quotas.ram.in_use}}"
-											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.ram.limit}}" style="width:{{ramWidth}}%;min-width: 2em;">
-											<span>{{imageSelected.quotas.ram.in_use}}</span>
+										<div class="input-group-addon" style="width:105px;">Instances :</div>
+										<div class="progress-bar progress-bar-launch progress-bar-warning" id="progressNodes" role="progressbar" aria-valuenow="{{imageSelected.quotas.instances.in_use}}"
+											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.instances.limit}}" style="width:{{instancesWidth}}%;min-width: 2em;">
+											<span>{{imageSelected.quotas.instances.in_use}}</span>
 										</div>
-										<span class="input-group-addon">Max. {{imageSelected.quotas.ram.limit}}</span>
+										<span class="input-group-addon">Max. {{imageSelected.quotas.instances.limit}}</span>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="progress">
 									<div class="input-group">
-										<div class="input-group-addon" style="width:105px;">Floating IPs:</div>
-										<div class="progress-bar progress-bar-launch progress-bar-warning" id="progressNodes" role="progressbar" aria-valuenow="{{imageSelected.quotas.floating_ips.in_use}}"
-											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.floating_ips.limit}}" style="width:{{floatingIpsWidth}}%;min-width: 2em;">
-											<span>{{imageSelected.quotas.floating_ips.in_use}}</span>
+										<div class="input-group-addon" style="width:105px;">RAM (Mb):</div>
+										<div class="progress-bar progress-bar-launch progress-bar-info" id="progressNodes" role="progressbar" aria-valuenow="{{imageSelected.quotas.ram.in_use}}"
+											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.ram.limit}}" style="width:{{ramWidth}}%;min-width: 2em;">
+											<span>{{imageSelected.quotas.ram.in_use}}</span>
 										</div>
-										<span class="input-group-addon">Max. {{imageSelected.quotas.floating_ips.limit}}</span>
+										<span class="input-group-addon">Max. {{imageSelected.quotas.ram.limit}}</span>
 									</div>
 								</div>
 							</div>
