@@ -16,8 +16,6 @@ app/tests/coverage/
 .idea/
 
 !overlord/public-server/public/lib/tree-view/**/*
-!overlord/public-server/public/lib/tree-view/js/*
-!overlord/public-server/public/lib/tree-view/img/*
-!overlord/public-server/public/lib/tree-view/css/*
+!overlord/public-server/public/lib/ace/**/*
 
 **.vscode/
