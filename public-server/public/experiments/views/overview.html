@@ -15,56 +15,65 @@
 					</div>
 					<div class="modal-body">
 						<div class="row">
-							<form ng-submit="launchSubmit()" class="form form-horizontal col-md-12">
-								<div class="form-group col-md-12">
-									<label for="nodes">Nodes</label>
-									<input type="number" id="nodes" class="form-control" ng-model="nodesSelected" placeholder="3" min="1" max="{{imageSelected.quotas.cores.limit}}"
-										required>
-								</div>
-								<div class="form-group col-md-12">
-									<label for="image">Image</label>
-									<select class="form-control" id="image" ng-model="imageSelected" required ng-options="image as image.name for image in images"
-										ng-change="getSizesOfImage()">
-					</select>
-								</div>
-								<div class="form-group col-md-12">
-									<label for="size">Size</label>
-									<select class="form-control" id="size" ng-model="sizeSelected" ng-options="size as (size.name + ' (' +size.cpus + ' CPUs, ' + size.ram + 'Mb RAM)' ) for size in sizes"
-										required>
-						<!--<option ng-repeat="size in sizes" value="{{size}}">{{size.name}} ({{size.cpus}} CPUs, {{size.ram}} RAM )</option>-->
-					</select>
-								</div>
-								<div class="col-md-12 text-center">
-									<input type="submit" class="btn btn-success" value="Launch">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								</div>
-							</form>
+							<div class="col-md-12">
+								<form ng-submit="launchSubmit()" class="form form-horizontal">
+									<div class="form-group">
+										<label class="col-md-2" for="nodes">Nodes</label>
+										<div class="col-md-10">
+											<div class="input-group">
+												<input type="number" id="nodes" class="form-control" ng-model="nodesSelected" placeholder="3" min="1" max="{{limitNodes}}"
+													required>
+												<span class="input-group-addon">Max. {{limitNodes}}</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2" for="image">Image</label>
+										<div class="col-md-10">
+											<select class="form-control" id="image" ng-model="imageSelected" required ng-options="image as image.name for image in images"
+												ng-change="getSizesOfImage()"></select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2" for="size">Size</label>
+										<div class="col-md-10">
+											<select class="form-control" id="size" ng-model="sizeSelected" ng-options="size as (size.name + ' (' +size.cpus + ' CPUs, ' + size.ram + 'Mb RAM)' ) for size in sizes"
+												ng-change="calculateLimitNodes()" required></select>
+										</div>
+										<!--<option ng-repeat="size in sizes" value="{{size}}">{{size.name}} ({{size.cpus}} CPUs, {{size.ram}} RAM )</option>-->
+									</div>
+									<div class="col-md-12 text-center">
+										<input type="submit" class="btn btn-success" value="Launch">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
+								</form>
+							</div>
 						</div>
 						<div class="row">
-							<h4>
-								<p class="text-center">{{imageSelected.name}} info:</p>
-							</h4>
+							<div class="col-md-12 text-center">
+								<h4>{{imageSelected.name}} info:</h4>
+							</div>
 							<div class="col-md-12">
 								<div class="progress">
 									<div class="input-group">
-										<div class="input-group-addon" style="width:105px;">Nodes used:</div>
+										<div class="input-group-addon" style="width:105px;">Nº nodes:</div>
 										<div class="progress-bar progress-bar-launch progress-bar-success" id="progressNodes" role="progressbar" aria-valuenow="{{imageSelected.quotas.cores.in_use}}"
 											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.cores.limit}}" style="width:{{nodesWidth}}%;min-width: 2em;">
 											<span>{{imageSelected.quotas.cores.in_use}}</span>
 										</div>
-										<span class="input-group-addon">{{imageSelected.quotas.cores.limit}}</span>
+										<span class="input-group-addon">Max. {{imageSelected.quotas.cores.limit}}</span>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="progress">
 									<div class="input-group">
-										<div class="input-group-addon" style="width:105px;">RAM used:</div>
+										<div class="input-group-addon" style="width:105px;">RAM (Mb):</div>
 										<div class="progress-bar progress-bar-launch progress-bar-primary" id="progressNodes" role="progressbar" aria-valuenow="{{imageSelected.quotas.ram.in_use}}"
 											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.ram.limit}}" style="width:{{ramWidth}}%;min-width: 2em;">
 											<span>{{imageSelected.quotas.ram.in_use}}</span>
 										</div>
-										<span class="input-group-addon">{{imageSelected.quotas.ram.limit}}</span>
+										<span class="input-group-addon">Max. {{imageSelected.quotas.ram.limit}}</span>
 									</div>
 								</div>
 							</div>
@@ -76,7 +85,7 @@
 											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.floating_ips.limit}}" style="width:{{floatingIpsWidth}}%;min-width: 2em;">
 											<span>{{imageSelected.quotas.floating_ips.in_use}}</span>
 										</div>
-										<span class="input-group-addon">{{imageSelected.quotas.floating_ips.limit}}</span>
+										<span class="input-group-addon">Max. {{imageSelected.quotas.floating_ips.limit}}</span>
 									</div>
 								</div>
 							</div>

@@ -89,6 +89,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', function ($scope, $http, $stateParams, $location, PanelColors) {
 		var interval;
 		var defaultSizes = null;
+		$scope.panelColors = PanelColors;
 
 		//Get the experiment info and its application.
 		$http.get('/experiments/details/' + $stateParams.experimentId)
@@ -147,9 +148,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Fileter the sizes and leaves only the sizes compatible with the image selected
 		$scope.getSizesOfImage = function () {
-			$scope.nodesWidth = ($scope.imageSelected.quotas.cores.in_use / $scope.imageSelected.quotas.cores.limit)*100;
-			$scope.ramWidth = ($scope.imageSelected.quotas.ram.in_use / $scope.imageSelected.quotas.ram.limit)*100;
-			$scope.floatingIpsWidth = ($scope.imageSelected.quotas.floating_ips.in_use / $scope.imageSelected.quotas.floating_ips.limit)*100;
+			$scope.nodesWidth = ($scope.imageSelected.quotas.cores.in_use / $scope.imageSelected.quotas.cores.limit) * 100;
+			$scope.ramWidth = ($scope.imageSelected.quotas.ram.in_use / $scope.imageSelected.quotas.ram.limit) * 100;
+			$scope.floatingIpsWidth = ($scope.imageSelected.quotas.floating_ips.in_use / $scope.imageSelected.quotas.floating_ips.limit) * 100;
 			$scope.sizes = [];
 			defaultSizes.forEach(function (size) {
 				$scope.imageSelected.sizes_compatible.some(function (size_id) {
@@ -161,6 +162,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			});
 			if ($scope.sizes.length > 0) {
 				$scope.sizeSelected = $scope.sizes[0];
+				$scope.calculateLimitNodes();
 			}
 		};
 
@@ -210,7 +212,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.downloadResults = function (id) {
 			window.open('/experiments/downloadresults/' + id);
 		};
-		$scope.panelColors = PanelColors;
+
+		$scope.calculateLimitNodes = function () {
+			$scope.limitNodes = Math.floor($scope.imageSelected.quotas.cores.limit / $scope.sizeSelected.cpus);
+		};
 	}])
 
 	/**
