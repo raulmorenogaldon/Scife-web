@@ -19,3 +19,10 @@ app/tests/coverage/
 !overlord/public-server/public/lib/ace/**/*
 
 **.vscode/
+
+*.aux
+*.lof
+*.out
+*.out
+*.synctex.gz
+*.toc
