@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.7.4)  20 JUL 2016 11:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.7.4)  25 JUL 2016 12:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -878,21 +878,29 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<./img/logo_esii.png, id=8, 346.6551pt x 422.0568pt>
+<./img/logo_esii.png, id=36, 346.6551pt x 422.0568pt>
 File: ./img/logo_esii.png Graphic file (type png)
- <use ./img/logo_esii.png>
+
+<use ./img/logo_esii.png>
 Package pdftex.def Info: ./img/logo_esii.png used on input line 64.
 (pdftex.def)             Requested size: 138.65958pt x 168.81972pt.
-
-<./img/uclm.jpg, id=10, 272.6988pt x 170.3163pt>
+ <./img/uclm.jpg, id=38, 272.6988pt x 170.3163pt>
 File: ./img/uclm.jpg Graphic file (type jpg)
- <use ./img/uclm.jpg>
+
+<use ./img/uclm.jpg>
 Package pdftex.def Info: ./img/uclm.jpg used on input line 67.
 (pdftex.def)             Requested size: 163.62053pt x 102.19055pt.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/logo_esii.png> <./im
-g/uclm.jpg>] (./Scife-user-guide.toc)
+g/uclm.jpg>] (./Scife-user-guide.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 4.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 4.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 4.
+)
 \tf@toc=\write5
 \openout5 = `Scife-user-guide.toc'.
 
@@ -908,7 +916,11 @@ l.76 \clearpage
  [2
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 89.
+<./img/index.png, id=85, 963.6pt x 663.98062pt>
+File: ./img/index.png Graphic file (type png)
+ <use ./img/index.png>
+Package pdftex.def Info: ./img/index.png used on input line 92.
+(pdftex.def)             Requested size: 403.7448pt x 278.20128pt.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -920,42 +932,78 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.89 \end{document}
-                    [1
+l.111 	\item T
+              he yellow button redirects the user to the logs view (Section ...
+[1
 
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 89.
+]pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.111 	\item T
+              he yellow button redirects the user to the logs view (Section ...
+[2 <./img/index.png>] <img/index-delete.png, id=103, 1278.7775pt x 487.8225pt>
+File: img/index-delete.png Graphic file (type png)
+
+<use img/index-delete.png>
+Package pdftex.def Info: img/index-delete.png used on input line 117.
+(pdftex.def)             Requested size: 403.7448pt x 154.01474pt.
+ <img/create.png, id=105, 963.6pt x 399.74344pt>
+File: img/create.png Graphic file (type png)
+
+<use img/create.png>
+Package pdftex.def Info: img/create.png used on input line 125.
+(pdftex.def)             Requested size: 403.7448pt x 167.48851pt.
+ <img/overview-done.PNG, id=107, 963.6pt x 411.78844pt>
+File: img/overview-done.PNG Graphic file (type png)
+
+<use img/overview-done.PNG>
+Package pdftex.def Info: img/overview-done.PNG used on input line 134.
+(pdftex.def)             Requested size: 403.7448pt x 172.53525pt.
+ [3 <./img/index-delete.png> <./img/create.png>]
+<img/overview-launch.png, id=115, 1282.7925pt x 596.2275pt>
+File: img/overview-launch.png Graphic file (type png)
+
+<use img/overview-launch.png>
+Package pdftex.def Info: img/overview-launch.png used on input line 148.
+(pdftex.def)             Requested size: 403.7448pt x 187.6489pt.
+
+<img/overview-delete.png, id=116, 1282.7925pt x 504.88625pt>
+File: img/overview-delete.png Graphic file (type png)
+
+<use img/overview-delete.png>
+Package pdftex.def Info: img/overview-delete.png used on input line 154.
+(pdftex.def)             Requested size: 403.7448pt x 158.90132pt.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 163.
+ [4 <./img/overview-done.PNG>] [5 <./img/overview-launch.png> <./img/overview-d
+elete.png>] [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 163.
  (./Scife-user-guide.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 89.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 89.
-
-
-Package rerunfilecheck Warning: File `Scife-user-guide.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Scife-user-guide.out':
-(rerunfilecheck)             Before: CBC86F58E3BD0655ABB1DE0F6E74C2A8;48
-(rerunfilecheck)             After:  68ED5D9D86F16DD2A74FEB61CB14FC61;95.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 89.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 163.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 163.
+Package rerunfilecheck Info: File `Scife-user-guide.out' has not changed.
+(rerunfilecheck)             Checksum: 2F66D09CC3124FAB2FFAB56B5D8EE47D;447.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 163.
  ) 
 Here is how much of TeX's memory you used:
- 8516 strings out of 494953
- 126734 string characters out of 6180978
- 216422 words of memory out of 5000000
- 11708 multiletter control sequences out of 15000+600000
- 6362 words of font info for 23 fonts, out of 8000000 for 9000
+ 8613 strings out of 494953
+ 128239 string characters out of 6180978
+ 221021 words of memory out of 5000000
+ 11770 multiletter control sequences out of 15000+600000
+ 9574 words of font info for 34 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 44i,11n,43p,252b,447s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,11n,43p,756b,451s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on Scife-user-guide.pdf (4 pages, 599989 bytes).
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Scife-user-guide.pdf (9 pages, 810989 bytes).
 PDF statistics:
- 61 PDF objects out of 1000 (max. 8388607)
- 46 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
- 19 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 164 PDF objects out of 1000 (max. 8388607)
+ 132 compressed objects within 2 object streams
+ 26 named destinations out of 1000 (max. 500000)
+ 105 words of extra memory for PDF output out of 10000 (max. 10000000)
 
