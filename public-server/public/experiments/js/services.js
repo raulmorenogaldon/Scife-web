@@ -40,6 +40,10 @@ angular.module('Experiments')
 					case 'launched':
 					case 'compiling':
 					case 'executing':
+					case 'deployed':
+					case 'resetting':
+					case 'compiled':
+					case 'executed':
 						return 'panel-warning';
 					//case 'failed_compilation':
 					//case 'failed_execution':
