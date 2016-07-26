@@ -1,4 +1,10 @@
 angular.module('Experiments')
+/**
+ * This directive manages the error and info messages:
+ * If you want show an error messages, you only have to asign to the $scope.error an array (ej. $scope.error = [{'code':25,'msg':'error message'}]).
+ * If you want show an info message, you only have to asign an string to the $scope.message (ej. $scope.message = "This is an info message").
+ * When you close the messages (errors or info messages) the $scope.errors and $scope.message will be asigned to null, depending of the message type (error or info).
+ */
 	.directive('alertMessages', function ($compile) {
 		return {
 			restrict: 'E',
