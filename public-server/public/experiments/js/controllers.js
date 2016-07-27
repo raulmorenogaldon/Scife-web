@@ -53,7 +53,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 								});
 						} else {
 							jQuery('#loadingModal').modal('hide');
-							$scope.message = "There is not experiments yet."
+							$scope.message = "There is not experiments yet.";
 						}
 					}, function (response) {
 						$scope.errors = response.data.errors;
@@ -168,7 +168,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			})
             .then(function (response) {
 					$scope.message = response.data.message;
-					activateInterval()
+					activateInterval();
             }, function (response) {
 					$scope.errors = response.data.errors;
             });

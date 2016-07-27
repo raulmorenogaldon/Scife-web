@@ -1,7 +1,10 @@
 module.exports = function (grunt) {
    grunt.initConfig({
+		clean:{
+			js: ['../public-server/public/experiments/js/*.min.js']
+		},
       jshint: {
-         files: ['../public-angular/app/**/*.js', '../public-angular/config/**/*.js', '../public-angular/public/experiments/**/*.js'],
+         files: ['../public-server/app/**/*.js', '../public-server/config/**/*.js', '../public-server/public/experiments/**/*.js'],
          options: {
             globals: {
                jQuery: true,
@@ -26,39 +29,40 @@ module.exports = function (grunt) {
             ],
 				reportPath: 'html-angular-log.json'
          },
-         files: ['../public-angular/public/experiments/views/*.html']
+         files: ['../public-server/public/experiments/views/*.html']
       },
 		csslint: {
 			strict: {
 				options: {
 					import: 2
 				},
-				src: ['../public-angular/public/css/**/*.css', '../public-angular/public/experiment/css/**/*.css']
+				src: ['../public-server/public/css/**/*.css', '../public-server/public/experiment/css/**/*.css']
 			},
-		},
+		}/*,
 		concat: {
 			dist: {
-				src: ['../public-angular/public/experiments/js/*.js'],
-				dest: ['../public-angular/public/experiments/js/experiments-concat.js']
+				src: ['../public-server/public/experiments/js/*.js'],
+				dest: ['../public-server/public/experiments/js/experiments-concat.js']
 			}
-		},
+		}*/,
 		uglify: {
 			my_target: {
 				options: {
 					compress: true
 				},
 				files: {
-					'../public-angular/public/experiments/js/experiments-concat.min.js': ['../public-angular/public/experiments/js/*.js']
+					'../public-server/public/experiments/js/experiments-concat.min.js': ['../public-server/public/experiments/js/*.js']
 				}
 			}
 		}
    });
 
+grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-html-angular-validate');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
-	grunt.loadNpmTasks('grunt-contrib-concat');
+	//grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 
-	grunt.registerTask('default', ['jshint', /*'htmlangular',*/ 'csslint','concat','uglify']);
+	grunt.registerTask('default', ['clean','jshint', /*'htmlangular',*/ 'csslint'/*'concat'*/, 'uglify']);
 };
