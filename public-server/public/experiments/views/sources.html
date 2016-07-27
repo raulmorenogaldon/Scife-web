@@ -62,8 +62,8 @@
 									<div class="form-group">
 										<label for="folderName" class="col-md-3">Folder Name:</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control key-restricted" id="folderName" data-ng-model="folderName" required="required" title="Input Name for the folder"
-												placeholder="myFolder">
+											<input type="text" class="form-control key-restricted" id="folderName" data-ng-model="folderName" required="required" placeholder="myFolder"
+												title="Input Name for the folder">
 										</div>
 									</div>
 									<div class="text-center">
@@ -143,7 +143,7 @@
 <script src="/lib/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/lib/ace/src-min-noconflict/ext-modelist.js" type="text/javascript" charset="utf-8 "></script>
 <script src="/lib/ace/src-min-noconflict/ext-themelist.js" type="text/javascript" charset="utf-8 "></script>
-<script>
+<script type="text/javascript">
 $(document).ready(function(){
 	$('input.key-restricted').keydown(function(e) {
 		if (e.keyCode == 32 || (e.keyCode >= 106 && e.keyCode <= 188) || e.keyCode > 190) {
@@ -152,6 +152,12 @@ $(document).ready(function(){
 	});
 	$(function() {
         $('[data-toggle="tooltip"]').tooltip()
-    })
+    });
+	 $('#newFileModal').on('shown.bs.modal', function(){
+		$('#newFile').focus();
+	});
+	$('#newFolderModal').on('shown.bs.modal', function(){
+		$('#folderName').focus();
+	});
 });
 </script>

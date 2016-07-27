@@ -38,7 +38,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             $http.get('/experiments/list')
 					.then(function (response) {
 						$scope.experiments = response.data;
-						console.log(response.data);
 						if (response.data.length) {
 							$http.get('/applications/list/')
 								.then(function (data) {
@@ -95,7 +94,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
             $scope.experiment = response.data;
-				console.log(response.data);
             $http.get('/applications/details/' + response.data.app_id)
 					.then(function (data) {
 						$scope.experiment.app = data.data;
@@ -126,9 +124,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		function activateInterval() {
 			interval = window.setInterval(function () {
             $scope.refreshStatus();
-				console.log($scope.experiment.status);
             if (/^failed.*/.test($scope.experiment.status) || $scope.experiment.status == 'done' || $scope.experiment.status == 'created') {
-					console.log("Entra");
 					window.clearInterval(interval);
             }
 			}, 5000);
@@ -144,10 +140,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             });
 		};
 
-
 		//Fileter the sizes and leaves only the sizes compatible with the image selected
 		$scope.getSizesOfImage = function () {
-			console.log($scope.imageSelected);
 			$scope.coresWidth = ($scope.imageSelected.quotas.cores.in_use / $scope.imageSelected.quotas.cores.limit) * 100;
 			$scope.ramWidth = ($scope.imageSelected.quotas.ram.in_use / $scope.imageSelected.quotas.ram.limit) * 100;
 			$scope.instancesWidth = ($scope.imageSelected.quotas.instances.in_use / $scope.imageSelected.quotas.instances.limit) * 100;
@@ -162,7 +156,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			});
 			if ($scope.sizes.length > 0) {
 				$scope.sizeSelected = $scope.sizes[0];
-				$scope.calculateLimitNodes();
 			}
 		};
 
@@ -598,12 +591,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/experiments/logs/' + $stateParams.experimentId)
             .then(function (response) {
 					$scope.experiment = response.data;
-					if (selectedName) {
-						$scope.selected = $scope.experiment.logs.find(function (log) {
-							return log.name === selectedName;
-						});
-					} else {
-						$scope.selected = $scope.experiment.logs[0];
+					if (response.data.logs) {
+						if (selectedName) {
+							$scope.selected = response.data.logs.find(function (log) {
+								return log.name === selectedName;
+							});
+						}
+						else {
+							$scope.selected = response.data.logs[0];
+						}
 					}
             }, function (response) {
 					$scope.errors = response.data.errors;

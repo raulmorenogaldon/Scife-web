@@ -18,7 +18,7 @@
 							<div class="col-md-12">
 								<form ng-submit="launchSubmit()" class="form form-horizontal">
 									<div class="form-group">
-										<label class="col-md-2" for="nodes">Nodes:</label>
+										<label class="col-md-2" for="nodes">Instances:</label>
 										<div class="col-md-10">
 											<div class="input-group">
 												<input type="number" id="nodes" class="form-control" ng-model="nodesSelected" placeholder="3" min="1" max="{{imageSelected.quotas.instances.limit-imageSelected.quotas.instances.in_use}}"
@@ -38,7 +38,7 @@
 										<label class="col-md-2" for="size">Size:</label>
 										<div class="col-md-10">
 											<select class="form-control" id="size" ng-model="sizeSelected" ng-options="size as (size.name + ' (' +size.cpus + ' CPUs, ' + size.ram + 'Mb RAM)' ) for size in sizes"
-												ng-change="calculateLimitNodes()" required></select>
+												required></select>
 										</div>
 										<!--<option ng-repeat="size in sizes" value="{{size}}">{{size.name}} ({{size.cpus}} CPUs, {{size.ram}} RAM )</option>-->
 									</div>
@@ -81,7 +81,7 @@
 								<div class="progress">
 									<div class="input-group">
 										<div class="input-group-addon" style="width:105px;">RAM (Mb):</div>
-										<div class="progress-bar progress-bar-launch progress-bar-info" id="progressNodes" role="progressbar" aria-valuenow="{{imageSelected.quotas.ram.in_use}}"
+										<div class="progress-bar progress-bar-launch progress-bar-info" id="progressInstances" role="progressbar" aria-valuenow="{{imageSelected.quotas.ram.in_use}}"
 											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.ram.limit}}" style="width:{{ramWidth}}%;min-width: 2em;">
 											<span>{{imageSelected.quotas.ram.in_use}}</span>
 										</div>
@@ -131,8 +131,7 @@
 		</div>
 		<div class="row">
 			<div class="text-center col-md-12">
-				<button class="btn btn-success btn-lg" ng-disabled="experiment.status != 'created'" data-toggle="modal" data-target="#launchModal"
-					ng-click="launchModal()">Launch</button>
+				<button class="btn btn-success btn-lg" ng-disabled="experiment.status != 'created'" data-toggle="modal" data-target="#launchModal">Launch</button>
 				<button class="btn btn-warning btn-lg" ng-click="reset()">Reset</button>
 				<button class="btn btn-info btn-lg" ng-click="refreshStatus()">Update Status</button>
 				<button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deleteModal">Delete</button>
@@ -176,3 +175,10 @@
 			</div>
 		</div>
 	</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#launchModal').on('shown.bs.modal', function(){
+		$('#nodes').focus();
+	});
+});
+</script>
