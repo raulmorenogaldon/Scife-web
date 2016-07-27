@@ -106,6 +106,22 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             $scope.errors = response.data.errors;
 			});
 
+		//Get image and size list used when the user wants launch the experiment
+		$http.get('/images/list')
+			.then(function (response) {
+				$scope.images = response.data;
+				$scope.imageSelected = response.data[0];
+				$http.get('/sizes/list')
+					.then(function (response) {
+						defaultSizes = response.data;
+						$scope.getSizesOfImage();//Leaves only the sizes available for this image.
+					}, function (response) {
+						$scope.errors = response.data.err;
+					});
+			}, function (response) {
+				$scope.errors = response.data.errors;
+			});
+
 		//This function starts the counter to run the function $scope.refreshStatus() each 5 seconds while the experiment status wouldn't be "failed_*", "done" or "created"
 		function activateInterval() {
 			interval = window.setInterval(function () {
@@ -128,23 +144,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             });
 		};
 
-		//Launch the modal that allow the user execute an experiment. Also it gets the image list and the sizes available of each image
-		$scope.launchModal = function () {
-			$http.get('/images/list')
-            .then(function (response) {
-					$scope.images = response.data;
-					$scope.imageSelected = response.data[0];
-					$http.get('/sizes/list')
-						.then(function (response) {
-							defaultSizes = response.data;
-							$scope.getSizesOfImage();//Leaves only the sizes available for this image.
-						}, function (response) {
-							$scope.errors = response.data.err;
-						});
-            }, function (response) {
-					$scope.errors = response.data.errors;
-            });
-		};
 
 		//Fileter the sizes and leaves only the sizes compatible with the image selected
 		$scope.getSizesOfImage = function () {
@@ -212,10 +211,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//Dowload the results of the experiment execution
 		$scope.downloadResults = function (id) {
 			window.open('/experiments/downloadresults/' + id);
-		};
-
-		$scope.calculateLimitNodes = function () {
-			$scope.limitNodes = Math.floor($scope.imageSelected.quotas.cores.limit / $scope.sizeSelected.cpus);
 		};
 	}])
 
@@ -596,11 +591,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	//Runs in the logs view
 	.controller('LogsCtrl', ['$scope', '$http', '$stateParams', '$location', function ($scope, $http, $stateParams, $location) {
 		//Get the experiment info and its logs
+		var selectedName;
+
 		$scope.getLog = function () {
+			selectedName = $scope.selected ? $scope.selected.name : null;
 			$http.get('/experiments/logs/' + $stateParams.experimentId)
             .then(function (response) {
 					$scope.experiment = response.data;
-					$scope.selected = $scope.experiment.logs[0];
+					if (selectedName) {
+						$scope.selected = $scope.experiment.logs.find(function (log) {
+							return log.name === selectedName;
+						});
+					} else {
+						$scope.selected = $scope.experiment.logs[0];
+					}
             }, function (response) {
 					$scope.errors = response.data.errors;
             });
