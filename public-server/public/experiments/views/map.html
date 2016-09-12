@@ -1,0 +1,97 @@
+<style type="text/css">
+	#map {
+		height: 600px;
+	}
+</style>
+<div class="col-sm-10 col-sm-offset-2 col-md-11 col-md-offset-1 main">
+	<div class="page-header">
+		<h3><strong>{{experiment.name}}</strong> - Map</h3>
+	</div>
+	<alert-messages></alert-messages>
+	<div class="row">
+		<div class="col-md-9" id="map"></div>
+		<div class="col-md-3">
+			<h3 class="text-center">Data</h3>
+			<hr>
+			<div class="form-horizontal">
+				<div class="form-group">
+					<label for="latidud" class="col-md-3">Latitud:</label>
+					<div class="col-md-9">
+						<input type="text" id="latitud" class="form-control" disabled>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="longitud" class="col-md-3">Longitud:</label>
+					<div class="col-md-9">
+						<input type="text" id="longitud" class="form-control" disabled>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+function initMap() {
+	var marker;
+	var latLng;
+	var rectangle;
+	var map = new google.maps.Map(document.getElementById('map'), {
+		scaleControl: true,
+		center: {lat: 38.981, lng: -1.856},
+		zoom: 8,
+		 mapTypeId: google.maps.MapTypeId.TERRAIN
+	});
+
+	map.addListener('click', function(e) {
+		latLng = e.latLng;
+		marker == undefined ? placeMarker(latLng, map) : moveMarker(latLng, map);
+		$('#latitud').val(latLng.lat());
+		$('#longitud').val(latLng.lng());
+	});
+
+	function placeMarker(latLng, map) {
+			marker = new google.maps.Marker({
+			position: latLng,
+			map: map,
+			draggable:true,
+    		title:"Drag me!"
+		});
+		map.panTo(latLng);
+	
+	rectangle = new google.maps.Rectangle({
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.6,
+    strokeWeight: 2,
+    fillColor: '#FF0000',
+    fillOpacity: 0.2,
+	 editable:true,
+	 clickable:false,
+	 draggable:false,
+    map: map,
+    bounds: {
+      north: latLng.lat()+0.2,
+      south: latLng.lat()-0.2,
+      east: latLng.lng() + 0.2,
+      west: latLng.lng() - 0.2
+    }
+  });
+	}
+
+	function moveMarker(latLng, map) {
+		console.log(latLng.lat());
+		marker.setPosition(latLng);
+		map.panTo(latLng);
+		rectangle.setBounds({
+      north: latLng.lat()+0.2,
+      south: latLng.lat()-0.2,
+      east: latLng.lng() + 0.2,
+      west: latLng.lng() - 0.2
+    });
+};
+
+
+
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ4E6LnrDKzrEQtJhXpAY6bl0E9_ewKxY&callback=initMap" async
+	defer></script>

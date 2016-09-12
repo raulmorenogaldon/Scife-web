@@ -91,4 +91,18 @@ var app = angular.module('Experiments')
 				}
 			}
 		});
+
+		$stateProvider.state('map', {
+			url: '/map/:experimentId',
+			views: {
+				'content': {
+					templateUrl: "experiments/views/map.html",
+					controller: "MapCtrl"
+				},
+				'sidebar': {
+					controller: "SidebarCtrl",
+					templateUrl: "experiments/views/sidebar.html"
+				}
+			}
+		});
 	}]);

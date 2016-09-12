@@ -20,6 +20,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}, {
 				name: "Logs",
 				url: "/logs/" + $stateParams.experimentId
+			}, {
+				name: "Map",
+				url: "/map/" + $stateParams.experimentId
 			}];
 		//This function allow the sidebar options know if they are selected.
 		$scope.isActive = function (route) {
@@ -606,4 +609,16 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             });
 		};
 		$scope.getLog();
+	}])
+
+	//Runs in the logs view
+	.controller('MapCtrl', ['$scope', '$http', '$stateParams', '$location', function ($scope, $http, $stateParams, $location) {
+		//Get the experiment info and its application.
+		$http.get('/experiments/details/' + $stateParams.experimentId)
+			.then(function (response) {
+            $scope.experiment = response.data;
+			}, function (response) {
+            $scope.errors = response.data.errors;
+			});
+
 	}]);
