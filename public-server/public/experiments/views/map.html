@@ -31,13 +31,13 @@
 				<div class="form-group">
 					<label for="altura" class="col-md-3">Altura:</label>
 					<div class="col-md-9">
-						<input type="number" min="0" id="alto" class="form-control" placeholder="In Meters">
+						<input type="number" min="0" id="alto" class="form-control" placeholder="In Meters" value="5000">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="altura" class="col-md-3">Altura:</label>
 					<div class="col-md-9">
-						<input type="number" min="0" id="alto" class="form-control" placeholder="In Meters">
+						<input type="number" min="0" id="alto" class="form-control" placeholder="In Meters" value="5000">
 					</div>
 				</div>
 				<div class="text-center">
@@ -49,9 +49,11 @@
 </div>
 <script>
 function initMap() {
+	var EARTH_R = 6371000;
 	var marker;
 	var latLng;
 	var rectangle;
+
 	var map = new google.maps.Map(document.getElementById('map'), {
 		scaleControl: true,
 		center: {lat: 38.981, lng: -1.856},
@@ -75,24 +77,38 @@ function initMap() {
 		});
 		map.panTo(latLng);
 	
-	rectangle = new google.maps.Rectangle({
-    strokeColor: '#FF0000',
-    strokeOpacity: 0.6,
-    strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.2,
-	 editable:true,
-	 clickable:false,
-	 draggable:false,
-    map: map,
-    bounds: {
-      north: latLng.lat()+0.2,
-      south: latLng.lat()-0.2,
-      east: latLng.lng() + 0.2,
-      west: latLng.lng() - 0.2
-    }
-  });
-	 console.log(rectangle.getBounds())
+	rectangle == undefined ? newRectangle(latLng) : moveRectangle(latLng) ;
+	
+	}
+
+	function newRectangle(latLng){
+		rectangle = new google.maps.Rectangle({
+			strokeColor: '#FF0000',
+			strokeOpacity: 0.6,
+			strokeWeight: 2,
+			fillColor: '#FF0000',
+			fillOpacity: 0.2,
+			editable:true,
+			clickable:false,
+			draggable:false,
+			map: map,
+			bounds: {
+				north: latLng.lat() + 0.2,
+				south: latLng.lat() - 0.2,
+				east: latLng.lng() + 0.2,
+				west: latLng.lng() - 0.2
+			}
+		});
+		rectangle.addListener('bounds_changed', boundsChanged);
+	}
+
+	function moveRectangle(latLng){
+		rectangle.setBounds({
+			north: latLng.lat() + 0.2,
+				south: latLng.lat() - 0.2,
+				east: latLng.lng() + 0.2,
+				west: latLng.lng() - 0.2
+		})
 	}
 
 	function moveMarker(latLng, map) {
@@ -117,9 +133,12 @@ function initMap() {
 		return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
 	}
 
+	function boundsChanged(event){
+		marker.setPosition(rectangle.getBounds().getCenter());
+	}
+
 	function displace(lat, lng, dist, theta){
-		var EARTH_R = 6371000,
-		latG = lat*Math.PI/180,
+		var latG = lat*Math.PI/180,
 		lngG = lng*Math.PI/180,
 		thetaG = theta*Math.PI/180,
 		delta = dist/EARTH_R;
@@ -131,7 +150,18 @@ function initMap() {
 		return [(dstLat*180/Math.PI), (dstLng*180/Math.PI)];
 	}
 
+	function distance(lat1, lng1, lat2, lng2){
+		dLat = lat2-lat1;
+		dLng = lng2-lng1;
+
+		a = Math.sin(dLat/2.0) * Math.sin(dLat/2.0) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng/2.0) * Math.sin(dLng/2.0);
+		c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+		return EARTH_R * c;
+	}
+
 	console.log(displace(38.98503278695909,-1.8505096435546875,5000,0))
+	console.log(distance(38.99117049229764,-1.8796706199645996,38.997707897359035,-1.8516898155212402))
 }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ4E6LnrDKzrEQtJhXpAY6bl0E9_ewKxY&callback=initMap" async
