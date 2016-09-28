@@ -1,8 +1,8 @@
 function initMap() {
 	var EARTH_R = 6371000;
-	var marker, rectangle, center, rectangleWidth, rectangleHeight;
+	var map, marker, rectangle, center, rectangleWidth, rectangleHeight;
 
-	var map = new google.maps.Map(document.getElementById('map'), {
+	map = new google.maps.Map(document.getElementById('map'), {
 		scaleControl: true,
 		center: { lat: 38.981, lng: -1.856 },
 		zoom: 8,
@@ -11,72 +11,57 @@ function initMap() {
 
 	map.addListener('click', function (e) {
 		center = e.latLng;
-		marker == undefined ? placeMarker(center, map) : moveMarker(center, map);
-		$('#latitude').val(center.lat());
-		$('#longitude').val(center.lng());
+		moveMarker();
 	});
 
-	function placeMarker(latLng, map) {
-		marker = new google.maps.Marker({
-			position: latLng,
-			map: map,
-			draggable: true,
-			title: "Drag me!"
-		});
-		map.panTo(latLng);
+	marker = new google.maps.Marker({
+		position: map.getCenter(),
+		map: map,
+		draggable: true,
+		title: "Drag me!",
+		visible: false,
+	});
 
-		rectangle == undefined ? newRectangle(latLng) : moveRectangle(latLng);
+	rectangle = new google.maps.Rectangle({
+		strokeColor: '#FF0000',
+		strokeOpacity: 0.6,
+		strokeWeight: 2,
+		fillColor: '#FF0000',
+		fillOpacity: 0.2,
+		editable: true,
+		clickable: false,
+		draggable: false,
+		map: map
+	});
+	marker.addListener('dragend', function (e) {
+		center = e.latLng;
+		moveMarker();
+	});
+	rectangle.addListener('bounds_changed', boundsChanged);
 
-	}
-
-	function newRectangle(latLng) {
-		rectangle = new google.maps.Rectangle({
-			strokeColor: '#FF0000',
-			strokeOpacity: 0.6,
-			strokeWeight: 2,
-			fillColor: '#FF0000',
-			fillOpacity: 0.2,
-			editable: true,
-			clickable: false,
-			draggable: false,
-			map: map,
-			bounds: {
+	function moveMarker() {
+		marker.setPosition(center);
+		marker.setVisible(true);
+		setBoundsFromInputs();
+		$('#latitude').val(center.lat());
+		$('#longitude').val(center.lng());
+		map.panTo(center);
+	};
+	/*
+		function moveRectangle(latLng) {
+			rectangle.setBounds({
 				north: latLng.lat() + 0.2,
 				south: latLng.lat() - 0.2,
 				east: latLng.lng() + 0.2,
 				west: latLng.lng() - 0.2
-			}
-		});
-		rectangle.addListener('bounds_changed', boundsChanged);
-	}
-
-	function moveRectangle(latLng) {
-		rectangle.setBounds({
-			north: latLng.lat() + 0.2,
-			south: latLng.lat() - 0.2,
-			east: latLng.lng() + 0.2,
-			west: latLng.lng() - 0.2
-		})
-	}
-
-	function moveMarker(latLng, map) {
-		marker.setPosition(latLng);
-		map.panTo(latLng);
-		rectangle.setBounds({
-			north: displace(center.lat(), center.lng(), parseFloat($('#height').val()) / 2.0, 0)[0],
-			south: displace(center.lat(), center.lng(), parseFloat($('#height').val()) / 2.0, 180)[0],
-			east: displace(center.lat(), center.lng(), parseFloat($('#width').val()) / 2.0, 90)[1],
-			west: displace(center.lat(), center.lng(), parseFloat($('#width').val()) / 2.0, 270)[1]
-		});
-	};
-
+			});
+			rectangle.setVisible(true);
+		}
+	*/
 	function distance(lat1, lon1, lat2, lon2) {
 		var p = 0.017453292519943295;    // Math.PI / 180
 		var c = Math.cos;
-		var a = 0.5 - c((lat2 - lat1) * p) / 2 +
-			c(lat1 * p) * c(lat2 * p) *
-			(1 - c((lon2 - lon1) * p)) / 2;
-
+		var a = 0.5 - c((lat2 - lat1) * p) / 2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
 		return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
 	}
 
@@ -93,15 +78,16 @@ function initMap() {
 	}
 
 	$('#setCenterButton').click(function () {
-		if ($('#latitude').val() && $('#longitude').val() && rectangle) {
+		if ($('#latitude').val() && $('#longitude').val()) {
 			center = new google.maps.LatLng({ lat: parseFloat($('#latitude').val()), lng: parseFloat($('#longitude').val()) });
 			marker.setPosition(center);
-			rectangle.setBounds({
-				north: displace(center.lat(), center.lng(), parseFloat($('#height').val()) / 2.0, 0)[0],
-				south: displace(center.lat(), center.lng(), parseFloat($('#height').val()) / 2.0, 180)[0],
-				east: displace(center.lat(), center.lng(), parseFloat($('#width').val()) / 2.0, 90)[1],
-				west: displace(center.lat(), center.lng(), parseFloat($('#width').val()) / 2.0, 270)[1]
-			});
+			setBoundsFromInputs();
+			map.panTo(center);
+		}
+	});
+
+	$('#setBoundsButton').click(function () {
+		if ($('#height').val() && $('#width').val()) {
 			map.panTo(center);
 		}
 	});
@@ -119,6 +105,7 @@ function initMap() {
 		return [(dstLat * 180 / Math.PI), (dstLng * 180 / Math.PI)];
 	}
 
+
 	function distance(lat1, lng1, lat2, lng2) {
 		lat1 = lat1 * Math.PI / 180;
 		lng1 = lng1 * Math.PI / 180;
@@ -132,10 +119,19 @@ function initMap() {
 
 		return EARTH_R * c;
 	}
+
+	function setBoundsFromInputs() {
+		rectangle.setBounds({
+			north: displace(center.lat(), center.lng(), parseFloat($('#height').val()) / 2.0, 0)[0],
+			south: displace(center.lat(), center.lng(), parseFloat($('#height').val()) / 2.0, 180)[0],
+			east: displace(center.lat(), center.lng(), parseFloat($('#width').val()) / 2.0, 90)[1],
+			west: displace(center.lat(), center.lng(), parseFloat($('#width').val()) / 2.0, 270)[1]
+		});
+	}
 }
 
 $(".inputNumber").keydown(function (e) {
-	// Allow: backspace, delete, tab, escape, enter and .
+	// Allow: backspace, delete
 	if ($.inArray(e.keyCode, [46, 8, 109, 110, 190]) !== -1 ||
 		// Allow: Ctrl+A
 		(e.keyCode == 65 && e.ctrlKey === true) ||
