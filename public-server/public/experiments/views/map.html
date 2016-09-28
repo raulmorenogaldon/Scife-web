@@ -16,13 +16,13 @@
 				<div class="form-group">
 					<label for="latidud" class="col-md-3">Latitud:</label>
 					<div class="col-md-9">
-						<input type="number" class="inputNumber" id="latitude" class="form-control">
+						<input type="number" max="90" min="-90"  class="inputNumber form-control" step="any" id="latitude">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="longitud" class="col-md-3">Longitud:</label>
 					<div class="col-md-9">
-						<input type="number" class="inputNumber" id="longitude" class="form-control">
+						<input type="number" class="inputNumber form-control" max="180" min="-180" step="any" id="longitude">
 					</div>
 				</div>
 				<div class="text-center">
@@ -34,13 +34,13 @@
 				<div class="form-group">
 					<label for="altura" class="col-md-3">Height:</label>
 					<div class="col-md-9">
-						<input type="number" class="inputNumber" min="0" id="height" class="form-control" placeholder="In Meters" value="50000">
+						<input type="number" class="inputNumber form-control" min="0" id="height" placeholder="In Meters" value="50000">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="altura" class="col-md-3">Width:</label>
 					<div class="col-md-9">
-						<input type="number" class="inputNumber" min="0" id="width" class="form-control" placeholder="In Meters" value="50000">
+						<input type="number" class="inputNumber form-control" min="0" id="width" placeholder="In Meters" value="50000">
 					</div>
 				</div>
 				<div class="text-center">
