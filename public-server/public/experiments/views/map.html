@@ -16,28 +16,31 @@
 				<div class="form-group">
 					<label for="latidud" class="col-md-3">Latitud:</label>
 					<div class="col-md-9">
-						<input type="text" id="latitud" class="form-control" disabled>
+						<input type="number" class="inputNumber" id="latitude" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="longitud" class="col-md-3">Longitud:</label>
 					<div class="col-md-9">
-						<input type="text" id="longitud" class="form-control" disabled>
+						<input type="number" class="inputNumber" id="longitude" class="form-control">
 					</div>
+				</div>
+				<div class="text-center">
+					<button class="btn btn-primary" id="setCenterButton">Set Center</button>
 				</div>
 			</div>
 			<h3 class="text-center">Area</h3>
 			<div class="form">
 				<div class="form-group">
-					<label for="altura" class="col-md-3">Altura:</label>
+					<label for="altura" class="col-md-3">Height:</label>
 					<div class="col-md-9">
-						<input type="number" min="0" id="alto" class="form-control" placeholder="In Meters" value="5000">
+						<input type="number" class="inputNumber" min="0" id="height" class="form-control" placeholder="In Meters" value="50000">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="altura" class="col-md-3">Altura:</label>
+					<label for="altura" class="col-md-3">Width:</label>
 					<div class="col-md-9">
-						<input type="number" min="0" id="alto" class="form-control" placeholder="In Meters" value="5000">
+						<input type="number" class="inputNumber" min="0" id="width" class="form-control" placeholder="In Meters" value="50000">
 					</div>
 				</div>
 				<div class="text-center">
@@ -47,12 +50,10 @@
 		</div>
 	</div>
 </div>
-<script>
+<script type="text/javascript">
 function initMap() {
 	var EARTH_R = 6371000;
-	var marker;
-	var latLng;
-	var rectangle;
+	var marker, rectangle, center, rectangleWidth, rectangleHeight;
 
 	var map = new google.maps.Map(document.getElementById('map'), {
 		scaleControl: true,
@@ -62,10 +63,10 @@ function initMap() {
 	});
 
 	map.addListener('click', function(e) {
-		latLng = e.latLng;
-		marker == undefined ? placeMarker(latLng, map) : moveMarker(latLng, map);
-		$('#latitud').val(latLng.lat());
-		$('#longitud').val(latLng.lng());
+		center = e.latLng;
+		marker == undefined ? placeMarker(center, map) : moveMarker(center, map);
+		$('#latitude').val(center.lat());
+		$('#longitude').val(center.lng());
 	});
 
 	function placeMarker(latLng, map) {
@@ -112,14 +113,13 @@ function initMap() {
 	}
 
 	function moveMarker(latLng, map) {
-		console.log(latLng.lat());
 		marker.setPosition(latLng);
 		map.panTo(latLng);
 		rectangle.setBounds({
-      north: latLng.lat() + 0.2,
-      south: latLng.lat() - 0.2,
-      east: latLng.lng() + 0.2,
-      west: latLng.lng() - 0.2
+      north: displace(center.lat(), center.lng(), parseFloat($('#height').val())/2.0,0)[0],
+      south: displace(center.lat(), center.lng(), parseFloat($('#height').val())/2.0,180)[0],
+      east: displace(center.lat(), center.lng(), parseFloat($('#width').val())/2.0,90)[1],
+      west: displace(center.lat(), center.lng(), parseFloat($('#width').val())/2.0,270)[1]
     	});
 	};
 
@@ -134,8 +134,30 @@ function initMap() {
 	}
 
 	function boundsChanged(event){
-		marker.setPosition(rectangle.getBounds().getCenter());
+		center = rectangle.getBounds().getCenter();
+		var sw = rectangle.getBounds().getSouthWest(), ne = rectangle.getBounds().getNorthEast();
+		rectangleWidth = distance(sw.lat(),sw.lng(),sw.lat(), ne.lng());
+		rectangleHeight = distance(ne.lat(),ne.lng(),sw.lat(),ne.lng());
+		marker.setPosition(center);
+		$('#latitude').val(center.lat());
+		$('#longitude').val(center.lng());
+		$('#height').val(rectangleHeight);
+		$('#width').val(rectangleWidth);
 	}
+
+	$('#setCenterButton').click(function(){
+		if($('#latitude').val() && $('#longitude').val() && rectangle){
+		center = new google.maps.LatLng({lat:parseFloat($('#latitude').val()), lng:parseFloat($('#longitude').val())});
+		marker.setPosition(center);
+		rectangle.setBounds({
+		north: displace(center.lat(), center.lng(), parseFloat($('#height').val())/2.0,0)[0],
+      south: displace(center.lat(), center.lng(), parseFloat($('#height').val())/2.0,180)[0],
+      east: displace(center.lat(), center.lng(), parseFloat($('#width').val())/2.0,90)[1],
+      west: displace(center.lat(), center.lng(), parseFloat($('#width').val())/2.0,270)[1]
+		});
+		map.panTo(center);
+		}
+	});
 
 	function displace(lat, lng, dist, theta){
 		var latG = lat*Math.PI/180,
@@ -163,10 +185,27 @@ function initMap() {
 
 		return EARTH_R * c;
 	}
-
-	console.log(displace(38.98503278695909,-1.8505096435546875,5000,0))
-	console.log(distance(38.99,-1.87,38.99,-1.85))
 }
+
+$(".inputNumber").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8,109, 110, 190]) !== -1 ||
+             // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+             // Allow: Ctrl+C
+            (e.keyCode == 67 && e.ctrlKey === true) ||
+             // Allow: Ctrl+X
+            (e.keyCode == 88 && e.ctrlKey === true) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ4E6LnrDKzrEQtJhXpAY6bl0E9_ewKxY&callback=initMap" async
 	defer></script>
