@@ -1,6 +1,6 @@
 function initMap() {
 	var EARTH_R = 6371000;
-	var map, marker, rectangle, center, rectangleWidth, rectangleHeight;
+	var map, marker, rectangle, center, rectangleWidth, rectangleHeight, clickMarker = true;
 
 	map = new google.maps.Map(document.getElementById('map'), {
 		scaleControl: true,
@@ -42,6 +42,7 @@ function initMap() {
 	function moveMarker() {
 		marker.setPosition(center);
 		marker.setVisible(true);
+		clickMarker = true;
 		setBoundsFromInputs();
 		$('#latitude').val(center.lat());
 		$('#longitude').val(center.lng());
@@ -71,10 +72,13 @@ function initMap() {
 		rectangleWidth = distance(sw.lat(), sw.lng(), sw.lat(), ne.lng());
 		rectangleHeight = distance(ne.lat(), ne.lng(), sw.lat(), ne.lng());
 		marker.setPosition(center);
-		$('#latitude').val(center.lat());
-		$('#longitude').val(center.lng());
-		$('#height').val(rectangleHeight);
-		$('#width').val(rectangleWidth);
+		if (!clickMarker) {
+			$('#latitude').val(center.lat());
+			$('#longitude').val(center.lng());
+			$('#height').val(rectangleHeight);
+			$('#width').val(rectangleWidth);
+		}
+		clickMarker = false;
 	}
 
 	$('#setCenterButton').click(function () {
@@ -88,6 +92,7 @@ function initMap() {
 
 	$('#setBoundsButton').click(function () {
 		if ($('#height').val() && $('#width').val()) {
+			setBoundsFromInputs();
 			map.panTo(center);
 		}
 	});
