@@ -365,6 +365,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.fileName;
 			}
 			var fd = new FormData();
+			jQuery('#loadingModal').modal('show');
 			fd.append('inputFile', $scope.file);
 			$http.post(url, fd, {
             transformRequest: angular.identity,
@@ -374,8 +375,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				$scope.fileName = '';
 				$('#file').val(null);
 				$scope.message = "Your file " + $scope.fileName + ' has been saved succesfuly.';
+				jQuery('#loadingModal').modal('hide');
 			}, function (response) {
 				$scope.errors = response.data.errors;
+				jQuery('#loadingModal').modal('hide');
 			});
 		};
 
