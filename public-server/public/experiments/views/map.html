@@ -10,44 +10,43 @@
 	<alert-messages></alert-messages>
 	<div class="row">
 		<div class="col-md-9" id="map"></div>
-		<div class="col-md-3">
+		<form class="col-md-3" ng-submit="submit()">
 			<h3 class="text-center">Data</h3>
-			<div class="form">
-				<div class="form-group">
-					<label for="latidud" class="col-md-3">Latitud:</label>
-					<div class="col-md-9">
-						<input type="number" max="90" min="-90"  class="inputNumber form-control" step="0.0001" id="latitude">
-					</div>
+			<div class="form-group">
+				<label for="latidud" class="col-md-3">Latitud:</label>
+				<div class="col-md-9">
+					<input type="number" max="90" min="-90" class="inputNumber form-control" step="0.0001" id="latitude" ng-model="latitude">
 				</div>
-				<div class="form-group">
-					<label for="longitud" class="col-md-3">Longitud:</label>
-					<div class="col-md-9">
-						<input type="number" class="inputNumber form-control" max="180" min="-180" step="0.0001" id="longitude">
-					</div>
+			</div>
+			<div class="form-group">
+				<label for="longitud" class="col-md-3">Longitud:</label>
+				<div class="col-md-9">
+					<input type="number" class="inputNumber form-control" max="180" min="-180" step="0.0001" id="longitude" ng-model="longitude">
 				</div>
-				<div class="text-center">
-					<button class="btn btn-primary" id="setCenterButton">Set Center</button>
-				</div>
+			</div>
+			<div class="text-center">
+				<button class="btn btn-primary" id="setCenterButton">Set Center</button>
 			</div>
 			<h3 class="text-center">Area</h3>
-			<div class="form">
-				<div class="form-group">
-					<label for="altura" class="col-md-3">Height:</label>
-					<div class="col-md-9">
-						<input type="number" class="inputNumber form-control" min="0" id="height" step="0.0001" placeholder="In Meters" value="50000">
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="altura" class="col-md-3">Width:</label>
-					<div class="col-md-9">
-						<input type="number" class="inputNumber form-control" min="0" id="width" step="0.0001" placeholder="In Meters" value="50000">
-					</div>
-				</div>
-				<div class="text-center">
-					<button class="btn btn-primary" id="setBoundsButton">Set Values</button>
+			<div class="form-group">
+				<label for="altura" class="col-md-3">Height:</label>
+				<div class="col-md-9">
+					<input type="number" class="inputNumber form-control" min="0" id="height" step="0.0001" ng-model="height">
 				</div>
 			</div>
-		</div>
+			<div class="form-group">
+				<label for="altura" class="col-md-3">Width:</label>
+				<div class="col-md-9">
+					<input type="number" class="inputNumber form-control" min="0" id="width" step="0.0001" ng-model="width">
+				</div>
+			</div>
+			<div class="text-center">
+				<button class="btn btn-primary" id="setBoundsButton">Set Values</button>
+			</div>
+			<div class="text-center">
+				<input class="btn btn-success" type="submit" value="Send data">
+			</div>
+		</form>
 	</div>
 </div>
 <script type="text/javascript" src="experiments/js/maps.js">

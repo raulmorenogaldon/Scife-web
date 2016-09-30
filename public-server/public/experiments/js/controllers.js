@@ -612,7 +612,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}])
 
 	//Runs in the logs view
-	.controller('MapCtrl', ['$scope', '$http', '$stateParams', '$location', '$window', function ($scope, $http, $stateParams, $location,$window) {
+	.controller('MapCtrl', ['$scope', '$http', '$stateParams', '$location', '$window', function ($scope, $http, $stateParams, $location, $window) {
 		//Get the experiment info and its application.
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
@@ -621,5 +621,18 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
             $scope.errors = response.data.errors;
 			});
 
-			console.log($window.anchura);
+		$scope.latitude = 38.981;
+		$scope.longitude = -1.856;
+
+		$scope.height = 50;
+		$scope.width = 50;
+
+		$scope.submit = function () {
+			console.log(
+				$scope.latitude,
+				$scope.longitude,
+
+				$scope.height,
+				$scope.width)
+		}
 	}]);

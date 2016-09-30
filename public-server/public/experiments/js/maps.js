@@ -1,6 +1,6 @@
 function initMap() {
 	var EARTH_R = 6371000;
-	var map, marker, rectangle, center, rectangleWidth, rectangleHeight, clickMarker = true;
+	var map, marker, rectangle, center, rectangleWidth, rectangleHeight, clickMarker = false;
 
 	map = new google.maps.Map(document.getElementById('map'), {
 		scaleControl: true,
@@ -14,12 +14,13 @@ function initMap() {
 		moveMarker();
 	});
 
+	center = map.getCenter();
+
 	marker = new google.maps.Marker({
-		position: map.getCenter(),
+		position: center,
 		map: map,
 		draggable: true,
 		title: "Drag me!",
-		visible: false,
 	});
 
 	rectangle = new google.maps.Rectangle({
@@ -31,8 +32,9 @@ function initMap() {
 		editable: true,
 		clickable: false,
 		draggable: false,
-		map: map
+		map: map,
 	});
+	setBoundsFromInputs();
 	marker.addListener('dragend', function (e) {
 		center = e.latLng;
 		moveMarker();
@@ -48,17 +50,7 @@ function initMap() {
 		$('#longitude').val(center.lng());
 		map.panTo(center);
 	};
-	/*
-		function moveRectangle(latLng) {
-			rectangle.setBounds({
-				north: latLng.lat() + 0.2,
-				south: latLng.lat() - 0.2,
-				east: latLng.lng() + 0.2,
-				west: latLng.lng() - 0.2
-			});
-			rectangle.setVisible(true);
-		}
-	*/
+
 	function distance(lat1, lon1, lat2, lon2) {
 		var p = 0.017453292519943295;    // Math.PI / 180
 		var c = Math.cos;
@@ -75,8 +67,8 @@ function initMap() {
 		if (!clickMarker) {
 			$('#latitude').val(center.lat());
 			$('#longitude').val(center.lng());
-			$('#height').val(rectangleHeight);
-			$('#width').val(rectangleWidth);
+			$('#height').val(rectangleHeight/1000);
+			$('#width').val(rectangleWidth/1000);
 		}
 		clickMarker = false;
 	}
@@ -127,10 +119,10 @@ function initMap() {
 
 	function setBoundsFromInputs() {
 		rectangle.setBounds({
-			north: displace(center.lat(), center.lng(), parseFloat($('#height').val()) / 2.0, 0)[0],
-			south: displace(center.lat(), center.lng(), parseFloat($('#height').val()) / 2.0, 180)[0],
-			east: displace(center.lat(), center.lng(), parseFloat($('#width').val()) / 2.0, 90)[1],
-			west: displace(center.lat(), center.lng(), parseFloat($('#width').val()) / 2.0, 270)[1]
+			north: displace(center.lat(), center.lng(), $('#height').val()*1000 / 2.0, 0)[0],
+			south: displace(center.lat(), center.lng(), $('#height').val()*1000 / 2.0, 180)[0],
+			east: displace(center.lat(), center.lng(), $('#width').val()*1000 / 2.0, 90)[1],
+			west: displace(center.lat(), center.lng(), $('#width').val()*1000 / 2.0, 270)[1]
 		});
 	}
 }
