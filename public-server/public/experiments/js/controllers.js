@@ -330,8 +330,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Request the sub-tree of the a folder passed as argument
 		function getFolderData(folder) {
-			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/input_tree?depth=" + depth : '/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=0';
-
+			console.log(url);
+			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/input_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=0';
+			console.log(url);
 			$http.get(url)
             .then(function (response) {
 					$scope.experiment = response.data;
@@ -371,11 +372,18 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}).then(function (response) {
 				getFolderData($scope.currentPath);
 				$scope.fileName = '';
+				$('#file').val(null);
 				$scope.message = "Your file " + $scope.fileName + ' has been saved succesfuly.';
 			}, function (response) {
 				$scope.errors = response.data.errors;
 			});
 		};
+
+		$('#file').change(function () {
+			if (!$('#fileName').val()) {
+				$scope.fileName = $('#file').val().split('\\').pop();
+			}
+		});
 
 		$scope.launchCreateFolderModal = function () {
 			jQuery('#newFolderModal').modal('show');
