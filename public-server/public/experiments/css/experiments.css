@@ -4,7 +4,6 @@ div#editor {
 
 div.treeview {
 	max-height: 650px;
-	max-width: 314px;
 	overflow: auto;
 	white-space: nowrap;
 }

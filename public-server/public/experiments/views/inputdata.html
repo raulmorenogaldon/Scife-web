@@ -64,7 +64,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title text-center"><strong>Input Data</strong></h4>
@@ -82,12 +82,12 @@
 				</div>
 				<div class="panel-body">
 					<div class="treeview" data-angular-treeview="true" data-tree-id="input_tree" data-tree-model="experiment.input_tree" data-node-id="id"
-						data-node-label="label" data-node-children="children" ng-click="select(input_tree.currentNode)">
+						data-node-label="label" data-node-children="children" data-node-select-function="select">
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class=" col-md-8">
+		<div class=" col-md-7">
 			<div class="row">
 				<div class="col-md-12">
 					<form class="form-horizontal bordered" name="uploadFileForm" data-ng-submit="uploadFileForm.$valid && uploadFile()">

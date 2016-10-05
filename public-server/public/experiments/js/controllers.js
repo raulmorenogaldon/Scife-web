@@ -330,9 +330,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Request the sub-tree of the a folder passed as argument
 		function getFolderData(folder) {
-			console.log(url);
 			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/input_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=0';
-			console.log(url);
 			$http.get(url)
             .then(function (response) {
 					$scope.experiment = response.data;
