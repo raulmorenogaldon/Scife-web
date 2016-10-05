@@ -368,8 +368,14 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			jQuery('#loadingModal').modal('show');
 			fd.append('inputFile', $scope.file);
 			$http.post(url, fd, {
-            transformRequest: angular.identity,
-            headers: { 'Content-Type': undefined }
+				transformRequest: angular.identity,
+				headers: { 'Content-Type': undefined },
+				uploadEventHandlers: {
+					progress: function (e) {
+						$scope.progressStatus = e.loaded * 100 / e.total;
+						$scope.fileSize = e.total/1024;
+					}
+				}
 			}).then(function (response) {
 				getFolderData($scope.currentPath);
 				$scope.fileName = '';
