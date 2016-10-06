@@ -3,48 +3,92 @@
 		height: 600px;
 	}
 </style>
+<link rel="stylesheet" href="lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 <div class="col-sm-10 col-sm-offset-2 col-md-11 col-md-offset-1 main">
 	<div class="page-header">
 		<h3><strong>{{experiment.name}}</strong> - Map</h3>
 	</div>
 	<alert-messages></alert-messages>
 	<div class="row">
-		<div class="col-md-9" id="map"></div>
-		<form class="col-md-3" ng-submit="submit()">
-			<h3 class="text-center">Data</h3>
-			<div class="form-group">
-				<label for="latidud" class="col-md-3">Latitud:</label>
-				<div class="col-md-9">
-					<input type="number" max="90" min="-90" class="inputNumber form-control" step="0.0001" id="latitude" ng-model="latitude">
+		<div class="col-md-12" id="map"></div>
+	</div>
+	<div class="row">
+		<form ng-submit="submit()">
+			<div class="col-md-12">
+				<div class="col-md-4">
+					<h3 class="text-center">Data</h3>
+					<div class="form-group">
+						<label for="latidud" class="col-md-4">Latitud:</label>
+						<div class="col-md-8 input-group">
+							<input type="number" max="90" min="-90" class="inputNumber form-control" step="0.0001" id="latitude" ng-model="latitude">
+							<span class="input-group-btn">
+        						<button type="button" class="btn btn-default setCenterButton" aria-label="Left Align">
+  									<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+							</button>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="longitud" class="col-md-4">Longitud:</label>
+						<div class="col-md-8 input-group">
+							<input type="number" class="inputNumber form-control" max="180" min="-180" step="0.0001" id="longitude" ng-model="longitude">
+							<span class="input-group-btn">
+        						<button type="button" class="btn btn-default setCenterButton" aria-label="Left Align">
+  									<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+							</button>
+							</span>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="longitud" class="col-md-3">Longitud:</label>
-				<div class="col-md-9">
-					<input type="number" class="inputNumber form-control" max="180" min="-180" step="0.0001" id="longitude" ng-model="longitude">
+				<div class="col-md-4">
+					<h3 class="text-center">Area</h3>
+					<div class="form-group">
+						<label for="altura" class="col-md-4">Height:</label>
+						<div class="col-md-8 input-group">
+							<input type="number" class="inputNumber form-control" min="0" id="height" step="0.0001" ng-model="height">
+							<span class="input-group-btn">
+        						<button type="button" class="btn btn-default setBoundsButton" aria-label="Left Align">
+  									<span class="glyphicon glyphicon glyphicon-resize-vertical" aria-hidden="true"></span>
+							</button>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="altura" class="col-md-4">Width:</label>
+						<div class="col-md-8 input-group">
+							<input type="number" class="inputNumber form-control" min="0" id="width" step="0.0001" ng-model="width">
+							<span class="input-group-btn">
+        						<button type="button" class="btn btn-default setBoundsButton" aria-label="Left Align">
+  									<span class="glyphicon glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
+							</button>
+							</span>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="text-center">
-				<button class="btn btn-primary" id="setCenterButton">Set Center</button>
-			</div>
-			<h3 class="text-center">Area</h3>
-			<div class="form-group">
-				<label for="altura" class="col-md-3">Height:</label>
-				<div class="col-md-9">
-					<input type="number" class="inputNumber form-control" min="0" id="height" step="0.0001" ng-model="height">
+				<div class="col-md-4">
+					<h3 class="text-center">Time</h3>
+					<div class="form-group">
+						<label for="datetimeStart" class="col-md-4">Init date:</label>
+						<div class='input-group date col-md-8' id='datetimeStart'>
+							<input type='text' class="form-control" required/>
+							<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="datetimeFinish" class="col-md-4">Finish date:</label>
+						<div class='input-group date col-md-8' id='datetimeFinish'>
+							<input type='text' class="form-control" required/>
+							<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="altura" class="col-md-3">Width:</label>
-				<div class="col-md-9">
-					<input type="number" class="inputNumber form-control" min="0" id="width" step="0.0001" ng-model="width">
+				<div class="text-center col-md-12">
+					<input class="btn btn-success" type="submit" value="Save Data">
 				</div>
-			</div>
-			<div class="text-center">
-				<button class="btn btn-primary" id="setBoundsButton">Set Values</button>
-			</div>
-			<div class="text-center">
-				<input class="btn btn-success" type="submit" value="Save Data">
 			</div>
 		</form>
 	</div>
@@ -53,3 +97,30 @@
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ4E6LnrDKzrEQtJhXpAY6bl0E9_ewKxY&callback=initMap" async
 	defer></script>
+<script type="text/javascript" src="lib/moment/min/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+            $(function () {
+                $('#datetimeStart').datetimepicker({
+						 locale: 'en',
+						 minDate: moment().subtract(12,'day'),
+						 maxDate: moment().subtract(6,'hours'),
+						 stepping: 60,
+						 showTodayButton: true,
+						 showClose: true
+					 });
+
+					 $('#datetimeFinish').datetimepicker({
+						 locale: 'en',
+						 minDate:$('#datetimeStart').data('DateTimePicker').date(),
+						 maxDate: moment().add(12,'day'),
+						 stepping: 60,
+						 showTodayButton: true,
+						 showClose: true
+					 });
+
+					 $('#datetimeStart').on("dp.change", function (e) {
+            		$('#datetimeFinish').data("DateTimePicker").minDate(e.date);
+        			});
+            });
+</script>

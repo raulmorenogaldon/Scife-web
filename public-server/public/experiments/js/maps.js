@@ -73,7 +73,7 @@ function initMap() {
 		clickMarker = false;
 	}
 
-	$('#setCenterButton').click(function () {
+	$('.setCenterButton').click(function () {
 		if ($('#latitude').val() && $('#longitude').val()) {
 			center = new google.maps.LatLng({ lat: parseFloat($('#latitude').val()), lng: parseFloat($('#longitude').val()) });
 			marker.setPosition(center);
@@ -82,7 +82,7 @@ function initMap() {
 		}
 	});
 
-	$('#setBoundsButton').click(function () {
+	$('.setBoundsButton').click(function () {
 		if ($('#height').val() && $('#width').val()) {
 			setBoundsFromInputs();
 			map.panTo(center);
