@@ -17,13 +17,37 @@
 				//node name
 				var nodeLabel = attrs.nodeLabel || 'label';
 
-				var selectFunction = 'scope.'+attrs.nodeSelectFunction || '$scope.select';
+				var selectFunction = 'scope.' + attrs.nodeSelectFunction || '$scope.select';
 
 				//children
 				var nodeChildren = attrs.nodeChildren || 'children';
 
+				var nodeDelete = attrs.nodeDelete || 'nodeDelete';
+
 				//tree template
-				var template =
+				var template = '<div class="row">' +
+					'<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">' +
+					'<div class="modal-dialog" role="document">' +
+					'<div class="modal-content">' +
+					'<div class="modal-header">' +
+					'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+					'<h4 class="modal-title" id="deleteModalLabel">Confirm Deletion</h4>' +
+					'</div>' +
+					'<div class="modal-body">' +
+					'<p class="text-justified">Are you sure, you want to delete <strong>/{{nodeDelete.id}}</strong></p>' +
+					'<div class="modal-footer">' +
+					'<form ng-submit="deleteNodeConfirm()" class="form form-horizontal col-md-12">' +
+					'<div class="col-md-12 text-center">' +
+					'<input type="submit" class="btn btn-danger" value="I Agree">' +
+					'<button type="button" class="btn btn-default" data-dismiss="modal">I disagree</button>' +
+					'</div>' +
+					'</form>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
 					'<ul>' +
 					'<li data-ng-repeat="node in ' + treeModel + '">' +
 					'<div class="row"><div class="col-md-10">' +
@@ -34,7 +58,7 @@
 					'<i class="normal" data-ng-hide="node.' + nodeChildren + '.length || node.' + nodeId + '.slice(-1) == ' + "'/'" + '"></i> ' +
 					'<span data-ng-class="node.selected" data-ng-click="' + treeId + '.selectnodeLabel(node)">{{node.' + nodeLabel + '}}</span>' +
 					'</div><div class="col-md-2">' +
-					'<button type="button" class="btn btn-danger btn-xs pull-right clearfix" aria-label="Left Align" data-ng-click="' + treeId + '.deleteNode(node)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>' +
+					'<button type="button" class="btn btn-danger btn-xs pull-right clearfix" aria-label="Left Align" data-ng-click="' + treeId + '.deleteNode(node)"><span class="glyphicon glyphicon-trash" aria-hidden="true" data-toggle="modal" data-target="#deleteModal"></span></button>' +
 					'</div></div>' +
 					//'<div data-ng-hide="node.collapsed" data-tree-id="' + treeId + '" data-tree-model="node.' + nodeChildren + '" data-node-id=' + nodeId + ' data-node-name=' + nodeLabel + ' data-node-children=' + nodeChildren + '></div>' +
 					'</li>' +
@@ -74,8 +98,7 @@
 						};
 
 						scope[treeId].deleteNode = scope[treeId].deleteNode || function (node) {
-							console.log("Node to delete: ");
-							console.log(node);
+							scope[nodeDelete] = node;
 						};
 					}
 

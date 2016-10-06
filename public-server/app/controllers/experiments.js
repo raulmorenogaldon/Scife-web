@@ -495,3 +495,57 @@ exports.uploadFile = function (req, res) {
 			}
 		}));
 };
+
+exports.deleteInputFile = function (req, res) {
+	console.log(privateServer + '/cloud/experiments/' + req.params.experimentId + '/input?file=' + req.query.file);
+	request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId + '/input?file=' + req.query.file,
+		method: 'DELETE'
+	}, function (err, response, body) {
+		if (err) {
+			res.status(505).json({
+				errors: err
+			});
+		} else {
+				console.log(body);
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
+					break;
+				case 200:
+					res.status(response.statusCode).end();
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+};
+
+exports.deleteSourceFile = function (req, res) {
+	request({
+		url: privateServer + '/cloud/experiments/' + req.params.experimentId + '/code?file=' + req.query.file,
+		method: 'DELETE'
+	}, function (err, response, body) {
+		if (err) {
+			res.status(505).json({
+				errors: err
+			});
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 404:
+				case 400:
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
+					break;
+				case 200:
+					res.status(response.statusCode).end();
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+};

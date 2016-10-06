@@ -371,7 +371,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				uploadEventHandlers: {
 					progress: function (e) {
 						$scope.progressStatus = e.loaded * 100 / e.total;
-						$scope.fileSize = e.total/1024;
+						$scope.fileSize = e.total / 1024;
 					}
 				}
 			}).then(function (response) {
@@ -413,6 +413,19 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			});
 		};
 
+		$scope.deleteNodeConfirm = function () {
+			$http.delete('/experiments/' + $scope.experiment.id + '/input?file='+$scope.nodeDelete.id)
+            .then(function (response) {
+					jQuery('#deleteModal').modal('hide');
+					jQuery('#deleteModal').on('hidden.bs.modal', function () {
+						console.log(path.dirname(nodeDelete.id));
+					});
+				},
+				function (response) {
+					$scope.errors = "There is an error in the request";
+				});
+		}
+
 	}])
 
 	//This controller runs in the sources view
@@ -437,6 +450,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=0")
             .then(function (response) {
 					$scope.experiment = response.data;
+
+					console.log($scope.experiment)
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
@@ -555,6 +570,19 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				jQuery('#newFolderModal').modal('hide');
 			});
 		};
+
+		$scope.deleteNodeConfirm = function () {
+			$http.delete('/experiments/' + $scope.experiment.id + '/code?file='+$scope.nodeDelete.id)
+            .then(function (response) {
+					jQuery('#deleteModal').modal('hide');
+					jQuery('#deleteModal').on('hidden.bs.modal', function () {
+						console.log(path.dirname(nodeDelete.id));
+					});
+				},
+				function (response) {
+					$scope.errors = "There is an error in the request";
+				});
+		}
 
 		//The next lines in this controller configure the editor
 		$scope.keyboardList = [{

@@ -30,9 +30,13 @@ module.exports = function (app) {
 
 	app.post('/experiments/:experimentId/code', expCtrl.saveCode);
 
+	app.delete('/experiments/:experimentId/code', expCtrl.deleteSourceFile);
+
 	app.get('/experiments/:experimentId/src_tree', expCtrl.getSrcTree);
 
 	app.get('/experiments/:experimentId/input_tree', expCtrl.getInputTree);
 
 	app.post('/experiments/:experimentId/input', expCtrl.uploadFile);
+
+	app.delete('/experiments/:experimentId/input', expCtrl.deleteInputFile);
 };
