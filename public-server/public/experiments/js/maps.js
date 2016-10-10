@@ -1,6 +1,6 @@
 function initMap() {
 	var EARTH_R = 6371000;
-	var map, marker, rectangle, center, rectangleWidth, rectangleHeight, clickMarker = false;
+	var map, marker, rectangle, center, rectangleWidth, rectangleHeight, changeInputBounds = true;
 
 	map = new google.maps.Map(document.getElementById('map'), {
 		scaleControl: true,
@@ -44,7 +44,7 @@ function initMap() {
 	function moveMarker() {
 		marker.setPosition(center);
 		marker.setVisible(true);
-		clickMarker = true;
+		changeInputBounds = false;
 		setBoundsFromInputs();
 		$('#latitude').val(center.lat());
 		$('#longitude').val(center.lng());
@@ -64,13 +64,13 @@ function initMap() {
 		rectangleWidth = distance(sw.lat(), sw.lng(), sw.lat(), ne.lng());
 		rectangleHeight = distance(ne.lat(), ne.lng(), sw.lat(), ne.lng());
 		marker.setPosition(center);
-		if (!clickMarker) {
+		if (changeInputBounds) {
 			$('#latitude').val(center.lat());
 			$('#longitude').val(center.lng());
-			$('#height').val(rectangleHeight/1000);
-			$('#width').val(rectangleWidth/1000);
+			$('#height').val(rectangleHeight / 1000);
+			$('#width').val(rectangleWidth / 1000);
 		}
-		clickMarker = false;
+		changeInputBounds = true;
 	}
 
 	$('.setCenterButton').click(function () {
@@ -84,6 +84,7 @@ function initMap() {
 
 	$('.setBoundsButton').click(function () {
 		if ($('#height').val() && $('#width').val()) {
+			changeInputBounds = false;
 			setBoundsFromInputs();
 			map.panTo(center);
 		}
@@ -119,10 +120,10 @@ function initMap() {
 
 	function setBoundsFromInputs() {
 		rectangle.setBounds({
-			north: displace(center.lat(), center.lng(), $('#height').val()*1000 / 2.0, 0)[0],
-			south: displace(center.lat(), center.lng(), $('#height').val()*1000 / 2.0, 180)[0],
-			east: displace(center.lat(), center.lng(), $('#width').val()*1000 / 2.0, 90)[1],
-			west: displace(center.lat(), center.lng(), $('#width').val()*1000 / 2.0, 270)[1]
+			north: displace(center.lat(), center.lng(), $('#height').val() * 1000 / 2.0, 0)[0],
+			south: displace(center.lat(), center.lng(), $('#height').val() * 1000 / 2.0, 180)[0],
+			east: displace(center.lat(), center.lng(), $('#width').val() * 1000 / 2.0, 90)[1],
+			west: displace(center.lat(), center.lng(), $('#width').val() * 1000 / 2.0, 270)[1]
 		});
 	}
 }
