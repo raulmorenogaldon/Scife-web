@@ -91,6 +91,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', function ($scope, $http, $stateParams, $location, PanelColors) {
 		var interval;
 		var defaultSizes = null;
+		$scope.Math = window.Math;
 		$scope.panelColors = PanelColors;
 
 		//Get the experiment info and its application.
@@ -160,6 +161,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			if ($scope.sizes.length > 0) {
 				$scope.sizeSelected = $scope.sizes[0];
 			}
+			$scope.getLimitInstances();
 		};
 
 		//Sends the request to launch an experiment by its ID, the data required to launch the experiment (nodes, image and size) is passed in the body.
@@ -207,6 +209,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//Dowload the results of the experiment execution
 		$scope.downloadResults = function (id) {
 			window.open('/experiments/downloadresults/' + id);
+		};
+
+		$scope.getLimitInstances = function () {
+			$scope.limitInstances = Math.min(($scope.imageSelected.quotas.instances.limit - $scope.imageSelected.quotas.instances.in_use), Math.floor(($scope.imageSelected.quotas.cores.limit - $scope.imageSelected.quotas.cores.in_use) / $scope.sizeSelected.cpus), Math.floor(($scope.imageSelected.quotas.ram.limit - $scope.imageSelected.quotas.ram.in_use) / $scope.sizeSelected.ram));
+			console.log($scope.limitInstances);
 		};
 	}])
 
@@ -414,7 +421,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 
 		$scope.deleteNodeConfirm = function () {
-			$http.delete('/experiments/' + $scope.experiment.id + '/input?file='+$scope.nodeDelete.id)
+			$http.delete('/experiments/' + $scope.experiment.id + '/input?file=' + $scope.nodeDelete.id)
             .then(function (response) {
 					jQuery('#deleteModal').modal('hide');
 					jQuery('#deleteModal').on('hidden.bs.modal', function () {
@@ -572,7 +579,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 
 		$scope.deleteNodeConfirm = function () {
-			$http.delete('/experiments/' + $scope.experiment.id + '/code?file='+$scope.nodeDelete.id)
+			$http.delete('/experiments/' + $scope.experiment.id + '/code?file=' + $scope.nodeDelete.id)
             .then(function (response) {
 					jQuery('#deleteModal').modal('hide');
 					jQuery('#deleteModal').on('hidden.bs.modal', function () {
