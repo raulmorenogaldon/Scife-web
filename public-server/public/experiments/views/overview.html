@@ -37,7 +37,7 @@
 									<div class="form-group">
 										<label class="col-md-2" for="size">Size:</label>
 										<div class="col-md-10">
-											<select class="form-control" id="size" ng-model="sizeSelected" ng-options="size as (size.name + ' (' +size.cpus + ' CPUs, ' + size.ram + 'Mb RAM)' ) for size in sizes"
+											<select class="form-control" id="size" ng-model="sizeSelected" ng-options="size as (size.name + ' (' +size.cpus + ' CPUs, ' + size.ram + 'Mb RAM)' ) for size in sizes | orderBy:'cpus'"
 												required></select>
 										</div>
 										<!--<option ng-repeat="size in sizes" value="{{size}}">{{size.name}} ({{size.cpus}} CPUs, {{size.ram}} RAM )</option>-->
