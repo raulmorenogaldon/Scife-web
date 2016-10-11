@@ -51,14 +51,14 @@ function initMap() {
 		map.panTo(center);
 	}
 
-/*
-	function distance(lat1, lon1, lat2, lon2) {
-		var p = 0.017453292519943295;    // Math.PI / 180
-		var c = Math.cos;
-		var a = 0.5 - c((lat2 - lat1) * p) / 2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-		return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-	}
-*/
+	/*
+		function distance(lat1, lon1, lat2, lon2) {
+			var p = 0.017453292519943295;    // Math.PI / 180
+			var c = Math.cos;
+			var a = 0.5 - c((lat2 - lat1) * p) / 2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+			return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+		}
+	*/
 	function boundsChanged(event) {
 		center = rectangle.getBounds().getCenter();
 		var sw = rectangle.getBounds().getSouthWest(), ne = rectangle.getBounds().getNorthEast();
@@ -147,4 +147,30 @@ $(".inputNumber").keydown(function (e) {
 	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
 		e.preventDefault();
 	}
+});
+
+$(function () {
+	$('#datetimeStart').datetimepicker({
+		locale: 'en',
+		minDate: moment().subtract(12, 'day'),
+		maxDate: moment().subtract(6, 'hours'),
+		stepping: 60,
+		showTodayButton: true,
+		showClose: true,
+		showClear: true
+	});
+
+	$('#datetimeFinish').datetimepicker({
+		locale: 'en',
+		minDate: $('#datetimeStart').data('DateTimePicker').date(),
+		maxDate: moment().add(12, 'day'),
+		stepping: 60,
+		showTodayButton: true,
+		showClose: true,
+		showClear:true
+	});
+
+	$('#datetimeStart').on("dp.change", function (e) {
+		$('#datetimeFinish').data("DateTimePicker").minDate(e.date);
+	});
 });

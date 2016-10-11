@@ -12,3 +12,4 @@ var app = express();
 module.exports = app;
 
 console.log('Server running in the port 3000');
+console.log('Secure Server running in the port 3003, use https://...');

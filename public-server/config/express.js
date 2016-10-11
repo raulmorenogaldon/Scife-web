@@ -3,7 +3,9 @@ var config = require('./config'),
 	express = require('express'),
 	morgan = require('morgan'),
 	compress = require('compression'),
-	bodyParser = require('body-parser');
+	bodyParser = require('body-parser'),
+	https = require('https'),
+	fs = require('fs');
 
 /*
 flash = require('connect-flash'),
@@ -51,5 +53,11 @@ module.exports = function () {
 	app.use(express.static('./public'));
 
 	app.listen(config.publicServerPort);
+
+	https.createServer({
+      key: fs.readFileSync('./config/certificates/key.pem'),
+      cert: fs.readFileSync('./config/certificates/cert.pem')
+    }, app).listen(3003);
+	 
 	return app;
 };
