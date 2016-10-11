@@ -431,7 +431,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				function (response) {
 					$scope.errors = "There is an error in the request";
 				});
-		}
+		};
 
 	}])
 
@@ -457,8 +457,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=0")
             .then(function (response) {
 					$scope.experiment = response.data;
-
-					console.log($scope.experiment)
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
             }, function (response) {
 					$scope.errors = response.data.errors;
@@ -589,7 +587,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				function (response) {
 					$scope.errors = "There is an error in the request";
 				});
-		}
+		};
 
 		//The next lines in this controller configure the editor
 		$scope.keyboardList = [{
@@ -683,6 +681,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				$scope.longitude,
 
 				$scope.height,
-				$scope.width)
-		}
+				$scope.width);
+		};
 	}]);
