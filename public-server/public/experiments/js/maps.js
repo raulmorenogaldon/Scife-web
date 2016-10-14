@@ -152,7 +152,7 @@ $(".inputNumber").keydown(function (e) {
 $(function () {
 	$('#datetimeStart').datetimepicker({
 		locale: 'en',
-		minDate: moment().subtract(12, 'day'),
+		minDate: moment('20070101','YYYYMMDD'),
 		maxDate: moment().subtract(6, 'hours'),
 		stepping: 60,
 		showTodayButton: true,
