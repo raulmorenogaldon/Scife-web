@@ -53,52 +53,52 @@
 											</div>
 										</div>
 									</div>
+									<div class="col-md-12 text-center">
+										<input type="submit" class="btn btn-success" value="Launch">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
+								</form>
 							</div>
+						</div>
+						<div class="row">
 							<div class="col-md-12 text-center">
-								<input type="submit" class="btn btn-success" value="Launch">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<hr>
+								<h4>{{imageSelected.name}} usage:</h4>
 							</div>
-							</form>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12 text-center">
-						<hr>
-							<h4>{{imageSelected.name}} usage:</h4>
-						</div>
-						<div class="col-md-12">
-							<div class="progress">
-								<div class="input-group">
-									<div class="input-group-addon" style="width:105px;">Instances:</div>
-									<div class="progress-bar progress-bar-launch progress-bar-success" id="progressInstances" role="progressbar" aria-valuenow="{{imageSelected.quotas.instances.in_use}}"
-										aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.instances.limit}}" style="width:{{instancesWidth}}%;min-width: 2em;">
-										<span>{{imageSelected.quotas.instances.in_use}}</span>
+							<div class="col-md-12">
+								<div class="progress">
+									<div class="input-group">
+										<div class="input-group-addon" style="width:105px;">Instances:</div>
+										<div class="progress-bar progress-bar-launch progress-bar-success" id="progressInstances" role="progressbar" aria-valuenow="{{imageSelected.quotas.instances.in_use}}"
+											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.instances.limit}}" style="width:{{instancesWidth}}%;min-width: 2em;">
+											<span>{{imageSelected.quotas.instances.in_use}}</span>
+										</div>
+										<span class="input-group-addon">Max. {{imageSelected.quotas.instances.limit}}</span>
 									</div>
-									<span class="input-group-addon">Max. {{imageSelected.quotas.instances.limit}}</span>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-12">
-							<div class="progress">
-								<div class="input-group">
-									<div class="input-group-addon" style="width:105px;">Cores :</div>
-									<div class="progress-bar progress-bar-launch progress-bar-warning" id="progressCores" role="progressbar" aria-valuenow="{{imageSelected.quotas.cores.in_use}}"
-										aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.cores.limit}}" style="width:{{coresWidth}}%;min-width: 2em;">
-										<span>{{imageSelected.quotas.cores.in_use}}</span>
+							<div class="col-md-12">
+								<div class="progress">
+									<div class="input-group">
+										<div class="input-group-addon" style="width:105px;">Cores :</div>
+										<div class="progress-bar progress-bar-launch progress-bar-warning" id="progressCores" role="progressbar" aria-valuenow="{{imageSelected.quotas.cores.in_use}}"
+											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.cores.limit}}" style="width:{{coresWidth}}%;min-width: 2em;">
+											<span>{{imageSelected.quotas.cores.in_use}}</span>
+										</div>
+										<span class="input-group-addon">Max. {{imageSelected.quotas.cores.limit}}</span>
 									</div>
-									<span class="input-group-addon">Max. {{imageSelected.quotas.cores.limit}}</span>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-12">
-							<div class="progress">
-								<div class="input-group">
-									<div class="input-group-addon" style="width:105px;">RAM (Mb):</div>
-									<div class="progress-bar progress-bar-launch progress-bar-info" id="progressInstances" role="progressbar" aria-valuenow="{{imageSelected.quotas.ram.in_use}}"
-										aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.ram.limit}}" style="width:{{ramWidth}}%;min-width: 2em;">
-										<span>{{imageSelected.quotas.ram.in_use}}</span>
+							<div class="col-md-12">
+								<div class="progress">
+									<div class="input-group">
+										<div class="input-group-addon" style="width:105px;">RAM (Mb):</div>
+										<div class="progress-bar progress-bar-launch progress-bar-info" id="progressInstances" role="progressbar" aria-valuenow="{{imageSelected.quotas.ram.in_use}}"
+											aria-valuemin="0" aria-valuemax="{{imageSelected.quotas.ram.limit}}" style="width:{{ramWidth}}%;min-width: 2em;">
+											<span>{{imageSelected.quotas.ram.in_use}}</span>
+										</div>
+										<span class="input-group-addon">Max. {{imageSelected.quotas.ram.limit}}</span>
 									</div>
-									<span class="input-group-addon">Max. {{imageSelected.quotas.ram.limit}}</span>
 								</div>
 							</div>
 						</div>
@@ -106,89 +106,88 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="deleteModalLabel">Confirm Deletion</h4>
-					</div>
-					<div class="modal-body">
-						<p class="text-justified">
-							Are you sure, you want to delete the experiment?
-						</p>
-						<dl class="dl-horizontal">
-							<dt>Name</dt>
-							<dd>{{experiment.name}}</dd>
-							<dt>Description</dt>
-							<dd>{{experiment.desc}}</dd>
-							<dt>Application</dt>
-							<dd>{{experiment.app.name}}</dd>
-							<dt>Status</dt>
-							<dd>{{experiment.status}}</dd>
-						</dl>
-						<div class="modal-footer">
-							<form ng-submit="deleteSubmit()" class="form form-horizontal col-md-12">
-								<div class="col-md-12 text-center">
-									<input type="submit" class="btn btn-danger" value="I Agree">
-									<button type="button" class="btn btn-default" data-dismiss="modal">I disagree</button>
-								</div>
-							</form>
+		<div class="row">
+			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="deleteModalLabel">Confirm Deletion</h4>
+						</div>
+						<div class="modal-body">
+							<p class="text-justified">
+								Are you sure, you want to delete the experiment?
+							</p>
+							<dl class="dl-horizontal">
+								<dt>Name</dt>
+								<dd>{{experiment.name}}</dd>
+								<dt>Description</dt>
+								<dd>{{experiment.desc}}</dd>
+								<dt>Application</dt>
+								<dd>{{experiment.app.name}}</dd>
+								<dt>Status</dt>
+								<dd>{{experiment.status}}</dd>
+							</dl>
+							<div class="modal-footer">
+								<form ng-submit="deleteSubmit()" class="form form-horizontal col-md-12">
+									<div class="col-md-12 text-center">
+										<input type="submit" class="btn btn-danger" value="I Agree">
+										<button type="button" class="btn btn-default" data-dismiss="modal">I disagree</button>
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="text-center col-md-12">
-			<button class="btn btn-success btn-lg" ng-disabled="experiment.status != 'created'" data-toggle="modal" data-target="#launchModal">Launch</button>
-			<button class="btn btn-warning btn-lg" ng-click="reset()">Reset</button>
-			<button class="btn btn-info btn-lg" ng-click="refreshStatus()">Update Status</button>
-			<button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deleteModal">Delete</button>
+		<div class="row">
+			<div class="text-center col-md-12">
+				<button class="btn btn-success btn-lg" ng-disabled="experiment.status != 'created'" data-toggle="modal" data-target="#launchModal">Launch</button>
+				<button class="btn btn-warning btn-lg" ng-click="reset()">Reset</button>
+				<button class="btn btn-info btn-lg" ng-click="refreshStatus()">Update Status</button>
+				<button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deleteModal">Delete</button>
+			</div>
 		</div>
-	</div>
-	<br>
-	<div class="row">
-		<div class="col-md-offset-1 col-md-10">
-			<div class="panel" ng-class="panelColors.getColorClass(experiment.status)">
-				<div class="panel-heading text-center">
-					<strong>Experiment Information</strong>
+		<br>
+		<div class="row">
+			<div class="col-md-offset-1 col-md-10">
+				<div class="panel" ng-class="panelColors.getColorClass(experiment.status)">
+					<div class="panel-heading text-center">
+						<strong>Experiment Information</strong>
+					</div>
+					<table class="table table-hover table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>Concept</th>
+								<th>Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Description</td>
+								<td>{{experiment.desc}}</td>
+							</tr>
+							<tr>
+								<td>Application</td>
+								<td>{{experiment.app.name}}</td>
+							</tr>
+							<tr>
+								<td>Status</td>
+								<td>{{experiment.status}}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<table class="table table-hover table-striped table-bordered">
-					<thead>
-						<tr>
-							<th>Concept</th>
-							<th>Value</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Description</td>
-							<td>{{experiment.desc}}</td>
-						</tr>
-						<tr>
-							<td>Application</td>
-							<td>{{experiment.app.name}}</td>
-						</tr>
-						<tr>
-							<td>Status</td>
-							<td>{{experiment.status}}</td>
-						</tr>
-					</tbody>
-				</table>
+			</div>
+		</div>
+		<div class="row" ng-show="!errors">
+			<div class="text-center">
+				<button ng-disabled='experiment.status != "done"' class="btn btn-lg btn-success" ng-click="downloadResults(experiment.id)">Dowload Results</button>
 			</div>
 		</div>
 	</div>
-	<div class="row" ng-show="!errors">
-		<div class="text-center">
-			<button ng-disabled='experiment.status != "done"' class="btn btn-lg btn-success" ng-click="downloadResults(experiment.id)">Dowload Results</button>
-		</div>
-	</div>
-</div>
-<script type="text/javascript">
+	<script type="text/javascript">
 $(document).ready(function(){
 	$('#launchModal').on('shown.bs.modal', function(){
 		$('#nodes').focus();

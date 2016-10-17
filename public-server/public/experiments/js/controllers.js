@@ -166,6 +166,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Sends the request to launch an experiment by its ID, the data required to launch the experiment (nodes, image and size) is passed in the body.
 		$scope.launchSubmit = function () {
+			console.log("LaunchSubmit");
 			$http.post('/experiments/launch/' + $scope.experiment.id, {
 				'nodes': $scope.nodesSelected,
 				'image_id': $scope.imageSelected.id,
@@ -213,7 +214,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		$scope.getLimitInstances = function () {
 			$scope.limitInstances = Math.min(($scope.imageSelected.quotas.instances.limit - $scope.imageSelected.quotas.instances.in_use), Math.floor(($scope.imageSelected.quotas.cores.limit - $scope.imageSelected.quotas.cores.in_use) / $scope.sizeSelected.cpus), Math.floor(($scope.imageSelected.quotas.ram.limit - $scope.imageSelected.quotas.ram.in_use) / $scope.sizeSelected.ram));
-			console.log($scope.limitInstances);
 		};
 	}])
 
