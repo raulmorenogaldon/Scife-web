@@ -37,8 +37,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		function ($scope, $http, PanelColors) {
 			//Get the experiment list, then when the info es available, ask the applications info to add to each experiment the info of its application in the field "app".
 			function getList() {
-            jQuery('#loadingModal').modal('show');
-            $http.get('/experiments/list')
+				jQuery('#loadingModal').modal('show');
+				$http.get('/experiments/list')
 					.then(function (response) {
 						$scope.experiments = response.data;
 						if (response.data.length) {
@@ -66,19 +66,19 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			getList();
 
 			$scope.selectExpToDelete = function (exp) {
-            $scope.deleteExpSelect = exp;
+				$scope.deleteExpSelect = exp;
 			};
 
 			//Asks the server delete an experiment identified by its ID
 			$scope.deleteSubmit = function () {
-            $http.delete('/experiments/' + $scope.deleteExpSelect.id)
+				$http.delete('/experiments/' + $scope.deleteExpSelect.id)
 					.then(function (response) {
 						getList();
 						$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
 					}, function (response) {
 						$scope.errors = "There is an error in the request";
 					});
-            jQuery('#deleteModal').modal('hide');
+				jQuery('#deleteModal').modal('hide');
 			};
 
 			$scope.panelColors = PanelColors;
@@ -97,15 +97,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//Get the experiment info and its application.
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
-            $scope.experiment = response.data;
-            $http.get('/applications/details/' + response.data.app_id)
+				$scope.experiment = response.data;
+				$http.get('/applications/details/' + response.data.app_id)
 					.then(function (data) {
 						$scope.experiment.app = data.data;
 					}, function (data) {
 						$scope.errors = data.data.errors;
 					});
 			}, function (response) {
-            $scope.errors = response.data.errors;
+				$scope.errors = response.data.errors;
 			});
 
 		//Get image and size list used when the user wants launch the experiment
@@ -127,21 +127,21 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//This function starts the counter to run the function $scope.refreshStatus() each 5 seconds while the experiment status wouldn't be "failed_*", "done" or "created"
 		function activateInterval() {
 			interval = window.setInterval(function () {
-            $scope.refreshStatus();
-            if (/^failed.*/.test($scope.experiment.status) || $scope.experiment.status == 'done' || $scope.experiment.status == 'created') {
+				$scope.refreshStatus();
+				if (/^failed.*/.test($scope.experiment.status) || $scope.experiment.status == 'done' || $scope.experiment.status == 'created') {
 					window.clearInterval(interval);
-            }
+				}
 			}, 5000);
 		}
 
 		//Get the experiment info and updates its status
 		$scope.refreshStatus = function () {
 			$http.get('/experiments/details/' + $stateParams.experimentId)
-            .then(function (response) {
+				.then(function (response) {
 					$scope.experiment.status = response.data.status;
-            }, function (response) {
+				}, function (response) {
 					$scope.errors = response.data.errors;
-            });
+				});
 		};
 
 		//Fileter the sizes and leaves only the sizes compatible with the image selected
@@ -172,12 +172,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				'image_id': $scope.imageSelected.id,
 				'size_id': $scope.sizeSelected.id
 			})
-            .then(function (response) {
+				.then(function (response) {
 					$scope.message = response.data.message;
 					activateInterval();
-            }, function (response) {
+				}, function (response) {
 					$scope.errors = response.data.errors;
-            });
+				});
 			jQuery('#launchModal').modal('hide');
 			activateInterval();
 		};
@@ -185,18 +185,18 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//Sends the request to reset the experiment whose ID is passed in the url
 		$scope.reset = function () {
 			$http.post('/experiments/reset/' + $scope.experiment.id)
-            .then(function (response) {
+				.then(function (response) {
 					$scope.message = response.data.message;
 					activateInterval();
-            }, function (response) {
+				}, function (response) {
 					$scope.errors = response.data.errors;
-            });
+				});
 		};
 
 		//Request delete the experiment whose ID is passed in the url
 		$scope.deleteSubmit = function () {
 			$http.delete('/experiments/' + $scope.experiment.id)
-            .then(function (response) {
+				.then(function (response) {
 					jQuery('#deleteModal').modal('hide');
 					jQuery('#deleteModal').on('hidden.bs.modal', function () {
 						$scope.$apply(function () { $location.path('/'); });
@@ -241,18 +241,18 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.submit = function () {
 			//Delete the labels whose contain is empty before sends the data
 			for (var i in $scope.experiment.labels) {
-            if ($scope.experiment.labels[i] === "" || $scope.experiment.labels[i] === null) {
+				if ($scope.experiment.labels[i] === "" || $scope.experiment.labels[i] === null) {
 					delete $scope.experiment.labels[i];
-            }
+				}
 			}
 			$http.put('/experiments/' + $scope.experiment.id, {
-            labels: $scope.experiment.labels
+				labels: $scope.experiment.labels
 			}).then(function (response) {
-            $scope.message = "Experiment " + $scope.experiment.name + " updated successfully.";
-            $scope.showForm = false;
-            $scope.oldLabels = angular.copy($scope.experiment.labels);
+				$scope.message = "Experiment " + $scope.experiment.name + " updated successfully.";
+				$scope.showForm = false;
+				$scope.oldLabels = angular.copy($scope.experiment.labels);
 			}, function (response) {
-            $scope.errors = "There is an error in the request.";
+				$scope.errors = "There is an error in the request.";
 			});
 		};
 
@@ -269,27 +269,27 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//Get the application list available to create the experiment
 		$http.get('/applications/list/')
 			.then(function (response) {
-            $scope.applications = response.data;
-            $scope.experiment.app_id = response.data[0].id;
+				$scope.applications = response.data;
+				$scope.experiment.app_id = response.data[0].id;
 			}, function (response) {
-            $scope.errors = response.data.errors;
+				$scope.errors = response.data.errors;
 			});
 
 		//Send the data to create the new experiment
 		$scope.submit = function () {
 			jQuery('#loadingModal').modal('show');
 			$http.post('/experiments/create', $scope.experiment)
-            .then(function (response) {
+				.then(function (response) {
 					jQuery('#loadingModal').modal('hide');
 					jQuery('#loadingModal').on('hidden.bs.modal', function () {
 						$scope.$apply(function () {
 							$location.path('/overview/' + response.data.experimentId);
 						});
 					});
-            }, function (response) {
+				}, function (response) {
 					jQuery('#loadingModal').modal('hide');
 					$scope.errors = response.data.errors;
-            });
+				});
 		};
 	}])
 
@@ -310,28 +310,28 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//Get the input data tree
 		function getTree() {
 			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?depth=0")
-            .then(function (response) {
+				.then(function (response) {
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
-            }, function (response) {
+				}, function (response) {
 					$scope.errors = response.data.errors;
-            });
+				});
 		}
 		getTree();
 
 		//This method is executed when the user wants to the parent folder when browsing in the input data tree, loads again the new tree and asigns the different variable their new values
 		$scope.folderUp = function () {
 			if (folderParentList.length > 1) {
-            folderParentList.pop();
-            $scope.currentPath = folderParentList[folderParentList.length - 1];
-            if (folderParentList[folderParentList.length - 1] === '/') {
+				folderParentList.pop();
+				$scope.currentPath = folderParentList[folderParentList.length - 1];
+				if (folderParentList[folderParentList.length - 1] === '/') {
 					getTree();
 					$scope.subFolder = false;
 					$scope.currentFolder = '/';
-            } else {
+				} else {
 					getFolderData(folderParentList[folderParentList.length - 1], 0);
 					$scope.currentFolder = TreeViewFunctions.getFolderFromPath($scope.currentPath);
-            }
+				}
 			}
 		};
 
@@ -339,23 +339,23 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		function getFolderData(folder) {
 			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/input_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=0';
 			$http.get(url)
-            .then(function (response) {
+				.then(function (response) {
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
-            }, function (response) {
+				}, function (response) {
 					$scope.errors = response.data.errors;
-            });
+				});
 		}
 
 		//This function is executed when then user selects a file or folder in the input tree, if a folder is selected, the function load again the input tree and sets the vars values
 		$scope.select = function (node) {
 			if (node.children.length || node.id.slice(-1) == '/') {
-            folderParentList.push(node.id);
-            $scope.currentPath = node.id;
-            $scope.currentFolder = node.label;
-            TreeViewFunctions.getFolderFromPath(node.id);
-            getFolderData(node.id);
-            $scope.subFolder = true;
+				folderParentList.push(node.id);
+				$scope.currentPath = node.id;
+				$scope.currentFolder = node.label;
+				TreeViewFunctions.getFolderFromPath(node.id);
+				getFolderData(node.id);
+				$scope.subFolder = true;
 			}
 		};
 
@@ -422,7 +422,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		$scope.deleteNodeConfirm = function () {
 			$http.delete('/experiments/' + $scope.experiment.id + '/input?file=' + $scope.nodeDelete.id)
-            .then(function (response) {
+				.then(function (response) {
 					jQuery('#deleteModal').modal('hide');
 					jQuery('#deleteModal').on('hidden.bs.modal', function () {
 						console.log(path.dirname(nodeDelete.id));
@@ -455,19 +455,19 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//Gets the initial sources tree root
 		function getTree() {
 			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=0")
-            .then(function (response) {
+				.then(function (response) {
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
-            }, function (response) {
+				}, function (response) {
 					$scope.errors = response.data.errors;
-            });
+				});
 		}
 		getTree();
 
 		//This function runs when the user selects an element (file or folder) in the sources tree. If selects a file, the function requests the file data to te server, if no (it's a folder) the function requests to te server the elements cotained in the folder selected.
 		$scope.select = function (node) {
 			if (!node.children.length && node.id.slice(-1) != '/') {
-            $http.get('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id)
+				$http.get('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id)
 					.then(function (response) {
 						$scope.selectedNode = node;
 						editor.setSession(ace.createEditSession(response.data, modelist.getModeForPath(node.label).mode));
@@ -475,19 +475,19 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 						$scope.errors = response.data.errors;
 					});
 			} else {
-            folderParentList.push(node.id);
-            $scope.currentPath = node.id;
-            $scope.currentFolder = node.label;
-            TreeViewFunctions.getFolderFromPath(node.id);
-            getFolderData(node.id);
-            $scope.subFolder = true;
+				folderParentList.push(node.id);
+				$scope.currentPath = node.id;
+				$scope.currentFolder = node.label;
+				TreeViewFunctions.getFolderFromPath(node.id);
+				getFolderData(node.id);
+				$scope.subFolder = true;
 			}
 		};
 
 		//This function is executed when the user click the button saveFile, then the contain of the editor will be sent to the server to be saved
 		$scope.saveFile = function (node) {
 			if ($scope.btnSaveChanges) {
-            $http.post('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id,
+				$http.post('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id,
 					editor.getValue(), {
 						headers: {
 							'content-type': 'text/plain'
@@ -504,9 +504,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//This function runs when the user wants to create a new file, the file will be created with the info contained in the editor
 		$scope.saveNewFile = function () {
 			if ($scope.newFileName !== null) {
-            var url = $scope.currentPath == '/' ? '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.newFileName : '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.currentPath + $scope.newFileName;
+				var url = $scope.currentPath == '/' ? '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.newFileName : '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.currentPath + $scope.newFileName;
 
-            $http.post(url, editor.getValue(), {
+				$http.post(url, editor.getValue() || " ", {
 					headers: {
 						'content-type': 'text/plain'
 					}
@@ -518,35 +518,37 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 						jQuery('#newFileModal').modal('hide');
 						$scope.errors = response.data.errors;
 					});
+
+				$scope.newFileName = null;
 			}
 		};
 
 		//This funciton is executed when the user wants return to the parent folder in the sources tree. The function updates the different vars (currentFolder, currentPath, etc.)
 		$scope.folderUp = function () {
 			if (folderParentList.length > 1) {
-            folderParentList.pop();
-            $scope.currentPath = folderParentList[folderParentList.length - 1];
-            if (folderParentList[folderParentList.length - 1] === '/') {
+				folderParentList.pop();
+				$scope.currentPath = folderParentList[folderParentList.length - 1];
+				if (folderParentList[folderParentList.length - 1] === '/') {
 					getTree();
 					$scope.subFolder = false;
 					$scope.currentFolder = '/';
-            } else {
+				} else {
 					getFolderData(folderParentList[folderParentList.length - 1]);
 					$scope.currentFolder = TreeViewFunctions.getFolderFromPath($scope.currentPath);
-            }
+				}
 			}
 		};
 
 		//Gets the file and folder contained in the folder passed as parameter
 		function getFolderData(folder) {
-			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/src_tree?depth=" + depth : '/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=0';
+			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/src_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=0';
 			$http.get(url)
-            .then(function (response) {
+				.then(function (response) {
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
-            }, function (response) {
+				}, function (response) {
 					$scope.errors = response.data.errors;
-            });
+				});
 		}
 
 		$scope.launchModal = function () {
@@ -578,10 +580,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		$scope.deleteNodeConfirm = function () {
 			$http.delete('/experiments/' + $scope.experiment.id + '/code?file=' + $scope.nodeDelete.id)
-            .then(function (response) {
+				.then(function (response) {
 					jQuery('#deleteModal').modal('hide');
 					jQuery('#deleteModal').on('hidden.bs.modal', function () {
-						console.log(path.dirname(nodeDelete.id));
+						getFolderData($scope.currentFolder);
 					});
 				},
 				function (response) {
@@ -594,12 +596,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			'id': 'hash_handler',
 			'name': 'Ace'
 		}, {
-				'id': 'vim',
-				'name': 'vim'
-			}, {
-				'id': 'emacs',
-				'name': 'Emacs'
-			}];
+			'id': 'vim',
+			'name': 'vim'
+		}, {
+			'id': 'emacs',
+			'name': 'Emacs'
+		}];
 
 		var editor = ace.edit("editor");
 		var EditSession = ace.require("ace/edit_session").EditSession;
@@ -640,7 +642,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.getLog = function () {
 			selectedName = $scope.selected ? $scope.selected.name : null;
 			$http.get('/experiments/logs/' + $stateParams.experimentId)
-            .then(function (response) {
+				.then(function (response) {
 					$scope.experiment = response.data;
 					if (response.data.logs) {
 						if (selectedName) {
@@ -652,9 +654,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 							$scope.selected = response.data.logs[0];
 						}
 					}
-            }, function (response) {
+				}, function (response) {
 					$scope.errors = response.data.errors;
-            });
+				});
 		};
 		$scope.getLog();
 	}])
@@ -664,9 +666,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//Get the experiment info and its application.
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
-            $scope.experiment = response.data;
+				$scope.experiment = response.data;
 			}, function (response) {
-            $scope.errors = response.data.errors;
+				$scope.errors = response.data.errors;
 			});
 
 		$scope.latitude = 38.981;
