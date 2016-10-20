@@ -36,6 +36,10 @@ module.exports = function (app) {
 
 	app.get('/experiments/:experimentId/input_tree', expCtrl.getInputTree);
 
+	app.get('/experiments/:experimentId/output_tree', expCtrl.getOutputTree);
+
+	app.get('/experiments/:experimentId/download', expCtrl.downloadFile);
+
 	app.post('/experiments/:experimentId/input', expCtrl.uploadFile);
 
 	app.delete('/experiments/:experimentId/input', expCtrl.deleteInputFile);

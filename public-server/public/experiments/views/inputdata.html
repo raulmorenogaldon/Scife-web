@@ -63,78 +63,78 @@
 			</div>
 		</div>
 	</div>
-<div class="row">
-	<div class="col-md-5">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title text-center"><strong>Input Data</strong></h4>
-				<div class="row">
-					<div class="col-md-2">
-						<button data-ng-disabled="!subFolder" class="btn btn-primary btn-xs" data-ng-click="folderUp()" title="Return"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+	<div class="row">
+		<div class="col-md-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title text-center"><strong>Input Data</strong></h4>
+					<div class="row">
+						<div class="col-md-2">
+							<button data-ng-disabled="!subFolder" class="btn btn-primary btn-xs" data-ng-click="folderUp()" title="Return"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+						</div>
+						<div class="col-md-8 text-center" data-toggle="tooltip" data-placement="bottom" title="{{currentPath}}">
+							{{currentFolder}}
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-primary btn-xs" data-ng-click="launchCreateFolderModal()" title="New Folder"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+						</div>
 					</div>
-					<div class="col-md-8 text-center" data-toggle="tooltip" data-placement="bottom" title="{{currentPath}}">
-						{{currentFolder}}
-					</div>
-					<div class="col-md-2">
-						<button class="btn btn-primary btn-xs" data-ng-click="launchCreateFolderModal()" title="New Folder"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+				</div>
+				<div class="panel-body">
+					<div class="treeview tree-model-delete" data-angular-treeview="true" data-tree-id="input_tree" data-tree-model="experiment.input_tree"
+						data-node-id="id" data-node-label="label" data-node-children="children" data-node-select-function="select" data-node-delete="nodeDelete">
 					</div>
 				</div>
 			</div>
-			<div class="panel-body">
-				<div class="treeview" data-angular-treeview="true" data-tree-id="input_tree" data-tree-model="experiment.input_tree" data-node-id="id"
-					data-node-label="label" data-node-children="children" data-node-select-function="select" data-node-delete="nodeDelete">
+		</div>
+		<div class=" col-md-7">
+			<div class="row">
+				<div class="col-md-12">
+					<form class="form-horizontal bordered" name="uploadFileForm" data-ng-submit="uploadFileForm.$valid && uploadFile()">
+						<p class="text-center text-info">The file will be added to the current path of the input tree.</p>
+						<div class="form-group">
+							<label for="path" class="col-md-3">Path:</label>
+							<div class="col-md-9">
+								<input type="text" id="path" class="form-control" disabled value="{{currentPath}}{{fileName}}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="fileName" class="col-md-3">File Name:</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" id="fileName" data-ng-model="fileName" required="required" title="Input Name for the file"
+									placeholder="myFile.js">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="file" class="col-md-3">Choose the file:</label>
+							<div class="col-md-9">
+								<input type="file" id="file" class="form-control" file-model="file" required="required">
+							</div>
+						</div>
+						<div class="text-center">
+							<button class="btn btn-primary" type="submit">Submit</button>
+						</div>
+					</form>
 				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title text-center">Preview</h4>
+						</div>
+						<div class="panel-body">
+							Not implemented yet.
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-center" role="group">
+				<button type="button" class="btn btn-success" title="Move to sources"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
+				<button type="button" class="btn btn-danger" title="Delete File"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
 			</div>
 		</div>
 	</div>
-	<div class=" col-md-7">
-		<div class="row">
-			<div class="col-md-12">
-				<form class="form-horizontal bordered" name="uploadFileForm" data-ng-submit="uploadFileForm.$valid && uploadFile()">
-					<p class="text-center text-info">The file will be added to the current path of the input tree.</p>
-					<div class="form-group">
-						<label for="path" class="col-md-3">Path:</label>
-						<div class="col-md-9">
-							<input type="text" id="path" class="form-control" disabled value="{{currentPath}}{{fileName}}">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="fileName" class="col-md-3">File Name:</label>
-						<div class="col-md-9">
-							<input type="text" class="form-control" id="fileName" data-ng-model="fileName" required="required" title="Input Name for the file"
-								placeholder="myFile.js">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="file" class="col-md-3">Choose the file:</label>
-						<div class="col-md-9">
-							<input type="file" id="file" class="form-control" file-model="file" required="required">
-						</div>
-					</div>
-					<div class="text-center">
-						<button class="btn btn-primary" type="submit">Submit</button>
-					</div>
-				</form>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title text-center">Preview</h4>
-					</div>
-					<div class="panel-body">
-						Not implemented yet.
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="text-center" role="group">
-			<button type="button" class="btn btn-success" title="Move to sources"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
-			<button type="button" class="btn btn-danger" title="Delete File"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-		</div>
-	</div>
-</div>
 </div>
 <script>
 $(document).ready(function(){

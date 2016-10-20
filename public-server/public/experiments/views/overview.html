@@ -181,9 +181,29 @@
 				</div>
 			</div>
 		</div>
-		<div class="row" ng-show="!errors">
+		<div class="row" ng-show="!errors && experiment.output_tree.length > 0">
 			<div class="text-center">
 				<button ng-disabled='experiment.status != "done"' class="btn btn-lg btn-success" ng-click="downloadResults(experiment.id)">Dowload Results</button>
+			</div>
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title text-center"><strong>Output data</strong></h4>
+						<div class="row">
+							<div class="col-md-2">
+								<button data-ng-disabled="!subFolder" class="btn btn-primary btn-xs" data-ng-click="folderUp()" title="Return"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
+							</div>
+							<div class="col-md-8 text-center" data-toggle="tooltip" data-placement="bottom" title="{{currentPath}}">
+								{{currentFolder}}
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="treeview tree-model-download" data-angular-treeview="true" data-tree-id="output_tree" data-tree-model="experiment.output_tree"
+							data-node-id="id" data-node-label="label" data-node-children="children" data-node-select-function="downloadFile" data-node-download-function="downloadFile">
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

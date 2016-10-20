@@ -99,11 +99,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			.then(function (response) {
 				$scope.experiment = response.data;
 				$http.get('/applications/details/' + response.data.app_id)
-					.then(function (data) {
-						$scope.experiment.app = data.data;
-					}, function (data) {
-						$scope.errors = data.data.errors;
+					.then(function (app) {
+						$scope.experiment.app = app.data;
+					}, function (app) {
+						$scope.errors = app.data.errors;
 					});
+				//if (response.data.status == 'done') {
+					$http.get('/experiments/' + response.data.id + '/output_tree?depth=0')
+						.then(function (outputTree) {
+							$scope.experiment.output_tree = outputTree.data.output_tree;
+							console.log($scope.experiment);
+						}, function (outputTree) {
+							$scope.errors = outputTree.data.errors;
+					});
+				//}
 			}, function (response) {
 				$scope.errors = response.data.errors;
 			});
@@ -215,6 +224,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.getLimitInstances = function () {
 			$scope.limitInstances = Math.min(($scope.imageSelected.quotas.instances.limit - $scope.imageSelected.quotas.instances.in_use), Math.floor(($scope.imageSelected.quotas.cores.limit - $scope.imageSelected.quotas.cores.in_use) / $scope.sizeSelected.cpus), Math.floor(($scope.imageSelected.quotas.ram.limit - $scope.imageSelected.quotas.ram.in_use) / $scope.sizeSelected.ram));
 		};
+
+		$scope.downloadFile = function (file) {
+			console.log(file);
+			window.open('/experiments/' + $scope.experiment.id + '/download?file=' + file.id);
+		};
+
+		$scope.select = function(node){
+			console.log(node);
+		}
 	}])
 
 	/**
@@ -425,7 +443,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				.then(function (response) {
 					jQuery('#deleteModal').modal('hide');
 					jQuery('#deleteModal').on('hidden.bs.modal', function () {
-						console.log(path.dirname(nodeDelete.id));
+						getFolderData($scope.currentFolder);
 					});
 				},
 				function (response) {
