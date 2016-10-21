@@ -88,11 +88,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	/**
 	 *This controler is executed in the overview view. 
 	 */
-	.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', function ($scope, $http, $stateParams, $location, PanelColors) {
+	.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', 'TreeViewFunctions', function ($scope, $http, $stateParams, $location, PanelColors, TreeViewFunctions) {
 		var interval;
 		var defaultSizes = null;
 		$scope.Math = window.Math;
 		$scope.panelColors = PanelColors;
+		$scope.currentPath = '/';
+		$scope.currentFolder = '/';
+		$scope.subFolder = false;
+		var folderParentList = ['/'];
 
 		//Get the experiment info and its application.
 		$http.get('/experiments/details/' + $stateParams.experimentId)
@@ -104,15 +108,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					}, function (app) {
 						$scope.errors = app.data.errors;
 					});
-				//if (response.data.status == 'done') {
-					$http.get('/experiments/' + response.data.id + '/output_tree?depth=0')
-						.then(function (outputTree) {
-							$scope.experiment.output_tree = outputTree.data.output_tree;
-							console.log($scope.experiment);
-						}, function (outputTree) {
-							$scope.errors = outputTree.data.errors;
-					});
-				//}
+				getOutputTree();
 			}, function (response) {
 				$scope.errors = response.data.errors;
 			});
@@ -175,7 +171,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Sends the request to launch an experiment by its ID, the data required to launch the experiment (nodes, image and size) is passed in the body.
 		$scope.launchSubmit = function () {
-			console.log("LaunchSubmit");
 			$http.post('/experiments/launch/' + $scope.experiment.id, {
 				'nodes': $scope.nodesSelected,
 				'image_id': $scope.imageSelected.id,
@@ -226,12 +221,52 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 
 		$scope.downloadFile = function (file) {
-			console.log(file);
 			window.open('/experiments/' + $scope.experiment.id + '/download?file=' + file.id);
 		};
 
-		$scope.select = function(node){
-			console.log(node);
+		$scope.select = function (node) {
+			if (node.children.length || node.id.slice(-1) == '/') {
+				folderParentList.push(node.id);
+				$scope.currentPath = node.id;
+				$scope.currentFolder = node.label;
+				TreeViewFunctions.getFolderFromPath(node.id);
+				getFolderData(node.id);
+				$scope.subFolder = true;
+			}
+		};
+
+		function getFolderData(folder) {
+			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/output_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/output_tree?folder=" + folder + '&depth=0';
+			$http.get(url)
+				.then(function (response) {
+					$scope.experiment = response.data;
+				}, function (response) {
+					$scope.errors = response.data.errors;
+				});
+		}
+
+		$scope.folderUp = function () {
+			if (folderParentList.length > 1) {
+				folderParentList.pop();
+				$scope.currentPath = folderParentList[folderParentList.length - 1];
+				if (folderParentList[folderParentList.length - 1] === '/') {
+					getOutputTree();
+					$scope.subFolder = false;
+					$scope.currentFolder = '/';
+				} else {
+					getFolderData(folderParentList[folderParentList.length - 1], 0);
+					$scope.currentFolder = TreeViewFunctions.getFolderFromPath($scope.currentPath);
+				}
+			}
+		};
+
+		function getOutputTree() {
+			$http.get('/experiments/' + $scope.experiment.id + '/output_tree?depth=0')
+				.then(function (outputTree) {
+					$scope.experiment.output_tree = outputTree.data.output_tree;
+				}, function (outputTree) {
+					$scope.errors = outputTree.data.errors;
+				});
 		}
 	}])
 
@@ -318,12 +353,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.currentFolder = '/';
 		$scope.subFolder = false;
 		var folderParentList = ['/'];
-		$scope.clearMessage = function () {
-			$scope.message = null;
-		};
-		$scope.clearErrorMessages = function () {
-			$scope.errors = null;
-		};
 
 		//Get the input data tree
 		function getTree() {
