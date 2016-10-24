@@ -1,15 +1,9 @@
-"use strict"
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'; //Force NODE_ENV variable to 'development'
-
-var /*mongoose = require('./config/mongoose'),*/
-	express = require('./config/express');
-/*
-passport = require('./config/passport');
-*/
-
-//var db = mongoose();
-var app = express();
-module.exports = app;
-
-console.log('Server running in the port 3000');
-console.log('Secure Server running in the port 3003, use https://...');
+if (!process.argv[2]) {
+	console.log("ERROR: You must set the file config path");
+	console.log("Usage: node server.js [File-config-path.json]");
+	process.exit(-1);
+} else {
+	var express = require('./config/express');
+	var app = express(process.argv[2]);
+	module.exports = app;
+}

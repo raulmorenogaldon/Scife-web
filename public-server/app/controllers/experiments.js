@@ -1,5 +1,6 @@
 var request = require('request'),
-	privateServer = require('../../config/env/development.js').privateServer;
+	fs = require('fs'),
+	privateServer = JSON.parse(fs.readFileSync(process.argv[2])).privateServer;
 
 /** 
  * Method: GET

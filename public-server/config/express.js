@@ -1,5 +1,4 @@
-var config = require('./config'),
-	session = require('express-session'),
+var session = require('express-session'),
 	express = require('express'),
 	morgan = require('morgan'),
 	compress = require('compression'),
@@ -7,17 +6,14 @@ var config = require('./config'),
 	https = require('https'),
 	fs = require('fs');
 
-/*
-flash = require('connect-flash'),
-passport = require('passport');
-*/
-
-module.exports = function () {
+module.exports = function (fileConfigPath) {
+	config = JSON.parse(fs.readFileSync(fileConfigPath));
 	var app = express();
-	if (process.env.NODE_ENV === 'development') {
+
+	if (config.development) {
 		app.use(morgan('dev'));
 	}
-	else if (process.env.NODE_ENV === 'production') {
+	else if (!config.development) {
 		app.use(compress());
 	}
 
@@ -25,11 +21,13 @@ module.exports = function () {
 		extended: true
 	}));
 	app.use(bodyParser.json());
-	app.use(session({
+	
+	/*app.use(session({
 		saveUninitialized: true,
 		resave: true,
 		secret: config.sessionSecret
 	}));
+	*/
 
 	app.set('views', './app/views');
 	app.set('view engine', 'jade');
@@ -52,12 +50,14 @@ module.exports = function () {
 
 	app.use(express.static('./public'));
 
-	app.listen(config.publicServerPort);
+	app.listen(config.publicHttpServerPort);
 
 	https.createServer({
-      key: fs.readFileSync('./config/certificates/key.pem'),
-      cert: fs.readFileSync('./config/certificates/cert.pem')
-    }, app).listen(3003);
-	 
+		key: fs.readFileSync('./config/certificates/key.pem'),
+		cert: fs.readFileSync('./config/certificates/cert.pem')
+	}, app).listen(config.publicHttpsServerPort);
+
+	console.log('Server running in the port ' + config.publicHttpServerPort);
+	console.log('Secure Server running in the port ' + config.publicHttpsServerPort + ', use https://...');
 	return app;
 };
