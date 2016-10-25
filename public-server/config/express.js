@@ -6,8 +6,8 @@ var session = require('express-session'),
 	https = require('https'),
 	fs = require('fs');
 
-module.exports = function (fileConfigPath) {
-	config = JSON.parse(fs.readFileSync(fileConfigPath));
+module.exports = function () {
+	config = JSON.parse(fs.readFileSync(process.argv[2]));
 	var app = express();
 
 	if (config.development) {

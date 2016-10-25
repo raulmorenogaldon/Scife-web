@@ -4,6 +4,6 @@ if (!process.argv[2]) {
 	process.exit(-1);
 } else {
 	var express = require('./config/express');
-	var app = express(process.argv[2]);
+	var app = express();
 	module.exports = app;
 }
