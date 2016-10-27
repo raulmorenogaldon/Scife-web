@@ -8,7 +8,7 @@ var request = require('request'),
 */
 exports.list = function (req, res) {
 	request({
-		url: privateServer + '/cloud/experiments',
+		url: privateServer + '/experiments',
 		method: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -39,7 +39,7 @@ exports.list = function (req, res) {
  */
 exports.details = function (req, res) {
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
+		url: privateServer + '/experiments/' + req.params.experimentId,
 		method: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -69,7 +69,7 @@ exports.details = function (req, res) {
  */
 exports.logs = function (req, res) {
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/logs",
+		url: privateServer + '/experiments/' + req.params.experimentId + "/logs",
 		method: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -98,7 +98,7 @@ exports.logs = function (req, res) {
  * Redirect the experiment results from the private server as a stream
  */
 exports.downloadResults = function (req, res) {
-	request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download").pipe(res);
+	request(privateServer + '/experiments/' + req.params.experimentId + "/download").pipe(res);
 };
 
 /**
@@ -112,7 +112,7 @@ exports.create = function (req, res) {
 		});
 	} else {
 		request({
-			url: privateServer + '/cloud/experiments',
+			url: privateServer + '/experiments',
 			method: 'POST',
 			json: req.body
 		}, function (err, response, body) {
@@ -147,7 +147,7 @@ exports.create = function (req, res) {
  */
 exports.update = function (req, res) {
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
+		url: privateServer + '/experiments/' + req.params.experimentId,
 		method: 'PUT',
 		json: req.body
 	}, function (err, response, body) {
@@ -185,7 +185,7 @@ exports.launch = function (req, res) {
 	} else {
 		data.op = "launch";
 		request({
-			url: privateServer + '/cloud/experiments/' + req.params.experimentId,
+			url: privateServer + '/experiments/' + req.params.experimentId,
 			method: 'POST',
 			json: data
 		}, function (err, response, body) {
@@ -219,7 +219,7 @@ exports.launch = function (req, res) {
  */
 exports.reset = function (req, res) {
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
+		url: privateServer + '/experiments/' + req.params.experimentId,
 		method: 'POST',
 		json: {
 			op: 'reset'
@@ -254,7 +254,7 @@ exports.reset = function (req, res) {
  */
 exports.delete = function (req, res) {
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId,
+		url: privateServer + '/experiments/' + req.params.experimentId,
 		method: 'DELETE'
 	}, function (err, response, body) {
 		if (err) {
@@ -284,7 +284,7 @@ exports.delete = function (req, res) {
  */
 exports.getCode = function (req, res) {
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
+		url: privateServer + '/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 		method: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -316,7 +316,7 @@ exports.saveCode = function (req, res) {
 	//Check if the user wants to create a folder (path ends with '/')
 	if (req.query.fileId.slice(-1) == '/') {
 		request({
-			url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
+			url: privateServer + '/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 			method: 'POST'
 		}, function (err, response, body) {
 			if (err) {
@@ -348,7 +348,7 @@ exports.saveCode = function (req, res) {
 			req.on('end',
 				function () {
 					request({
-						url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
+						url: privateServer + '/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 						method: 'POST',
 						headers: {
 							'content-type': 'text/plain'
@@ -392,13 +392,13 @@ exports.saveCode = function (req, res) {
 exports.getSrcTree = function (req, res) {
 	var url;
 	if (req.query.folder && req.query.depth) {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree?folder=" + req.query.folder + '&depth=' + req.query.depth;
+		url = privateServer + '/experiments/' + req.params.experimentId + "/srctree?folder=" + req.query.folder + '&depth=' + req.query.depth;
 	} else if (!req.query.folder && req.query.depth) {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree?depth=" + req.query.depth;
+		url = privateServer + '/experiments/' + req.params.experimentId + "/srctree?depth=" + req.query.depth;
 	} else if (req.query.folder && !req.query.depth) {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree?folder=" + req.query.folder;
+		url = privateServer + '/experiments/' + req.params.experimentId + "/srctree?folder=" + req.query.folder;
 	} else {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/srctree";
+		url = privateServer + '/experiments/' + req.params.experimentId + "/srctree";
 	}
 
 	request({
@@ -433,13 +433,13 @@ exports.getSrcTree = function (req, res) {
 exports.getInputTree = function (req, res) {
 	var url;
 	if (req.query.folder && req.query.depth) {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree?folder=" + req.query.folder + '&depth=' + req.query.depth;
+		url = privateServer + '/experiments/' + req.params.experimentId + "/inputtree?folder=" + req.query.folder + '&depth=' + req.query.depth;
 	} else if (!req.query.folder && req.query.depth) {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree?depth=" + req.query.depth;
+		url = privateServer + '/experiments/' + req.params.experimentId + "/inputtree?depth=" + req.query.depth;
 	} else if (req.query.folder && !req.query.depth) {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree?folder=" + req.query.folder;
+		url = privateServer + '/experiments/' + req.params.experimentId + "/inputtree?folder=" + req.query.folder;
 	} else {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/inputtree";
+		url = privateServer + '/experiments/' + req.params.experimentId + "/inputtree";
 	}
 	request({
 		url: url,
@@ -469,13 +469,13 @@ exports.getInputTree = function (req, res) {
 exports.getOutputTree = function (req, res) {
 	var url;
 	if (req.query.folder && req.query.depth) {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/outputtree?folder=" + req.query.folder + '&depth=' + req.query.depth;
+		url = privateServer + '/experiments/' + req.params.experimentId + "/outputtree?folder=" + req.query.folder + '&depth=' + req.query.depth;
 	} else if (!req.query.folder && req.query.depth) {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/outputtree?depth=" + req.query.depth;
+		url = privateServer + '/experiments/' + req.params.experimentId + "/outputtree?depth=" + req.query.depth;
 	} else if (req.query.folder && !req.query.depth) {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/outputtree?folder=" + req.query.folder;
+		url = privateServer + '/experiments/' + req.params.experimentId + "/outputtree?folder=" + req.query.folder;
 	} else {
-		url = privateServer + '/cloud/experiments/' + req.params.experimentId + "/outputtree";
+		url = privateServer + '/experiments/' + req.params.experimentId + "/outputtree";
 	}
 	request({
 		url: url,
@@ -503,7 +503,7 @@ exports.getOutputTree = function (req, res) {
 };
 
 exports.downloadFile = function (req, res) {
-	request(privateServer + '/cloud/experiments/' + req.params.experimentId + "/download?file="+req.query.file).pipe(res);
+	request(privateServer + '/experiments/' + req.params.experimentId + "/download?file="+req.query.file).pipe(res);
 };
 
 /**
@@ -512,7 +512,7 @@ exports.downloadFile = function (req, res) {
  */
 exports.uploadFile = function (req, res) {
 	req.pipe(request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + "/input?file=" + req.query.file,
+		url: privateServer + '/experiments/' + req.params.experimentId + "/input?file=" + req.query.file,
 		method: 'POST'
 	},
 		function (err, response, body) {
@@ -538,9 +538,9 @@ exports.uploadFile = function (req, res) {
 };
 
 exports.deleteInputFile = function (req, res) {
-	console.log(privateServer + '/cloud/experiments/' + req.params.experimentId + '/input?file=' + req.query.file);
+	console.log(privateServer + '/experiments/' + req.params.experimentId + '/input?file=' + req.query.file);
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + '/input?file=' + req.query.file,
+		url: privateServer + '/experiments/' + req.params.experimentId + '/input?file=' + req.query.file,
 		method: 'DELETE'
 	}, function (err, response, body) {
 		if (err) {
@@ -567,7 +567,7 @@ exports.deleteInputFile = function (req, res) {
 
 exports.deleteSourceFile = function (req, res) {
 	request({
-		url: privateServer + '/cloud/experiments/' + req.params.experimentId + '/code?file=' + req.query.file,
+		url: privateServer + '/experiments/' + req.params.experimentId + '/code?file=' + req.query.file,
 		method: 'DELETE'
 	}, function (err, response, body) {
 		if (err) {

@@ -4,7 +4,7 @@ var request = require('request'),
 
 exports.list = function (req, res) {
 	request({
-		url: privateServer + '/cloud/sizes',
+		url: privateServer + '/sizes',
 		methos: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -39,7 +39,7 @@ exports.create = function (req, res) {
 		});
 	} else {
 		request({
-			url: privateServer + '/cloud/createsize',
+			url: privateServer + '/createsize',
 			method: 'POST',
 			json: {
 				name: req.body.name,
@@ -82,7 +82,7 @@ exports.create = function (req, res) {
 
 exports.get = function (req, res) {
 	request({
-		url: privateServer + '/cloud/sizes/' + req.params.sizeId,
+		url: privateServer + '/sizes/' + req.params.sizeId,
 		methos: 'GET'
 	}, function (err, response, body) {
 		if (err) {

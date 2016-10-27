@@ -1,5 +1,9 @@
 
+
+var ctrl = require('../controllers/index.js');
+
 module.exports = function (app) {
-	var index = require('../controllers/index.js');
-	app.get('/', index.render);
+	app.get('/', ctrl.index);
+	app.get('/login', ctrl.login);
+	app.post('/login', ctrl.signIn);
 };

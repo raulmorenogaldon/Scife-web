@@ -4,7 +4,7 @@ var request = require('request'),
 
 exports.list = function (req, res) {
 	request({
-		url: privateServer + '/cloud/instances',
+		url: privateServer + '/instances',
 		methos: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -31,7 +31,7 @@ exports.create = function (req, res) {
 		res.render('instances/create', { err: "Name, description, image id and size id are required", name: req.body.name, desc: req.body.desc, imageId: req.body.imageId, sizeId: req.body.sizeId });
 	} else {
 		request({
-			url: privateServer + '/cloud/createinstance',
+			url: privateServer + '/createinstance',
 			method: 'POST',
 			json: {
 				name: req.body.name,
@@ -62,7 +62,7 @@ exports.create = function (req, res) {
 
 exports.get = function (req, res) {
 	request({
-		url: privateServer + '/cloud/instances/' + req.params.instanceId,
+		url: privateServer + '/instances/' + req.params.instanceId,
 		methos: 'GET'
 	}, function (err, response, body) {
 		if (err) {

@@ -1,0 +1,15 @@
+extends ../index
+
+block stylesheets
+	link(rel="stylesheet" href="/experiments/css/experiments.css")
+
+block content
+	div(class="container")
+		div(class="col-md-offset-4 col-md-4 modal-content")
+			div(class="modal-header"): h1(class="text-center") Login
+			div(class="moda-body")
+				form(class="form col-md-12 center-block" method="post" action="/login")
+					div.form-group: input(type="username" name="username" class="form-control input-lg" placeholder="username" required)
+					div.form-group: input(type="password" name="password" class="form-control input-lg" placeholder="password" required)
+					div.form-group: button.btn.btn-primary.btn-lg.btn-block(type="submit") Sign In
+block scripts

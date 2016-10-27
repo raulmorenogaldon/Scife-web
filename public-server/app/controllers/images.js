@@ -8,7 +8,7 @@ exports.get = function(req, res) {
 
 exports.list = function(req, res) {
 	request({
-		url: privateServer + '/cloud/images/',
+		url: privateServer + '/images/',
 		methos: 'GET'
 	}, function(err, response, body) {
 		if (err) {

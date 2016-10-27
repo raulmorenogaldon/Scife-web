@@ -5,7 +5,7 @@ var request = require('request'),
 
 exports.list = function (req, res) {
 	request({
-		url: privateServer + '/cloud/applications/',
+		url: privateServer + '/applications/',
 		methos: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -29,7 +29,7 @@ exports.list = function (req, res) {
 
 exports.details = function (req, res) {
 	request({
-		url: privateServer + '/cloud/applications/' + req.params.applicationId,
+		url: privateServer + '/applications/' + req.params.applicationId,
 		methos: 'GET'
 	}, function (err, response, body) {
 		if (err) {
@@ -56,7 +56,7 @@ exports.create = function (req, res) {
 		res.render('experiments/create', { err: "Name, description, creation script and experiment script are required", name: req.body.name, desc: req.body.desc, creationScript: req.body.creationScript, executionScript: req.body.executionScript });
 	} else {
 		request({
-			url: privateServer + '/cloud/createapplication',
+			url: privateServer + '/createapplication',
 			method: 'POST',
 			json: {
 				name: req.body.name,
