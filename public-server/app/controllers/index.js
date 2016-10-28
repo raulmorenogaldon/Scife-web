@@ -1,6 +1,7 @@
 var request = require('request'),
 	fs = require('fs'),
-	privateServer = JSON.parse(fs.readFileSync(process.argv[2])).privateServer;
+	privateServer = JSON.parse(fs.readFileSync(process.argv[2])).privateServer,
+	SHA = require("crypto-js/sha512");
 
 exports.index = function (req, res) {
 	res.render('index');
@@ -20,14 +21,18 @@ exports.signIn = function (req, res) {
 				value: 'application/json'
 			}
 		],
-		json: req.body
+		json: {
+			"username": req.body.username,
+			"password": SHA(req.body.password)
+		}
 	}, function (err, response, body) {
 		if (err) {
 			res.status(505).json({
 				errors: err
 			});
 		} else {
-			console.log(body);
+			res.cookie("token",body.token);
+			res.redirect("/experiments");
 		}
 	});
 };

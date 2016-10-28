@@ -8,6 +8,7 @@ var request = require('request'),
 */
 exports.list = function (req, res) {
 	request({
+		headers:{"x-access-token":req.get("x-access-token")},
 		url: privateServer + '/experiments',
 		method: 'GET'
 	}, function (err, response, body) {

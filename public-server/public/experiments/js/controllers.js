@@ -1,4 +1,4 @@
-var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
+var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCookies'])
 
 	/**
 	 *This controler defines the sidebar options and for each option the url to access it. 
@@ -33,56 +33,56 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	/**
 	 * This is the controller executed in the index view.
 	 */
-	.controller('IndexCtrl', ['$scope', '$http', 'PanelColors',
-		function ($scope, $http, PanelColors) {
-			//Get the experiment list, then when the info es available, ask the applications info to add to each experiment the info of its application in the field "app".
-			function getList() {
-				jQuery('#loadingModal').modal('show');
-				$http.get('/experiments/list')
-					.then(function (response) {
-						$scope.experiments = response.data;
-						if (response.data.length) {
-							$http.get('/applications/list/')
-								.then(function (data) {
-									$scope.experiments.forEach(function (exp) {
-										exp.app = angular.copy(data.data.find(function (app) {
-											return app.id === exp.app_id;
-										}));
-										jQuery('#loadingModal').modal('hide');
-									});
-								}, function (response) {
-									$scope.errors = response.data.errors;
+	.controller('IndexCtrl', ['$scope', '$http', 'PanelColors', '$cookies', function ($scope, $http, PanelColors, $cookies) {
+		//Get the experiment list, then when the info es available, ask the applications info to add to each experiment the info of its application in the field "app".
+		var token = $cookies.get("token");
+		function getList() {
+			jQuery('#loadingModal').modal('show');
+			$http.get('/experiments/list',{headers:{"x-access-token":token}})
+				.then(function (response) {
+					$scope.experiments = response.data;
+					if (response.data.length) {
+						$http.get('/applications/list/')
+							.then(function (data) {
+								$scope.experiments.forEach(function (exp) {
+									exp.app = angular.copy(data.data.find(function (app) {
+										return app.id === exp.app_id;
+									}));
 									jQuery('#loadingModal').modal('hide');
 								});
-						} else {
-							jQuery('#loadingModal').modal('hide');
-							$scope.message = "There is not experiments yet.";
-						}
-					}, function (response) {
-						$scope.errors = response.data.errors;
+							}, function (response) {
+								$scope.errors = response.data.errors;
+								jQuery('#loadingModal').modal('hide');
+							});
+					} else {
 						jQuery('#loadingModal').modal('hide');
-					});
-			}
-			getList();
-
-			$scope.selectExpToDelete = function (exp) {
-				$scope.deleteExpSelect = exp;
-			};
-
-			//Asks the server delete an experiment identified by its ID
-			$scope.deleteSubmit = function () {
-				$http.delete('/experiments/' + $scope.deleteExpSelect.id)
-					.then(function (response) {
-						getList();
-						$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
-					}, function (response) {
-						$scope.errors = "There is an error in the request";
-					});
-				jQuery('#deleteModal').modal('hide');
-			};
-
-			$scope.panelColors = PanelColors;
+						$scope.message = "There is not experiments yet.";
+					}
+				}, function (response) {
+					$scope.errors = response.data.errors;
+					jQuery('#loadingModal').modal('hide');
+				});
 		}
+		getList();
+
+		$scope.selectExpToDelete = function (exp) {
+			$scope.deleteExpSelect = exp;
+		};
+
+		//Asks the server delete an experiment identified by its ID
+		$scope.deleteSubmit = function () {
+			$http.delete('/experiments/' + $scope.deleteExpSelect.id)
+				.then(function (response) {
+					getList();
+					$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
+				}, function (response) {
+					$scope.errors = "There is an error in the request";
+				});
+			jQuery('#deleteModal').modal('hide');
+		};
+
+		$scope.panelColors = PanelColors;
+	}
 	])
 
 	/**
