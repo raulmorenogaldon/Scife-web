@@ -3,7 +3,7 @@ var request = require('request'),
 	privateServer = JSON.parse(fs.readFileSync(process.argv[2])).privateServer;
 
 exports.list = function (req, res) {
-	request({
+	request({headers:{"x-access-token":req.get("x-access-token")},
 		url: privateServer + '/sizes',
 		methos: 'GET'
 	}, function (err, response, body) {
@@ -81,7 +81,7 @@ exports.create = function (req, res) {
 };
 
 exports.get = function (req, res) {
-	request({
+	request({headers:{"x-access-token":req.get("x-access-token")},
 		url: privateServer + '/sizes/' + req.params.sizeId,
 		methos: 'GET'
 	}, function (err, response, body) {

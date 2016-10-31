@@ -7,7 +7,7 @@ exports.get = function(req, res) {
 };
 
 exports.list = function(req, res) {
-	request({
+	request({headers:{"x-access-token":req.get("x-access-token")},
 		url: privateServer + '/images/',
 		methos: 'GET'
 	}, function(err, response, body) {

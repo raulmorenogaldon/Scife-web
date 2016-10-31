@@ -44,7 +44,6 @@ module.exports = function () {
 	//require('../app/routes/cloud.js')(app);
 	require('../app/routes/sizes.js')(app);
 	require('../app/routes/images.js')(app);
-	require('../app/routes/instances.js')(app);
 	require('../app/routes/applications.js')(app);
 	require('../app/routes/experiments.js')(app);
 

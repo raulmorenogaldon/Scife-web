@@ -10,6 +10,4 @@ module.exports = function (app) {
 	
 	app.get('/applications/details/:applicationId', AppsCtrl.details);
 	
-	app.post('/applications/create', AppsCtrl.create);
-	
 };

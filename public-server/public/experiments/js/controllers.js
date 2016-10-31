@@ -35,14 +35,13 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 	 */
 	.controller('IndexCtrl', ['$scope', '$http', 'PanelColors', '$cookies', function ($scope, $http, PanelColors, $cookies) {
 		//Get the experiment list, then when the info es available, ask the applications info to add to each experiment the info of its application in the field "app".
-		var token = $cookies.get("token");
 		function getList() {
 			jQuery('#loadingModal').modal('show');
-			$http.get('/experiments/list',{headers:{"x-access-token":token}})
+			$http.get('/experiments/list', { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					$scope.experiments = response.data;
 					if (response.data.length) {
-						$http.get('/applications/list/')
+						$http.get('/applications/list/', { headers: { "x-access-token": $cookies.get("token") } })
 							.then(function (data) {
 								$scope.experiments.forEach(function (exp) {
 									exp.app = angular.copy(data.data.find(function (app) {
@@ -71,7 +70,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 
 		//Asks the server delete an experiment identified by its ID
 		$scope.deleteSubmit = function () {
-			$http.delete('/experiments/' + $scope.deleteExpSelect.id)
+			$http.delete('/experiments/' + $scope.deleteExpSelect.id, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					getList();
 					$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
@@ -88,7 +87,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 	/**
 	 *This controler is executed in the overview view. 
 	 */
-	.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', 'TreeViewFunctions', function ($scope, $http, $stateParams, $location, PanelColors, TreeViewFunctions) {
+	.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', 'TreeViewFunctions', '$cookies', function ($scope, $http, $stateParams, $location, PanelColors, TreeViewFunctions, $cookies) {
 		var interval;
 		var defaultSizes = null;
 		$scope.Math = window.Math;
@@ -99,10 +98,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		var folderParentList = ['/'];
 
 		//Get the experiment info and its application.
-		$http.get('/experiments/details/' + $stateParams.experimentId)
+		$http.get('/experiments/details/' + $stateParams.experimentId, { headers: { "x-access-token": $cookies.get("token")}})
 			.then(function (response) {
 				$scope.experiment = response.data;
-				$http.get('/applications/details/' + response.data.app_id)
+				$http.get('/applications/details/' + response.data.app_id, { headers: { "x-access-token": $cookies.get("token")}})
 					.then(function (app) {
 						$scope.experiment.app = app.data;
 					}, function (app) {
@@ -114,11 +113,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 			});
 
 		//Get image and size list used when the user wants launch the experiment
-		$http.get('/images/list')
+		$http.get('/images/list', { headers: { "x-access-token": $cookies.get("token") } })
 			.then(function (response) {
 				$scope.images = response.data;
 				$scope.imageSelected = response.data[0];
-				$http.get('/sizes/list')
+				$http.get('/sizes/list', { headers: { "x-access-token": $cookies.get("token") } })
 					.then(function (response) {
 						defaultSizes = response.data;
 						$scope.getSizesOfImage();//Leaves only the sizes available for this image.
@@ -141,7 +140,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 
 		//Get the experiment info and updates its status
 		$scope.refreshStatus = function () {
-			$http.get('/experiments/details/' + $stateParams.experimentId)
+			$http.get('/experiments/details/' + $stateParams.experimentId, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					$scope.experiment.status = response.data.status;
 				}, function (response) {
@@ -171,7 +170,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 
 		//Sends the request to launch an experiment by its ID, the data required to launch the experiment (nodes, image and size) is passed in the body.
 		$scope.launchSubmit = function () {
-			$http.post('/experiments/launch/' + $scope.experiment.id, {
+			$http.post('/experiments/launch/' + $scope.experiment.id, { headers: { "x-access-token": $cookies.get("token") } }, {
 				'nodes': $scope.nodesSelected,
 				'image_id': $scope.imageSelected.id,
 				'size_id': $scope.sizeSelected.id
@@ -188,7 +187,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 
 		//Sends the request to reset the experiment whose ID is passed in the url
 		$scope.reset = function () {
-			$http.post('/experiments/reset/' + $scope.experiment.id)
+			$http.post('/experiments/reset/' + $scope.experiment.id, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					$scope.message = response.data.message;
 					activateInterval();
@@ -199,7 +198,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 
 		//Request delete the experiment whose ID is passed in the url
 		$scope.deleteSubmit = function () {
-			$http.delete('/experiments/' + $scope.experiment.id)
+			$http.delete('/experiments/' + $scope.experiment.id, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					jQuery('#deleteModal').modal('hide');
 					jQuery('#deleteModal').on('hidden.bs.modal', function () {
@@ -237,7 +236,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 
 		function getFolderData(folder) {
 			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/output_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/output_tree?folder=" + folder + '&depth=0';
-			$http.get(url)
+			$http.get(url, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					$scope.experiment = response.data;
 				}, function (response) {
@@ -261,7 +260,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		};
 
 		function getOutputTree() {
-			$http.get('/experiments/' + $scope.experiment.id + '/output_tree?depth=0')
+			$http.get('/experiments/' + $scope.experiment.id + '/output_tree?depth=0', { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (outputTree) {
 					$scope.experiment.output_tree = outputTree.data.output_tree;
 				}, function (outputTree) {
@@ -273,14 +272,14 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 	/**
 	 * This controler is executed in the labels view
 	 */
-	.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', function ($scope, $http, $stateParams) {
+	.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', '$cookies', function ($scope, $http, $stateParams, $cookies) {
 		$scope.showForm = false;
 		//Get the experiment info and when the info is available gets the application info of the experiment
-		$http.get('/experiments/details/' + $stateParams.experimentId)
+		$http.get('/experiments/details/' + $stateParams.experimentId, { headers: { "x-access-token": $cookies.get("token") } })
 			.then(function (response) {
 				$scope.experiment = response.data;
 				$scope.oldLabels = angular.copy(response.data.labels);//Backups the current labes before modifiying
-				$http.get('/applications/details/' + $scope.experiment.app_id)
+				$http.get('/applications/details/' + $scope.experiment.app_id, { headers: { "x-access-token": $cookies.get("token") } })
 					.then(function (data) {
 						$scope.experiment.app = data.data;
 					}, function (data) {
@@ -298,7 +297,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 					delete $scope.experiment.labels[i];
 				}
 			}
-			$http.put('/experiments/' + $scope.experiment.id, {
+			$http.put('/experiments/' + $scope.experiment.id, { headers: { "x-access-token": $cookies.get("token") } }, {
 				labels: $scope.experiment.labels
 			}).then(function (response) {
 				$scope.message = "Experiment " + $scope.experiment.name + " updated successfully.";
@@ -317,10 +316,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 	}])
 
 	//This controler runs in the create view
-	.controller('CreateCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+	.controller('CreateCtrl', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
 		$scope.experiment = {};
 		//Get the application list available to create the experiment
-		$http.get('/applications/list/')
+		$http.get('/applications/list/', { headers: { "x-access-token": $cookies.get("token") } })
 			.then(function (response) {
 				$scope.applications = response.data;
 				$scope.experiment.app_id = response.data[0].id;
@@ -331,7 +330,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		//Send the data to create the new experiment
 		$scope.submit = function () {
 			jQuery('#loadingModal').modal('show');
-			$http.post('/experiments/create', $scope.experiment)
+			$http.post('/experiments/create', $scope.experiment, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					jQuery('#loadingModal').modal('hide');
 					jQuery('#loadingModal').on('hidden.bs.modal', function () {
@@ -347,7 +346,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 	}])
 
 	//This controler runs in the input data view
-	.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
+	.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', '$cookies', function ($scope, $http, $stateParams, TreeViewFunctions, $cookies) {
 		$scope.folderModal = '';
 		$scope.currentPath = '/';
 		$scope.currentFolder = '/';
@@ -356,7 +355,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 
 		//Get the input data tree
 		function getTree() {
-			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?depth=0")
+			$http.get('/experiments/' + $stateParams.experimentId + "/input_tree?depth=0", { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
@@ -385,7 +384,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		//Request the sub-tree of the a folder passed as argument
 		function getFolderData(folder) {
 			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/input_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/input_tree?folder=" + folder + '&depth=0';
-			$http.get(url)
+			$http.get(url, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
@@ -421,7 +420,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 			fd.append('inputFile', $scope.file);
 			$http.post(url, fd, {
 				transformRequest: angular.identity,
-				headers: { 'Content-Type': undefined },
+				headers: {
+					'Content-Type': undefined,
+					"x-access-token": $cookies.get("token")
+				},
 				uploadEventHandlers: {
 					progress: function (e) {
 						$scope.progressStatus = e.loaded * 100 / e.total;
@@ -454,7 +456,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		$scope.createNewFolder = function () {
 			var url = $scope.currentPath == '/' ? '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.folderName + '/' : '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + $scope.folderName + '/';
 
-			$http.post(url).then(function (response) {
+			$http.post(url, { headers: { "x-access-token": $cookies.get("token") } }).then(function (response) {
 				jQuery('#newFolderModal').modal('hide');
 				getFolderData($scope.currentPath);
 				$scope.folderName = '';
@@ -468,7 +470,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		};
 
 		$scope.deleteNodeConfirm = function () {
-			$http.delete('/experiments/' + $scope.experiment.id + '/input?file=' + $scope.nodeDelete.id)
+			$http.delete('/experiments/' + $scope.experiment.id + '/input?file=' + $scope.nodeDelete.id, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					jQuery('#deleteModal').modal('hide');
 					jQuery('#deleteModal').on('hidden.bs.modal', function () {
@@ -483,7 +485,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 	}])
 
 	//This controller runs in the sources view
-	.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
+	.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', '$cookies', function ($scope, $http, $stateParams, TreeViewFunctions, $cookies) {
 		$scope.btnSaveChanges = true;
 		$scope.folderModal = '';
 		$scope.currentPath = '/';
@@ -501,7 +503,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 
 		//Gets the initial sources tree root
 		function getTree() {
-			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=0")
+			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=0", { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
@@ -514,7 +516,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		//This function runs when the user selects an element (file or folder) in the sources tree. If selects a file, the function requests the file data to te server, if no (it's a folder) the function requests to te server the elements cotained in the folder selected.
 		$scope.select = function (node) {
 			if (!node.children.length && node.id.slice(-1) != '/') {
-				$http.get('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id)
+				$http.get('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id, { headers: { "x-access-token": $cookies.get("token") } })
 					.then(function (response) {
 						$scope.selectedNode = node;
 						editor.setSession(ace.createEditSession(response.data, modelist.getModeForPath(node.label).mode));
@@ -534,7 +536,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		//This function is executed when the user click the button saveFile, then the contain of the editor will be sent to the server to be saved
 		$scope.saveFile = function (node) {
 			if ($scope.btnSaveChanges) {
-				$http.post('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id,
+				$http.post('/experiments/' + $scope.experiment.id + "/code?fileId=" + node.id, { headers: { "x-access-token": $cookies.get("token") } },
 					editor.getValue(), {
 						headers: {
 							'content-type': 'text/plain'
@@ -553,7 +555,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 			if ($scope.newFileName !== null) {
 				var url = $scope.currentPath == '/' ? '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.newFileName : '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.currentPath + $scope.newFileName;
 
-				$http.post(url, editor.getValue() || " ", {
+				$http.post(url, { headers: { "x-access-token": $cookies.get("token") } }, editor.getValue() || " ", {
 					headers: {
 						'content-type': 'text/plain'
 					}
@@ -589,7 +591,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		//Gets the file and folder contained in the folder passed as parameter
 		function getFolderData(folder) {
 			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/src_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/src_tree?folder=" + folder + '&depth=0';
-			$http.get(url)
+			$http.get(url, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
@@ -610,7 +612,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		$scope.createNewFolder = function () {
 			var url = $scope.currentPath == '/' ? '/experiments/' + $stateParams.experimentId + "/code?fileId=" + $scope.folderName + '/' : '/experiments/' + $stateParams.experimentId + "/code?fileId=" + $scope.currentPath + $scope.folderName + '/';
 
-			$http.post(url).then(function (response) {
+			$http.post(url, { headers: { "x-access-token": $cookies.get("token") } }).then(function (response) {
 				jQuery('#newFolderModal').modal('hide');
 				getFolderData($scope.currentPath);
 				$scope.folderName = '';
@@ -626,7 +628,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		};
 
 		$scope.deleteNodeConfirm = function () {
-			$http.delete('/experiments/' + $scope.experiment.id + '/code?file=' + $scope.nodeDelete.id)
+			$http.delete('/experiments/' + $scope.experiment.id + '/code?file=' + $scope.nodeDelete.id, { headers: { "x-access-token": token } })
 				.then(function (response) {
 					jQuery('#deleteModal').modal('hide');
 					jQuery('#deleteModal').on('hidden.bs.modal', function () {
@@ -682,13 +684,13 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 	}])
 
 	//Runs in the logs view
-	.controller('LogsCtrl', ['$scope', '$http', '$stateParams', '$location', function ($scope, $http, $stateParams, $location) {
+	.controller('LogsCtrl', ['$scope', '$http', '$stateParams', '$location', '$cookies', function ($scope, $http, $stateParams, $location, $cookies) {
 		//Get the experiment info and its logs
 		var selectedName;
 
 		$scope.getLog = function () {
 			selectedName = $scope.selected ? $scope.selected.name : null;
-			$http.get('/experiments/logs/' + $stateParams.experimentId)
+			$http.get('/experiments/logs/' + $stateParams.experimentId, { headers: { "x-access-token": $cookies.get("token") } })
 				.then(function (response) {
 					$scope.experiment = response.data;
 					if (response.data.logs) {
@@ -709,9 +711,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 	}])
 
 	//Runs in the logs view
-	.controller('MapCtrl', ['$scope', '$http', '$stateParams', '$location', '$window', function ($scope, $http, $stateParams, $location, $window) {
+	.controller('MapCtrl', ['$scope', '$http', '$stateParams', '$location', '$window', '$cookies', function ($scope, $http, $stateParams, $location, $window, $cookies) {
 		//Get the experiment info and its application.
-		$http.get('/experiments/details/' + $stateParams.experimentId)
+		$http.get('/experiments/details/' + $stateParams.experimentId, { headers: { "x-access-token": $cookies.get("token") } })
 			.then(function (response) {
 				$scope.experiment = response.data;
 			}, function (response) {

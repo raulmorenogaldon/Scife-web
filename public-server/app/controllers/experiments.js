@@ -8,7 +8,7 @@ var request = require('request'),
 */
 exports.list = function (req, res) {
 	request({
-		headers:{"x-access-token":req.get("x-access-token")},
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments',
 		method: 'GET'
 	}, function (err, response, body) {
@@ -40,6 +40,7 @@ exports.list = function (req, res) {
  */
 exports.details = function (req, res) {
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments/' + req.params.experimentId,
 		method: 'GET'
 	}, function (err, response, body) {
@@ -70,6 +71,7 @@ exports.details = function (req, res) {
  */
 exports.logs = function (req, res) {
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments/' + req.params.experimentId + "/logs",
 		method: 'GET'
 	}, function (err, response, body) {
@@ -99,7 +101,10 @@ exports.logs = function (req, res) {
  * Redirect the experiment results from the private server as a stream
  */
 exports.downloadResults = function (req, res) {
-	request(privateServer + '/experiments/' + req.params.experimentId + "/download").pipe(res);
+	request({
+		headers: { "x-access-token": req.get("x-access-token") },
+		"url": privateServer + '/experiments/' + req.params.experimentId + "/download"
+	}).pipe(res);
 };
 
 /**
@@ -113,6 +118,7 @@ exports.create = function (req, res) {
 		});
 	} else {
 		request({
+			headers: { "x-access-token": req.get("x-access-token") },
 			url: privateServer + '/experiments',
 			method: 'POST',
 			json: req.body
@@ -148,6 +154,7 @@ exports.create = function (req, res) {
  */
 exports.update = function (req, res) {
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments/' + req.params.experimentId,
 		method: 'PUT',
 		json: req.body
@@ -186,6 +193,7 @@ exports.launch = function (req, res) {
 	} else {
 		data.op = "launch";
 		request({
+			headers: { "x-access-token": req.get("x-access-token") },
 			url: privateServer + '/experiments/' + req.params.experimentId,
 			method: 'POST',
 			json: data
@@ -220,6 +228,7 @@ exports.launch = function (req, res) {
  */
 exports.reset = function (req, res) {
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments/' + req.params.experimentId,
 		method: 'POST',
 		json: {
@@ -255,6 +264,7 @@ exports.reset = function (req, res) {
  */
 exports.delete = function (req, res) {
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments/' + req.params.experimentId,
 		method: 'DELETE'
 	}, function (err, response, body) {
@@ -285,6 +295,7 @@ exports.delete = function (req, res) {
  */
 exports.getCode = function (req, res) {
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 		method: 'GET'
 	}, function (err, response, body) {
@@ -317,6 +328,7 @@ exports.saveCode = function (req, res) {
 	//Check if the user wants to create a folder (path ends with '/')
 	if (req.query.fileId.slice(-1) == '/') {
 		request({
+			headers: { "x-access-token": req.get("x-access-token") },
 			url: privateServer + '/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 			method: 'POST'
 		}, function (err, response, body) {
@@ -349,6 +361,7 @@ exports.saveCode = function (req, res) {
 			req.on('end',
 				function () {
 					request({
+						headers: { "x-access-token": req.get("x-access-token") },
 						url: privateServer + '/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 						method: 'POST',
 						headers: {
@@ -403,6 +416,7 @@ exports.getSrcTree = function (req, res) {
 	}
 
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: url,
 		method: 'GET'
 	}, function (err, response, body) {
@@ -443,6 +457,7 @@ exports.getInputTree = function (req, res) {
 		url = privateServer + '/experiments/' + req.params.experimentId + "/inputtree";
 	}
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: url,
 		method: 'GET'
 	}, function (err, response, body) {
@@ -479,6 +494,7 @@ exports.getOutputTree = function (req, res) {
 		url = privateServer + '/experiments/' + req.params.experimentId + "/outputtree";
 	}
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: url,
 		method: 'GET'
 	}, function (err, response, body) {
@@ -504,7 +520,10 @@ exports.getOutputTree = function (req, res) {
 };
 
 exports.downloadFile = function (req, res) {
-	request(privateServer + '/experiments/' + req.params.experimentId + "/download?file="+req.query.file).pipe(res);
+	request({
+		headers: { "x-access-token": req.get("x-access-token") },
+		"url": privateServer + '/experiments/' + req.params.experimentId + "/download?file=" + req.query.file
+	}).pipe(res);
 };
 
 /**
@@ -513,6 +532,7 @@ exports.downloadFile = function (req, res) {
  */
 exports.uploadFile = function (req, res) {
 	req.pipe(request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments/' + req.params.experimentId + "/input?file=" + req.query.file,
 		method: 'POST'
 	},
@@ -541,6 +561,7 @@ exports.uploadFile = function (req, res) {
 exports.deleteInputFile = function (req, res) {
 	console.log(privateServer + '/experiments/' + req.params.experimentId + '/input?file=' + req.query.file);
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments/' + req.params.experimentId + '/input?file=' + req.query.file,
 		method: 'DELETE'
 	}, function (err, response, body) {
@@ -549,7 +570,7 @@ exports.deleteInputFile = function (req, res) {
 				errors: err
 			});
 		} else {
-				console.log(body);
+			console.log(body);
 			switch (response.statusCode) {
 				case 500:
 				case 404:
@@ -568,6 +589,7 @@ exports.deleteInputFile = function (req, res) {
 
 exports.deleteSourceFile = function (req, res) {
 	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/experiments/' + req.params.experimentId + '/code?file=' + req.query.file,
 		method: 'DELETE'
 	}, function (err, response, body) {
