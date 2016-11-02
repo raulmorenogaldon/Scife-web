@@ -5,8 +5,8 @@ var expCtrl = require('../controllers/experiments.js'),
  * This functions links the url with the correct methods to respond the resquests in the experiment controller
  */
 router.use(function (req, res, next) {
-	if (!req.cokkies.token) {
-		res.redirect('/login');
+	if (req.cookies) {
+		if (!req.cookies.token) res.redirect('/login');
 	}
 	next();
 });

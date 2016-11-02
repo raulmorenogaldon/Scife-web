@@ -5,6 +5,9 @@ block stylesheets
 
 block content
 	div(class="container")
+		if errors
+			each err in errors
+				.alert.alert-danger.col-md-offset-2.col-md-8.text-center(role="alert")= err.message
 		div(class="col-md-offset-4 col-md-4 modal-content")
 			div(class="modal-header"): h1(class="text-center") Login
 			div(class="moda-body")

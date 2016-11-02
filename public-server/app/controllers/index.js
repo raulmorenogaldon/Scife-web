@@ -32,8 +32,21 @@ exports.signIn = function (req, res) {
 				errors: err
 			});
 		} else {
-			res.cookie("token", body.token, { "domain": domain, "expries":0 });
-			res.redirect("/experiments");
+			switch (response.statusCode) {
+				case 500:
+				case 401:
+				case 404:
+				case 400:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body );
+					break;
+				case 200:
+					res.cookie("token", body.token, { "domain": domain, "expries": 0 });
+					res.redirect("/experiments");
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+
 		}
 	});
 };

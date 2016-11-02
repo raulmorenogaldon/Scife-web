@@ -21,7 +21,7 @@ exports.list = function (req, res) {
 				case 500:
 				case 404:
 				case 400:
-					res.status(response.statusCode).json(JSON.parse(body));
+					res.status(response.statusCode).json((body));
 					break;
 				case 200:
 					//res.status(response.statusCode).json(JSON.parse(body));
@@ -361,10 +361,10 @@ exports.saveCode = function (req, res) {
 			req.on('end',
 				function () {
 					request({
-						headers: { "x-access-token": req.get("x-access-token") },
 						url: privateServer + '/experiments/' + req.params.experimentId + "/code?file=" + req.query.fileId,
 						method: 'POST',
 						headers: {
+							"x-access-token": req.get("x-access-token"),
 							'content-type': 'text/plain'
 						},
 						body: data
