@@ -6,7 +6,7 @@ var app = angular.module('Experiments')
 			url: '/',
 			views: {
 				'content': {
-					templateUrl: "experiments/views/index.html",
+					templateUrl: "/experiments/views/index.html",
 					controller: "IndexCtrl"
 				}
 			}
@@ -16,12 +16,12 @@ var app = angular.module('Experiments')
 			url: '/overview/:experimentId',
 			views: {
 				'content': {
-					templateUrl: "experiments/views/overview.html",
+					templateUrl: "/experiments/views/overview.html",
 					controller: "OverviewCtrl"
 				},
 				'sidebar': {
 					controller: "SidebarCtrl",
-					templateUrl: "experiments/views/sidebar.html"
+					templateUrl: "/experiments/views/sidebar.html"
 				}
 			}
 		});
@@ -30,7 +30,7 @@ var app = angular.module('Experiments')
 			url: '/create',
 			views: {
 				'content': {
-					templateUrl: "experiments/views/create.html",
+					templateUrl: "/experiments/views/create.html",
 					controller: "CreateCtrl"
 				}
 			}
@@ -40,12 +40,12 @@ var app = angular.module('Experiments')
 			url: '/labels/:experimentId',
 			views: {
 				'content': {
-					templateUrl: "experiments/views/labels.html",
+					templateUrl: "/experiments/views/labels.html",
 					controller: "LabelsCtrl"
 				},
 				'sidebar': {
 					controller: "SidebarCtrl",
-					templateUrl: "experiments/views/sidebar.html"
+					templateUrl: "/experiments/views/sidebar.html"
 				}
 			}
 		});
@@ -54,12 +54,12 @@ var app = angular.module('Experiments')
 			url: '/inputdata/:experimentId',
 			views: {
 				'content': {
-					templateUrl: "experiments/views/inputdata.html",
+					templateUrl: "/experiments/views/inputdata.html",
 					controller: "InputDataCtrl"
 				},
 				'sidebar': {
 					controller: "SidebarCtrl",
-					templateUrl: "experiments/views/sidebar.html"
+					templateUrl: "/experiments/views/sidebar.html"
 				}
 			}
 		});
@@ -68,12 +68,12 @@ var app = angular.module('Experiments')
 			url: '/sources/:experimentId',
 			views: {
 				'content': {
-					templateUrl: "experiments/views/sources.html",
+					templateUrl: "/experiments/views/sources.html",
 					controller: "SourcesCtrl"
 				},
 				'sidebar': {
 					controller: "SidebarCtrl",
-					templateUrl: "experiments/views/sidebar.html"
+					templateUrl: "/experiments/views/sidebar.html"
 				}
 			}
 		});
@@ -82,12 +82,12 @@ var app = angular.module('Experiments')
 			url: '/logs/:experimentId',
 			views: {
 				'content': {
-					templateUrl: "experiments/views/logs.html",
+					templateUrl: "/experiments/views/logs.html",
 					controller: "LogsCtrl"
 				},
 				'sidebar': {
 					controller: "SidebarCtrl",
-					templateUrl: "experiments/views/sidebar.html"
+					templateUrl: "/experiments/views/sidebar.html"
 				}
 			}
 		});
@@ -96,12 +96,12 @@ var app = angular.module('Experiments')
 			url: '/map/:experimentId',
 			views: {
 				'content': {
-					templateUrl: "experiments/views/map.html",
+					templateUrl: "/experiments/views/map.html",
 					controller: "MapCtrl"
 				},
 				'sidebar': {
 					controller: "SidebarCtrl",
-					templateUrl: "experiments/views/sidebar.html"
+					templateUrl: "/experiments/views/sidebar.html"
 				}
 			}
 		});

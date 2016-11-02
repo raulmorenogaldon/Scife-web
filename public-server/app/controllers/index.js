@@ -1,6 +1,7 @@
 var request = require('request'),
 	fs = require('fs'),
 	privateServer = JSON.parse(fs.readFileSync(process.argv[2])).privateServer,
+	domain = JSON.parse(fs.readFileSync(process.argv[2])).domainServer,
 	SHA = require("crypto-js/sha512");
 
 exports.index = function (req, res) {
@@ -31,7 +32,7 @@ exports.signIn = function (req, res) {
 				errors: err
 			});
 		} else {
-			res.cookie("token",body.token);
+			res.cookie("token", body.token, { "domain": domain, "expries":0 });
 			res.redirect("/experiments");
 		}
 	});

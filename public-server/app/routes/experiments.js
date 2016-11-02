@@ -1,46 +1,53 @@
-var expCtrl = require('../controllers/experiments.js');
+var expCtrl = require('../controllers/experiments.js'),
+	router = require('express').Router();
 
 /**
  * This functions links the url with the correct methods to respond the resquests in the experiment controller
  */
-module.exports = function (app) {
-	app.get('/experiments/', function (req, res) {
-		res.render('experiments/index');
-	});
+router.use(function (req, res, next) {
+	if (!req.cokkies.token) {
+		res.redirect('/login');
+	}
+	next();
+});
 
-	app.get('/experiments/list', expCtrl.list);
+router.get('/', function (req, res) {
+	res.render('experiments/index');
+});
 
-	app.get('/experiments/details/:experimentId', expCtrl.details);
+router.get('/list', expCtrl.list);
 
-	app.get('/experiments/logs/:experimentId', expCtrl.logs);
+router.get('/details/:experimentId', expCtrl.details);
 
-	app.get('/experiments/downloadresults/:experimentId', expCtrl.downloadResults);
+router.get('/logs/:experimentId', expCtrl.logs);
 
-	app.post('/experiments/create', expCtrl.create);
+router.get('/downloadresults/:experimentId', expCtrl.downloadResults);
 
-	app.put('/experiments/:experimentId', expCtrl.update);
+router.post('/create', expCtrl.create);
 
-	app.post('/experiments/launch/:experimentId', expCtrl.launch);
+router.put('/:experimentId', expCtrl.update);
 
-	app.post('/experiments/reset/:experimentId', expCtrl.reset);
+router.post('/launch/:experimentId', expCtrl.launch);
 
-	app.delete('/experiments/:experimentId', expCtrl.delete);
+router.post('/reset/:experimentId', expCtrl.reset);
 
-	app.get('/experiments/:experimentId/code', expCtrl.getCode);
+router.delete('/:experimentId', expCtrl.delete);
 
-	app.post('/experiments/:experimentId/code', expCtrl.saveCode);
+router.get('/:experimentId/code', expCtrl.getCode);
 
-	app.delete('/experiments/:experimentId/code', expCtrl.deleteSourceFile);
+router.post('/:experimentId/code', expCtrl.saveCode);
 
-	app.get('/experiments/:experimentId/src_tree', expCtrl.getSrcTree);
+router.delete('/:experimentId/code', expCtrl.deleteSourceFile);
 
-	app.get('/experiments/:experimentId/input_tree', expCtrl.getInputTree);
+router.get('/:experimentId/src_tree', expCtrl.getSrcTree);
 
-	app.get('/experiments/:experimentId/output_tree', expCtrl.getOutputTree);
+router.get('/:experimentId/input_tree', expCtrl.getInputTree);
 
-	app.get('/experiments/:experimentId/download', expCtrl.downloadFile);
+router.get('/:experimentId/output_tree', expCtrl.getOutputTree);
 
-	app.post('/experiments/:experimentId/input', expCtrl.uploadFile);
+router.get('/:experimentId/download', expCtrl.downloadFile);
 
-	app.delete('/experiments/:experimentId/input', expCtrl.deleteInputFile);
-};
+router.post('/:experimentId/input', expCtrl.uploadFile);
+
+router.delete('/:experimentId/input', expCtrl.deleteInputFile);
+module.exports = router;

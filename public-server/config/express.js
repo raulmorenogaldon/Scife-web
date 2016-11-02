@@ -4,6 +4,7 @@ var session = require('express-session'),
 	compress = require('compression'),
 	bodyParser = require('body-parser'),
 	https = require('https'),
+	cookieParser = require('cookie-parser'),
 	fs = require('fs');
 
 module.exports = function () {
@@ -21,7 +22,8 @@ module.exports = function () {
 		extended: true
 	}));
 	app.use(bodyParser.json());
-	
+	app.use(cookieParser());
+
 	/*app.use(session({
 		saveUninitialized: true,
 		resave: true,
@@ -45,7 +47,7 @@ module.exports = function () {
 	require('../app/routes/sizes.js')(app);
 	require('../app/routes/images.js')(app);
 	require('../app/routes/applications.js')(app);
-	require('../app/routes/experiments.js')(app);
+	app.use('/experiments', require('../app/routes/experiments.js'));
 
 	app.use(express.static('./public'));
 
