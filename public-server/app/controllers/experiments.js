@@ -19,6 +19,9 @@ exports.list = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json((body));
@@ -51,6 +54,9 @@ exports.details = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -82,6 +88,9 @@ exports.logs = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -130,6 +139,9 @@ exports.create = function (req, res) {
 			} else {
 				switch (response.statusCode) {
 					case 500:
+					case 401:
+						res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+						break;
 					case 404:
 					case 400:
 						res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -166,6 +178,9 @@ exports.update = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -205,6 +220,9 @@ exports.launch = function (req, res) {
 			} else {
 				switch (response.statusCode) {
 					case 500:
+					case 401:
+						res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+						break;
 					case 404:
 					case 400:
 						res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -242,6 +260,9 @@ exports.reset = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -275,6 +296,9 @@ exports.delete = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -306,6 +330,9 @@ exports.getCode = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -339,6 +366,9 @@ exports.saveCode = function (req, res) {
 			} else {
 				switch (response.statusCode) {
 					case 500:
+					case 401:
+						res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+						break;
 					case 404:
 					case 400:
 						res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -376,6 +406,9 @@ exports.saveCode = function (req, res) {
 						} else {
 							switch (response.statusCode) {
 								case 500:
+								case 401:
+									res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+									break;
 								case 404:
 								case 400:
 									res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -427,6 +460,9 @@ exports.getSrcTree = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -468,6 +504,9 @@ exports.getInputTree = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -505,6 +544,9 @@ exports.getOutputTree = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -544,6 +586,9 @@ exports.uploadFile = function (req, res) {
 			} else {
 				switch (response.statusCode) {
 					case 500:
+					case 401:
+						res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+						break;
 					case 404:
 					case 400:
 						res.status(response.statusCode).end();
@@ -573,6 +618,9 @@ exports.deleteInputFile = function (req, res) {
 			console.log(body);
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
@@ -600,6 +648,9 @@ exports.deleteSourceFile = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);

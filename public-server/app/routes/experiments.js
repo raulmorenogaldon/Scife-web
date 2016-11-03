@@ -6,9 +6,15 @@ var expCtrl = require('../controllers/experiments.js'),
  */
 router.use(function (req, res, next) {
 	if (req.cookies) {
-		if (!req.cookies.token) res.redirect('/login');
+		if (!req.cookies.token) {
+			res.redirect('/login');
+		}
+		else {
+			next();
+		}
+	} else {
+		next();
 	}
-	next();
 });
 
 router.get('/', function (req, res) {
