@@ -8,7 +8,7 @@ var request = require('request'),
  */
 exports.list = function (req, res) {
 	request({
-		headers: { "x-access-token": req.get("x-access-token") },
+		headers: { "x-access-token": req.cookies.token },
 		url: privateServer + '/images/',
 		methos: 'GET'
 	}, function (err, response, body) {

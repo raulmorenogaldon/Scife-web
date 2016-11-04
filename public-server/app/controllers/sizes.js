@@ -8,7 +8,7 @@ var request = require('request'),
  */
 exports.list = function (req, res) {
 	request({
-		headers: { "x-access-token": req.get("x-access-token") },
+		headers: { "x-access-token": req.cookies.token },
 		url: privateServer + '/sizes',
 		methos: 'GET'
 	}, function (err, response, body) {
@@ -39,7 +39,7 @@ exports.list = function (req, res) {
  */
 exports.get = function (req, res) {
 	request({
-		headers: { "x-access-token": req.get("x-access-token") },
+		headers: { "x-access-token": req.cookies.token },
 		url: privateServer + '/sizes/' + req.params.sizeId,
 		methos: 'GET'
 	}, function (err, response, body) {
