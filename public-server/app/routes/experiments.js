@@ -7,7 +7,7 @@ var expCtrl = require('../controllers/experiments.js'),
 router.use(function (req, res, next) {
 	if (req.cookies) {
 		if (!req.cookies.token) {
-			res.redirect('/login');
+			res.redirect('/login?url='+req.originalUrl);
 		}
 		else {
 			next();

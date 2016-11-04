@@ -9,6 +9,7 @@ exports.index = function (req, res) {
 };
 
 exports.login = function (req, res) {
+	console.log(req.query.url);
 	res.render('index/login');
 };
 
@@ -42,7 +43,11 @@ exports.signIn = function (req, res) {
 					break;
 				case 200:
 					res.cookie("token", body.token, { "domain": domain, "expires": 0 });
-					res.redirect("/experiments");
+					if (req.query.url) {
+						res.redirect(req.query.url);
+					} else {
+						res.redirect("/");
+					}
 					break;
 				default:
 					res.send("There is no status code from the internal server.");
