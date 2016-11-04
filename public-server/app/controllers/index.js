@@ -4,15 +4,26 @@ var request = require('request'),
 	domain = JSON.parse(fs.readFileSync(process.argv[2])).domainServer,
 	SHA = require("crypto-js/sha512");
 
+/**
+ * Method: GET
+ * This method render the main view (index)
+ */
 exports.index = function (req, res) {
 	res.render('index');
 };
 
+/**
+ * Method: GET
+ * This method render the login view to allow the user sign in
+ */
 exports.login = function (req, res) {
-	console.log(req.query.url);
 	res.render('index/login');
 };
 
+/**
+ * Method: POST
+ * This function gets the credentials sent them to the private server to check the identity of the user. The password is encrypted with the SHA512 algorithm
+ */
 exports.signIn = function (req, res) {
 	request({
 		headers: [

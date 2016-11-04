@@ -2,7 +2,10 @@ var request = require('request'),
 	fs = require('fs'),
 	privateServer = JSON.parse(fs.readFileSync(process.argv[2])).privateServer;
 
-
+/**
+ * Method: GET
+ * This function returns all the applications
+ */
 exports.list = function (req, res) {
 	request({
 		headers: { "x-access-token": req.get("x-access-token") },
@@ -28,6 +31,10 @@ exports.list = function (req, res) {
 	});
 };
 
+/**
+ * Method: GET
+ * This function return the info of the application whose ID is passed by parameter
+ */
 exports.details = function (req, res) {
 	request({
 		headers: { "x-access-token": req.get("x-access-token") },

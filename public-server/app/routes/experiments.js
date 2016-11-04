@@ -2,7 +2,7 @@ var expCtrl = require('../controllers/experiments.js'),
 	router = require('express').Router();
 
 /**
- * This functions links the url with the correct methods to respond the resquests in the experiment controller
+ * This function check the user has the cookie with the token acces, if he has not the function redirect the user to the login view and set the "url" query with the URL the user tried tp access
  */
 router.use(function (req, res, next) {
 	if (req.cookies) {

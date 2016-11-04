@@ -98,10 +98,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview', 'ngCook
 		var folderParentList = ['/'];
 
 		//Get the experiment info and its application.
-		$http.get('/experiments/details/' + $stateParams.experimentId, { headers: { "x-access-token": $cookies.get("token")}})
+		$http.get('/experiments/details/' + $stateParams.experimentId, { headers: { "x-access-token": $cookies.get("token") } })
 			.then(function (response) {
 				$scope.experiment = response.data;
-				$http.get('/applications/details/' + response.data.app_id, { headers: { "x-access-token": $cookies.get("token")}})
+				$http.get('/applications/details/' + response.data.app_id, { headers: { "x-access-token": $cookies.get("token") } })
 					.then(function (app) {
 						$scope.experiment.app = app.data;
 					}, function (app) {

@@ -521,6 +521,10 @@ exports.getInputTree = function (req, res) {
 	});
 };
 
+/**
+ * Method: GET
+ * Get the output tree with the files generated when the experiment is launched
+ */
 exports.getOutputTree = function (req, res) {
 	var url;
 	if (req.query.folder && req.query.depth) {
@@ -561,6 +565,10 @@ exports.getOutputTree = function (req, res) {
 	});
 };
 
+/**
+ * Method: GET
+ * This method allow to download a file of the experiment generated when the experiment is launched
+ */
 exports.downloadFile = function (req, res) {
 	request({
 		headers: { "x-access-token": req.get("x-access-token") },
@@ -603,6 +611,10 @@ exports.uploadFile = function (req, res) {
 		}));
 };
 
+/**
+ * Method: DELETE
+ * This method delete an input file whose ID is passed as a parameter
+ */
 exports.deleteInputFile = function (req, res) {
 	console.log(privateServer + '/experiments/' + req.params.experimentId + '/input?file=' + req.query.file);
 	request({
@@ -635,6 +647,10 @@ exports.deleteInputFile = function (req, res) {
 	});
 };
 
+/**
+ * Method: DELETE
+ * This method delete an source file whose ID is passed as a parameter
+ */
 exports.deleteSourceFile = function (req, res) {
 	request({
 		headers: { "x-access-token": req.get("x-access-token") },

@@ -2,15 +2,16 @@ var request = require('request'),
 	fs = require('fs'),
 	privateServer = JSON.parse(fs.readFileSync(process.argv[2])).privateServer;;
 
-exports.get = function(req, res) {
-
-};
-
-exports.list = function(req, res) {
-	request({headers:{"x-access-token":req.get("x-access-token")},
+/**
+ * Method: GET
+ * This method get a list with the images
+ */
+exports.list = function (req, res) {
+	request({
+		headers: { "x-access-token": req.get("x-access-token") },
 		url: privateServer + '/images/',
 		methos: 'GET'
-	}, function(err, response, body) {
+	}, function (err, response, body) {
 		if (err) {
 			res.status(400).json({
 				err: err
