@@ -43,6 +43,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					if (response.data.length) {
 						$http.get('/applications/list/')
 							.then(function (data) {
+								//This function add to each experiment its application data
 								$scope.experiments.forEach(function (exp) {
 									exp.app = angular.copy(data.data.find(function (app) {
 										return app.id === exp.app_id;
@@ -64,6 +65,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		}
 		getList();
 
+		//Set the experiment to delete, this method is executed when the user press the delete button.
 		$scope.selectExpToDelete = function (exp) {
 			$scope.deleteExpSelect = exp;
 		};
@@ -112,7 +114,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				$scope.errors = response.data.errors;
 			});
 
-		//Get image and size list used when the user wants launch the experiment
+		//Get image and size list used when the user wants to launch the experiment
 		$http.get('/images/list')
 			.then(function (response) {
 				$scope.images = response.data;
@@ -120,7 +122,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				$http.get('/sizes/list')
 					.then(function (response) {
 						defaultSizes = response.data;
-						$scope.getSizesOfImage();//Leaves only the sizes available for this image.
+						$scope.getSizesOfImage();//Keeps only the sizes available for this image.
 					}, function (response) {
 						$scope.errors = response.data.err;
 					});
@@ -148,12 +150,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				});
 		};
 
-		//Fileter the sizes and leaves only the sizes compatible with the image selected
+		//Filter the sizes and leaves only the sizes compatible with the image selected
 		$scope.getSizesOfImage = function () {
+			//The next lines calculate the width of the bar of each quota.
 			$scope.coresWidth = ($scope.imageSelected.quotas.cores.in_use / $scope.imageSelected.quotas.cores.limit) * 100;
 			$scope.ramWidth = ($scope.imageSelected.quotas.ram.in_use / $scope.imageSelected.quotas.ram.limit) * 100;
 			$scope.instancesWidth = ($scope.imageSelected.quotas.instances.in_use / $scope.imageSelected.quotas.instances.limit) * 100;
 			$scope.sizes = [];
+
+			//Leave only the sizes compatible with the size selected by the user
 			defaultSizes.forEach(function (size) {
 				$scope.imageSelected.sizes_compatible.some(function (size_id) {
 					if (size.id === size_id) {
@@ -215,14 +220,17 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			window.open('/experiments/downloadresults/' + id);
 		};
 
+		//Calculate the limit of instances depending on the instances already launched, the RAM selected and the num of cores
 		$scope.getLimitInstances = function () {
 			$scope.limitInstances = Math.min(($scope.imageSelected.quotas.instances.limit - $scope.imageSelected.quotas.instances.in_use), Math.floor(($scope.imageSelected.quotas.cores.limit - $scope.imageSelected.quotas.cores.in_use) / $scope.sizeSelected.cpus), Math.floor(($scope.imageSelected.quotas.ram.limit - $scope.imageSelected.quotas.ram.in_use) / $scope.sizeSelected.ram));
 		};
 
+		//When the experiment in launched the output tree will be showed and then, the user will be able to download any file generated. This function allow the user download such file selected.
 		$scope.downloadFile = function (file) {
 			window.open('/experiments/' + $scope.experiment.id + '/download?file=' + file.id);
 		};
 
+		//This function is executed when the user selects an item in the output tree showed when an experiment is launched. In this case, if the user selects a folder, the output tree will be reloaded and will show the contain of the folder selected
 		$scope.select = function (node) {
 			if (node.children.length || node.id.slice(-1) == '/') {
 				folderParentList.push(node.id);
@@ -234,6 +242,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
+		//When the user selects a folder in the output tree, this function gets the contain of the folder selected
 		function getFolderData(folder) {
 			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/output_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/output_tree?folder=" + folder + '&depth=0';
 			$http.get(url)
@@ -244,6 +253,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				});
 		}
 
+		//This function allow the user return to the previous folder in the output tree.
 		$scope.folderUp = function () {
 			if (folderParentList.length > 1) {
 				folderParentList.pop();

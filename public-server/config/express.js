@@ -7,6 +7,7 @@ var express = require('express'),
 	fs = require('fs');
 
 module.exports = function () {
+	//Read the JSON config file passed as a parameter when launch nodejs server
 	config = JSON.parse(fs.readFileSync(process.argv[2]));
 	var app = express();
 
