@@ -39,6 +39,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			jQuery('#loadingModal').modal('show');
 			$http.get('/experiments/list')
 				.then(function (response) {
+					console.log(response.data)
 					$scope.experiments = response.data;
 					if (response.data.length) {
 						$http.get('/applications/list/')
@@ -269,6 +270,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
+		//This function gets the output tree when the user launchs the experiment.
 		function getOutputTree() {
 			$http.get('/experiments/' + $scope.experiment.id + '/output_tree?depth=0')
 				.then(function (outputTree) {
@@ -344,6 +346,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				.then(function (response) {
 					jQuery('#loadingModal').modal('hide');
 					jQuery('#loadingModal').on('hidden.bs.modal', function () {
+						//This is executed when the modal view is hidden
 						$scope.$apply(function () {
 							$location.path('/overview/' + response.data.experimentId);
 						});
@@ -425,7 +428,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			} else {
 				url = '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.fileName;
 			}
-			var fd = new FormData();
+			var fd = new FormData();//FormData ir required to send a file
 			jQuery('#loadingModal').modal('show');
 			fd.append('inputFile', $scope.file);
 			$http.post(url, fd, {
@@ -433,6 +436,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				headers: {
 					'Content-Type': undefined
 				},
+				//Next lines check the progress status of the upload
 				uploadEventHandlers: {
 					progress: function (e) {
 						$scope.progressStatus = e.loaded * 100 / e.total;
@@ -451,17 +455,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			});
 		};
 
+		//Next function is executed when the user set a file in the input
 		$('#file').change(function () {
+			//If the user does not set a name to the file, by default the applicacion asigns the name of the file
 			if (!$('#fileName').val()) {
 				$scope.fileName = $('#file').val().split('\\').pop();
 			}
 		});
 
+		//This function launch a modal view to allow the user to create a new folder
 		$scope.launchCreateFolderModal = function () {
 			jQuery('#newFolderModal').modal('show');
 		};
 
-		//This function allow the user create a new folder.
+		//This function is executed when the user completes the new folder form and submit the form data
 		$scope.createNewFolder = function () {
 			var url = $scope.currentPath == '/' ? '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.folderName + '/' : '/experiments/' + $stateParams.experimentId + "/input?file=" + $scope.currentPath + $scope.folderName + '/';
 
@@ -478,6 +485,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			});
 		};
 
+		//This function is executed when the user clics the delete button of the folder or file in the input tree view
 		$scope.deleteNodeConfirm = function () {
 			$http.delete('/experiments/' + $scope.experiment.id + '/input?file=' + $scope.nodeDelete.id)
 				.then(function (response) {
@@ -502,15 +510,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.subFolder = false;
 		var folderParentList = ['/'];
 
-		//The next two method delete the error and info messages hidding the alerts
-		$scope.clearMessage = function () {
-			$scope.message = null;
-		};
-		$scope.clearErrorMessages = function () {
-			$scope.errors = null;
-		};
-
-		//Gets the initial sources tree root
+		//Gets the sources in the "/" path
 		function getTree() {
 			$http.get('/experiments/' + $stateParams.experimentId + "/src_tree?depth=0")
 				.then(function (response) {
@@ -520,7 +520,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.errors = response.data.errors;
 				});
 		}
-		getTree();
+		getTree();//Executes the previous function
 
 		//This function runs when the user selects an element (file or folder) in the sources tree. If selects a file, the function requests the file data to te server, if no (it's a folder) the function requests to te server the elements cotained in the folder selected.
 		$scope.select = function (node) {
@@ -559,7 +559,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}
 		};
 
-		//This function runs when the user wants to create a new file, the file will be created with the info contained in the editor
+		//This function runs when the user wants to create a new file, if the editor contains some code, this info will be contained in the new file, if the editor is empty, a new empty file will be created
 		$scope.saveNewFile = function () {
 			if ($scope.newFileName !== null) {
 				var url = $scope.currentPath == '/' ? '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.newFileName : '/experiments/' + $scope.experiment.id + "/code?fileId=" + $scope.currentPath + $scope.newFileName;
@@ -609,12 +609,9 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				});
 		}
 
+		//This function sets the current path to show when the user open the modal to create a new folder
 		$scope.launchModal = function () {
 			$scope.folderModal = $scope.currentPath;
-		};
-
-		$scope.launchCreateFolderModal = function () {
-			jQuery('#newFolderModal').modal('show');
 		};
 
 		//Runs when the user wants to create a new folder.

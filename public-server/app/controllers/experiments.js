@@ -20,7 +20,8 @@ exports.list = function (req, res) {
 			switch (response.statusCode) {
 				case 500:
 				case 401:
-					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					//res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
+					res.redirect('/login');
 					break;
 				case 404:
 				case 400:

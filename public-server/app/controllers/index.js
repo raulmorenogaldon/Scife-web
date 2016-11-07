@@ -36,10 +36,9 @@ exports.signIn = function (req, res) {
 		method: 'POST',
 		json: {
 			"username": req.body.username,
-			"password": SHA(req.body.password)
+			"password": SHA(req.body.password).toString()
 		}
 	}, function (err, response, body) {
-		console.log(body)
 		if (err) {
 			res.status(505).json({
 				errors: err
