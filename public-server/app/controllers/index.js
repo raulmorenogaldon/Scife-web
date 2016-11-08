@@ -47,11 +47,14 @@ exports.signIn = function (req, res) {
 			switch (response.statusCode) {
 				case 500:
 				case 401:
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
 					break;
 				case 200:
+				res.clearCookie("token");
 					res.cookie("token", body.token, { "domain": domain, "expires": 0 });
 					if (req.query.url) {
 						res.redirect(req.query.url);
@@ -62,7 +65,6 @@ exports.signIn = function (req, res) {
 				default:
 					res.send("There is no status code from the internal server.");
 			}
-
 		}
 	});
 };

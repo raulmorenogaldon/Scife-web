@@ -33,13 +33,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	/**
 	 * This is the controller executed in the index view.
 	 */
-	.controller('IndexCtrl', ['$scope', '$http', 'PanelColors', function ($scope, $http, PanelColors) {
+	.controller('IndexCtrl', ['$scope', '$http', 'PanelColors', 'GlobalFunctions', function ($scope, $http, PanelColors, GlobalFunctions) {
 		//Get the experiment list, then when the info es available, ask the applications info to add to each experiment the info of its application in the field "app".
 		function getList() {
 			jQuery('#loadingModal').modal('show');
 			$http.get('/experiments/list')
 				.then(function (response) {
-					console.log(response.data)
 					$scope.experiments = response.data;
 					if (response.data.length) {
 						$http.get('/applications/list/')
@@ -52,7 +51,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 									jQuery('#loadingModal').modal('hide');
 								});
 							}, function (response) {
-								$scope.errors = response.data.errors;
+								GlobalFunctions.handleErrors(response, $scope);
 								jQuery('#loadingModal').modal('hide');
 							});
 					} else {
@@ -60,7 +59,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 						$scope.message = "There is not experiments yet.";
 					}
 				}, function (response) {
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 					jQuery('#loadingModal').modal('hide');
 				});
 		}
@@ -78,7 +77,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					getList();
 					$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
 				}, function (response) {
-					$scope.errors = "There is an error in the request";
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 			jQuery('#deleteModal').modal('hide');
 		};
@@ -90,7 +89,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	/**
 	 *This controler is executed in the overview view. 
 	 */
-	.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', 'TreeViewFunctions', function ($scope, $http, $stateParams, $location, PanelColors, TreeViewFunctions) {
+	.controller('OverviewCtrl', ['$scope', '$http', '$stateParams', '$location', 'PanelColors', 'TreeViewFunctions', 'GlobalFunctions', function ($scope, $http, $stateParams, $location, PanelColors, TreeViewFunctions, GlobalFunctions) {
 		var interval;
 		var defaultSizes = null;
 		$scope.Math = window.Math;
@@ -108,11 +107,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					.then(function (app) {
 						$scope.experiment.app = app.data;
 					}, function (app) {
-						$scope.errors = app.data.errors;
+						GlobalFunctions.handleErrors(app, $scope);
 					});
 				getOutputTree();
 			}, function (response) {
-				$scope.errors = response.data.errors;
+				GlobalFunctions.handleErrors(response, $scope);
 			});
 
 		//Get image and size list used when the user wants to launch the experiment
@@ -125,10 +124,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 						defaultSizes = response.data;
 						$scope.getSizesOfImage();//Keeps only the sizes available for this image.
 					}, function (response) {
-						$scope.errors = response.data.err;
+						GlobalFunctions.handleErrors(response, $scope);
 					});
 			}, function (response) {
-				$scope.errors = response.data.errors;
+				GlobalFunctions.handleErrors(response, $scope);
 			});
 
 		//This function starts the counter to run the function $scope.refreshStatus() each 5 seconds while the experiment status wouldn't be "failed_*", "done" or "created"
@@ -147,7 +146,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				.then(function (response) {
 					$scope.experiment.status = response.data.status;
 				}, function (response) {
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		};
 
@@ -180,13 +179,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				'nodes': $scope.nodesSelected,
 				'image_id': $scope.imageSelected.id,
 				'size_id': $scope.sizeSelected.id
-			})
-				.then(function (response) {
-					$scope.message = response.data.message;
-					activateInterval();
-				}, function (response) {
-					$scope.errors = response.data.errors;
-				});
+			}).then(function (response) {
+				$scope.message = response.data.message;
+				activateInterval();
+			}, function (response) {
+				GlobalFunctions.handleErrors(response, $scope);
+			});
 			jQuery('#launchModal').modal('hide');
 			activateInterval();
 		};
@@ -198,7 +196,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.message = response.data.message;
 					activateInterval();
 				}, function (response) {
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		};
 
@@ -212,7 +210,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					});
 				},
 				function (response) {
-					$scope.errors = "There is an error in the request";
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		};
 
@@ -250,7 +248,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				.then(function (response) {
 					$scope.experiment = response.data;
 				}, function (response) {
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		}
 
@@ -276,7 +274,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				.then(function (outputTree) {
 					$scope.experiment.output_tree = outputTree.data.output_tree;
 				}, function (outputTree) {
-					$scope.errors = outputTree.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		}
 	}])
@@ -284,7 +282,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	/**
 	 * This controler is executed in the labels view
 	 */
-	.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', function ($scope, $http, $stateParams) {
+	.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'GlobalFunctions', function ($scope, $http, $stateParams, GlobalFunctions) {
 		$scope.showForm = false;
 		//Get the experiment info and when the info is available gets the application info of the experiment
 		$http.get('/experiments/details/' + $stateParams.experimentId)
@@ -295,10 +293,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					.then(function (data) {
 						$scope.experiment.app = data.data;
 					}, function (data) {
-						$scope.errors = response.data.errors;
+						GlobalFunctions.handleErrors(response, $scope);
 					});
 			}, function (response) {
-				$scope.errors = response.data.errors;
+				GlobalFunctions.handleErrors(response, $scope);
 			});
 
 		//Submit the labels info to update the experiment.
@@ -316,7 +314,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				$scope.showForm = false;
 				$scope.oldLabels = angular.copy($scope.experiment.labels);
 			}, function (response) {
-				$scope.errors = "There is an error in the request.";
+				GlobalFunctions.handleErrors(response, $scope);
 			});
 		};
 
@@ -328,7 +326,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}])
 
 	//This controler runs in the create view
-	.controller('CreateCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+	.controller('CreateCtrl', ['$scope', '$http', '$location', 'GlobalFunctions', function ($scope, $http, $location, GlobalFunctions) {
 		$scope.experiment = {};
 		//Get the application list available to create the experiment
 		$http.get('/applications/list/')
@@ -336,7 +334,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				$scope.applications = response.data;
 				$scope.experiment.app_id = response.data[0].id;
 			}, function (response) {
-				$scope.errors = response.data.errors;
+				GlobalFunctions.handleErrors(response, $scope);
 			});
 
 		//Send the data to create the new experiment
@@ -353,13 +351,13 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					});
 				}, function (response) {
 					jQuery('#loadingModal').modal('hide');
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		};
 	}])
 
 	//This controler runs in the input data view
-	.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
+	.controller('InputDataCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', 'GlobalFunctions', function ($scope, $http, $stateParams, TreeViewFunctions, GlobalFunctions) {
 		$scope.folderModal = '';
 		$scope.currentPath = '/';
 		$scope.currentFolder = '/';
@@ -373,7 +371,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
 				}, function (response) {
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		}
 		getTree();
@@ -402,7 +400,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.input_tree);
 				}, function (response) {
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		}
 
@@ -450,7 +448,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				$scope.message = "Your file " + $scope.fileName + ' has been saved succesfuly.';
 				jQuery('#loadingModal').modal('hide');
 			}, function (response) {
-				$scope.errors = response.data.errors;
+				GlobalFunctions.handleErrors(response, $scope);
 				jQuery('#loadingModal').modal('hide');
 			});
 		};
@@ -480,7 +478,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.message = 'The folder ' + $scope.currentPath + $scope.folderName + ' has been created succesfully.';
 				});
 			}, function (response) {
-				$scope.errors = response.data.errors;
+				GlobalFunctions.handleErrors(response, $scope);
 				jQuery('#newFolderModal').modal('hide');
 			});
 		};
@@ -495,14 +493,14 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					});
 				},
 				function (response) {
-					$scope.errors = "There is an error in the request";
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		};
 
 	}])
 
 	//This controller runs in the sources view
-	.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', function ($scope, $http, $stateParams, TreeViewFunctions) {
+	.controller('SourcesCtrl', ['$scope', '$http', '$stateParams', 'TreeViewFunctions', 'GlobalFunctions', function ($scope, $http, $stateParams, TreeViewFunctions, GlobalFunctions) {
 		$scope.btnSaveChanges = true;
 		$scope.folderModal = '';
 		$scope.currentPath = '/';
@@ -517,7 +515,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
 				}, function (response) {
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		}
 		getTree();//Executes the previous function
@@ -530,7 +528,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 						$scope.selectedNode = node;
 						editor.setSession(ace.createEditSession(response.data, modelist.getModeForPath(node.label).mode));
 					}, function (response) {
-						$scope.errors = response.data.errors;
+						GlobalFunctions.handleErrors(response, $scope);
 					});
 			} else {
 				folderParentList.push(node.id);
@@ -554,7 +552,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					.then(function (response) {
 						$scope.message = 'File saved succesfully';
 					}, function (response) {
-						$scope.errors = response.data.errors;
+						GlobalFunctions.handleErrors(response, $scope);
 					});
 			}
 		};
@@ -574,7 +572,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 						getTree();
 					}, function (response) {
 						jQuery('#newFileModal').modal('hide');
-						$scope.errors = response.data.errors;
+						GlobalFunctions.handleErrors(response, $scope);
 					});
 
 				$scope.newFileName = null;
@@ -605,7 +603,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					$scope.experiment = response.data;
 					//TreeViewFunctions.addCollapsedProperty($scope.experiment.src_tree);
 				}, function (response) {
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		}
 
@@ -628,7 +626,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					});
 				});
 			}, function (response) {
-				$scope.errors = response.data.errors;
+				GlobalFunctions.handleErrors(response, $scope);
 				jQuery('#newFolderModal').modal('hide');
 			});
 		};
@@ -642,7 +640,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					});
 				},
 				function (response) {
-					$scope.errors = "There is an error in the request";
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		};
 
@@ -690,7 +688,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}])
 
 	//Runs in the logs view
-	.controller('LogsCtrl', ['$scope', '$http', '$stateParams', '$location', function ($scope, $http, $stateParams, $location) {
+	.controller('LogsCtrl', ['$scope', '$http', '$stateParams', '$location', 'GlobalFunctions', function ($scope, $http, $stateParams, $location, GlobalFunctions) {
 		//Get the experiment info and its logs
 		var selectedName;
 
@@ -710,20 +708,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 						}
 					}
 				}, function (response) {
-					$scope.errors = response.data.errors;
+					GlobalFunctions.handleErrors(response, $scope);
 				});
 		};
 		$scope.getLog();
 	}])
 
 	//Runs in the logs view
-	.controller('MapCtrl', ['$scope', '$http', '$stateParams', '$location', '$window', function ($scope, $http, $stateParams, $location, $window) {
+	.controller('MapCtrl', ['$scope', '$http', '$stateParams', '$location', 'GlobalFunctions', function ($scope, $http, $stateParams, $location, GlobalFunctions) {
 		//Get the experiment info and its application.
 		$http.get('/experiments/details/' + $stateParams.experimentId)
 			.then(function (response) {
 				$scope.experiment = response.data;
 			}, function (response) {
-				$scope.errors = response.data.errors;
+				GlobalFunctions.handleErrors(response, $scope);
 			});
 
 		$scope.latitude = 38.981;

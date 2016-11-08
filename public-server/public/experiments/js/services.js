@@ -1,31 +1,18 @@
 angular.module('Experiments')
-	.service('ExpDataService', function () {
-		var exp;
-		return {
-			get: function () {
-				return exp;
-			},
-			set: function (newExp) {
-				exp = newExp;
-			},
-			clean: function () {
-				exp = {};
+	.service('GlobalFunctions', function ($location) {
+		function handleErrors(response, $scope) {
+			switch (response.status) {
+				case 401:
+					window.location.href = window.location.pathname && window.location.hash ? "/login?url=" + window.location.pathname + window.location.hash : "/login";
+					break;
+				default:
+					$scope.errors = response.data.errors;
+					break;
 			}
-		};
-	})
-	.service('AppDataService', function () {
-		var app;
+		}
 		return {
-			get: function () {
-				return app;
-			},
-			set: function (newApp) {
-				app = newApp;
-			},
-			clean: function () {
-				app = {};
-			}
-		};
+			handleErrors: handleErrors
+		}
 	})
 
 	.service('PanelColors', function () {
@@ -78,18 +65,19 @@ angular.module('Experiments')
 		};
 	})
 
+
 	.directive('fileModel', ['$parse', function ($parse) {
 		return {
 			restrict: 'A',
 			link: function (scope, element, attrs) {
-            var model = $parse(attrs.fileModel);
-            var modelSetter = model.assign;
+				var model = $parse(attrs.fileModel);
+				var modelSetter = model.assign;
 
-            element.bind('change', function () {
+				element.bind('change', function () {
 					scope.$apply(function () {
 						modelSetter(scope, element[0].files[0]);
 					});
-            });
+				});
 			}
 		};
 	}]);

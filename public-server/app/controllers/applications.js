@@ -17,6 +17,9 @@ exports.list = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json(response.statusCode, { err: body.errors });
@@ -46,6 +49,9 @@ exports.details = function (req, res) {
 		} else {
 			switch (response.statusCode) {
 				case 500:
+				case 401:
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
+					break;
 				case 404:
 				case 400:
 					res.status(response.statusCode).json({ errors: body });
