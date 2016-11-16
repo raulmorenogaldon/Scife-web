@@ -1,7 +1,11 @@
+/**
+ * This file is loaded in the map view
+ */
 function initMap() {
-	var EARTH_R = 6371000;
+	var EARTH_R = 6371000; //Define the earth radious
 	var map, marker, rectangle, center, rectangleWidth, rectangleHeight, changeInputBounds = true;
 
+	//Initialize the map and set initial positon, the zoom and the map type (TERRAIN)
 	map = new google.maps.Map(document.getElementById('map'), {
 		scaleControl: true,
 		center: { lat: 38.981, lng: -1.856 },
@@ -9,13 +13,16 @@ function initMap() {
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
 
+	//Get the lat and lng of the map center
+	center = map.getCenter();
+
+	//Define the click event, when the user click the map, this event will be triggered
 	map.addListener('click', function (e) {
 		center = e.latLng;
 		moveMarker();
 	});
 
-	center = map.getCenter();
-
+	//Create a marker in the center of the map
 	marker = new google.maps.Marker({
 		position: center,
 		map: map,
@@ -23,6 +30,7 @@ function initMap() {
 		title: "Drag me!",
 	});
 
+	//Create a rectangle and sets its properties
 	rectangle = new google.maps.Rectangle({
 		strokeColor: '#FF0000',
 		strokeOpacity: 0.6,
@@ -34,31 +42,30 @@ function initMap() {
 		draggable: false,
 		map: map,
 	});
+
 	setBoundsFromInputs();
+
+	//This event will be triggered when the user drags the rectangle
 	marker.addListener('dragend', function (e) {
 		center = e.latLng;
 		moveMarker();
 	});
+
+	//This event will be triggered when the user change the bounds of the rectangle
 	rectangle.addListener('bounds_changed', boundsChanged);
 
+	//This function update the info of the marker position. Also sets the #latitude and #longitude input values
 	function moveMarker() {
 		marker.setPosition(center);
 		marker.setVisible(true);
-		changeInputBounds = false;
+		changeInputBounds = false;//Diable the flag because the change is for resize of the rectangle, not for the change of the width and heigh inputs
 		setBoundsFromInputs();
 		$('#latitude').val(center.lat());
 		$('#longitude').val(center.lng());
 		map.panTo(center);
 	}
 
-	/*
-		function distance(lat1, lon1, lat2, lon2) {
-			var p = 0.017453292519943295;    // Math.PI / 180
-			var c = Math.cos;
-			var a = 0.5 - c((lat2 - lat1) * p) / 2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-			return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-		}
-	*/
+	//This function calculates the bound changes when the user resize the rectangle. It also cumputes the Width and Heigh values of the rectangle.
 	function boundsChanged(event) {
 		center = rectangle.getBounds().getCenter();
 		var sw = rectangle.getBounds().getSouthWest(), ne = rectangle.getBounds().getNorthEast();
@@ -74,6 +81,7 @@ function initMap() {
 		changeInputBounds = true;
 	}
 
+	//This function is executed when the user any of the buttons with the setCenterButton class. This function sets the center of the map, marker and the rectangle with the #latitude and #longitude inputs
 	$('.setCenterButton').click(function () {
 		if ($('#latitude').val() && $('#longitude').val()) {
 			center = new google.maps.LatLng({ lat: parseFloat($('#latitude').val()), lng: parseFloat($('#longitude').val()) });
@@ -83,6 +91,7 @@ function initMap() {
 		}
 	});
 
+	//This function is executed when the user press any of the buttons with the setBoundsButton class. This functioin adjust the bounds of the rectangle.
 	$('.setBoundsButton').click(function () {
 		if ($('#height').val() && $('#width').val()) {
 			changeInputBounds = false;
@@ -91,6 +100,13 @@ function initMap() {
 		}
 	});
 
+	/**
+	 * This function calculates lat and lng of the displacement from a point (lat, lng).
+	 * lat: the initial latitude
+	 * lng: the initial longitude
+	 * dist: the distance of the displacement in meters
+	 * theta: the angle of the displacement
+	 */
 	function displace(lat, lng, dist, theta) {
 		var latG = lat * Math.PI / 180,
 			lngG = lng * Math.PI / 180,
@@ -104,7 +120,13 @@ function initMap() {
 		return [(dstLat * 180 / Math.PI), (dstLng * 180 / Math.PI)];
 	}
 
-
+	/**
+	 * This function calculates the distance between two points
+	 * lat1: the latitude of the first point
+	 * lng1: the longitude of the first point
+	 * lat2: the longitude of the second point
+	 * lng2: the longitude of the second point
+	 */
 	function distance(lat1, lng1, lat2, lng2) {
 		lat1 = lat1 * Math.PI / 180;
 		lng1 = lng1 * Math.PI / 180;
@@ -119,6 +141,7 @@ function initMap() {
 		return EARTH_R * c;
 	}
 
+	//This function set the bounds of the rectangle from the input values of the height and width
 	function setBoundsFromInputs() {
 		rectangle.setBounds({
 			north: displace(center.lat(), center.lng(), $('#height').val() * 1000 / 2.0, 0)[0],
@@ -129,6 +152,7 @@ function initMap() {
 	}
 }
 
+//Disable some keys of the keyboard, to allow only insert numbers
 $(".inputNumber").keydown(function (e) {
 	// Allow: backspace, delete
 	if ($.inArray(e.keyCode, [46, 8, 109, 110, 190]) !== -1 ||
@@ -149,12 +173,14 @@ $(".inputNumber").keydown(function (e) {
 	}
 });
 
+
 $(function () {
+	//Configure the date picker for the start time execution.
 	$('#datetimeStart').datetimepicker({
 		locale: 'en',
-		minDate: moment('20070101','YYYYMMDD'),
-		maxDate: moment().subtract(6, 'hours'),
-		stepping: 60,
+		minDate: moment('20070101', 'YYYYMMDD'),//Set the minimun date the 01/01/2007
+		maxDate: moment().subtract(6, 'hours'),//Set the maximun date to six hours lees than the current date and time
+		stepping: 60, //Set the steps of the clock to hours
 		showTodayButton: true,
 		showClose: true,
 		showClear: true
@@ -162,14 +188,15 @@ $(function () {
 
 	$('#datetimeFinish').datetimepicker({
 		locale: 'en',
-		minDate: $('#datetimeStart').data('DateTimePicker').date(),
-		maxDate: moment().add(12, 'day'),
+		minDate: $('#datetimeStart').data('DateTimePicker').date(),//Set the minimun date and time with the date and time selected in the start picker
+		maxDate: moment().add(12, 'day'),//Sets the maximun date to twelve days after current date
 		stepping: 60,
 		showTodayButton: true,
 		showClose: true,
-		showClear:true
+		showClear: true
 	});
 
+	//This function is triggered when the start picker changes and set the minimun finish date picker with the start picker date
 	$('#datetimeStart').on("dp.change", function (e) {
 		$('#datetimeFinish').data("DateTimePicker").minDate(e.date);
 	});

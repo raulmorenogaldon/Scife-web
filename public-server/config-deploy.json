@@ -1,0 +1,8 @@
+{
+	"sessionSecret": "SesionSecretFormScife",
+	"privateServer": "scife.i3a.uclm.es:4000",
+	"domainServer": "scife.com",
+	"publicHttpServerPort": "3000",
+	"publicHttpsServerPort": "3003",
+	"development": false
+}
