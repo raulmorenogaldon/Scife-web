@@ -3,7 +3,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	/**
 	 *This controler defines the sidebar options and for each option the url to access it. 
 	 */
-	.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', function ($scope, $location, $stateParams) {
+	.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', '$http', 'GlobalFunctions', function ($scope, $location, $stateParams, $http, GlobalFunctions) {
 		$scope.links = [
 			{
 				name: "Overview",
@@ -28,6 +28,13 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.isActive = function (route) {
 			return route === $location.path();
 		};
+
+		$http.get('/experiments/' + $stateParams.experimentId + '/executions')
+			.then(function (response) {
+				$scope.executions = response.data;
+			}, function (response) {
+				GlobalFunctions.handleErrors(response, $scope);
+			});
 	}])
 
 	/**

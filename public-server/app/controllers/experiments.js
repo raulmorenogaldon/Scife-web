@@ -680,3 +680,37 @@ exports.deleteSourceFile = function (req, res) {
 		}
 	});
 };
+
+/**
+ * Method: GET
+ * Get the output tree with the files generated when the experiment is launched
+ */
+exports.executions = function (req, res) {
+	request({
+		headers: { "x-access-token": req.cookies.token },
+		url: privateServer + '/experiments/' + req.params.experimentId + '/executions',
+		method: 'GET'
+	}, function (err, response, body) {
+		if (err) {
+			res.json({
+				errors: err
+			});
+		} else {
+			switch (response.statusCode) {
+				case 500:
+				case 401:
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
+					break;
+				case 404:
+				case 400:
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
+					break;
+				case 200:
+					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
+					break;
+				default:
+					res.send("There is no status code from the internal server.");
+			}
+		}
+	});
+};

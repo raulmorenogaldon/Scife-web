@@ -38,4 +38,5 @@ router.get('/:experimentId/output_tree', expCtrl.getOutputTree);
 router.get('/:experimentId/download', expCtrl.downloadFile);
 router.post('/:experimentId/input', expCtrl.uploadFile);
 router.delete('/:experimentId/input', expCtrl.deleteInputFile);
+router.get('/:experimentId/executions', expCtrl.executions);
 module.exports = router;
