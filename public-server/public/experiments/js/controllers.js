@@ -32,9 +32,19 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$http.get('/experiments/' + $stateParams.experimentId + '/executions')
 			.then(function (response) {
 				$scope.executions = response.data;
+				if($scope.executions){
+					$scope.executions.unshift({"create_date":"Latest"})
+					console.log($scope.executions)
+					$scope.execution=$scope.executions[0];
+				}
 			}, function (response) {
 				GlobalFunctions.handleErrors(response, $scope);
 			});
+
+			$scope.changeExecution = function(){
+				console.log("Execution selected");
+				console.log($scope.execution);
+			}
 	}])
 
 	/**

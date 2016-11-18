@@ -40,3 +40,7 @@ form.bordered p{
 .progress-bar-launch{
 	padding: 4px;
 }
+
+#map{
+height: 600px;
+}
