@@ -4,26 +4,14 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	 *This controler defines the sidebar options and for each option the url to access it. 
 	 */
 	.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', '$http', 'GlobalFunctions', function ($scope, $location, $stateParams, $http, GlobalFunctions) {
-		$scope.links = [
-			{
-				name: "Overview",
-				url: "/overview/" + $stateParams.experimentId
-			}, {
-				name: "Labels",
-				url: "/labels/" + $stateParams.experimentId
-			}, {
-				name: "Input Data",
-				url: "/inputdata/" + $stateParams.experimentId
-			}, {
-				name: "Sources",
-				url: "/sources/" + $stateParams.experimentId
-			}, {
-				name: "Logs",
-				url: "/logs/" + $stateParams.experimentId
-			}, {
-				name: "Map",
-				url: "/map/" + $stateParams.experimentId
-			}];
+		$scope.links = {
+			"Overview": "/overview/" + $stateParams.experimentId,
+			"Labels": "/labels/" + $stateParams.experimentId,
+			"Input Data": "/inputdata/" + $stateParams.experimentId,
+			"Sources": "/sources/" + $stateParams.experimentId,
+			"Logs": "/logs/" + $stateParams.experimentId,
+			"Map": "/map/" + $stateParams.experimentId
+		};
 		//This function allow the sidebar options know if they are selected.
 		$scope.isActive = function (route) {
 			return route === $location.path();
@@ -33,7 +21,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			.then(function (response) {
 				$scope.executions = response.data;
 				if ($scope.executions.length > 0) {
-					$scope.executions.unshift({ "create_date": "Latest" })
+					$scope.executions.unshift({ "create_date": "Latest" });
 					$scope.execution = $scope.executions[0];
 				}
 			}, function (response) {
@@ -41,8 +29,17 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			});
 
 		$scope.changeExecution = function () {
-			console.log("Execution selected");
-			console.log($scope.execution);
+			if ($scope.execution.id && $scope.execution.create_date != 'Latest') {
+				$scope.links['Labels'] = "/labels/" + $stateParams.experimentId + '?exec=' + $scope.execution.id;
+				$scope.links['Input Data'] = "/inputdata/" + $stateParams.experimentId + '?exec=' + $scope.execution.id;
+				$scope.links['Sources'] = "/sources/" + $stateParams.experimentId + '?exec=' + $scope.execution.id;
+				$scope.links['Logs'] = "/logs/" + $stateParams.experimentId + '?exec=' + $scope.execution.id;
+			}else if($scope.execution.create_date == 'Latest'){
+				$scope.links['Labels'] = "/labels/" + $stateParams.experimentId;
+				$scope.links['Input Data'] = "/inputdata/" + $stateParams.experimentId;
+				$scope.links['Sources'] = "/sources/" + $stateParams.experimentId;
+				$scope.links['Logs'] = "/logs/" + $stateParams.experimentId;
+			}
 		}
 	}])
 
