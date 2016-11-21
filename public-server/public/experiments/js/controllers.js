@@ -32,19 +32,18 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$http.get('/experiments/' + $stateParams.experimentId + '/executions')
 			.then(function (response) {
 				$scope.executions = response.data;
-				if($scope.executions){
-					$scope.executions.unshift({"create_date":"Latest"})
-					console.log($scope.executions)
-					$scope.execution=$scope.executions[0];
+				if ($scope.executions.length > 0) {
+					$scope.executions.unshift({ "create_date": "Latest" })
+					$scope.execution = $scope.executions[0];
 				}
 			}, function (response) {
 				GlobalFunctions.handleErrors(response, $scope);
 			});
 
-			$scope.changeExecution = function(){
-				console.log("Execution selected");
-				console.log($scope.execution);
-			}
+		$scope.changeExecution = function () {
+			console.log("Execution selected");
+			console.log($scope.execution);
+		}
 	}])
 
 	/**
@@ -714,6 +713,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.get('/experiments/logs/' + $stateParams.experimentId)
 				.then(function (response) {
 					$scope.experiment = response.data;
+					console.log($scope.experiment)
 					if (response.data.logs) {
 						if (selectedName) {
 							$scope.selected = response.data.logs.find(function (log) {
