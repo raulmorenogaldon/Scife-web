@@ -4,44 +4,35 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	 *This controler defines the sidebar options and for each option the url to access it. 
 	 */
 	.controller('SidebarCtrl', ['$scope', '$location', '$stateParams', '$http', 'GlobalFunctions', function ($scope, $location, $stateParams, $http, GlobalFunctions) {
-		$scope.links = {
-			"Overview": "/overview/" + $stateParams.experimentId,
-			"Labels": "/labels/" + $stateParams.experimentId,
-			"Input Data": "/inputdata/" + $stateParams.experimentId,
-			"Sources": "/sources/" + $stateParams.experimentId,
-			"Logs": "/logs/" + $stateParams.experimentId,
-			"Results": "/results/" + $stateParams.experimentId,
-			"Map": "/map/" + $stateParams.experimentId
-		};
+		$scope.links = [
+			{
+				name: "Overview",
+				url: "/overview/" + $stateParams.experimentId
+			}, {
+				name: "Labels",
+				url: "/labels/" + $stateParams.experimentId
+			}, {
+				name: "Input Data",
+				url: "/inputdata/" + $stateParams.experimentId
+			}, {
+				name: "Sources",
+				url: "/sources/" + $stateParams.experimentId
+			}, {
+				name: "Executions",
+				url: "/executions/" + $stateParams.executionId,
+				disabled: !$stateParams.executionId ? true : false
+			}, {
+				name: "Map",
+				url: "/map/" + $stateParams.experimentId,
+				disabled: true
+			}];
+
+		console.log($scope.links)
 		//This function allow the sidebar options know if they are selected.
 		$scope.isActive = function (route) {
 			return route === $location.path();
 		};
 
-		$http.get('/experiments/' + $stateParams.experimentId + '/executions')
-			.then(function (response) {
-				$scope.executions = response.data;
-				if ($scope.executions.length > 0) {
-					$scope.executions.unshift({ "create_date": "Latest" });
-					$scope.execution = $scope.executions[0];
-				}
-			}, function (response) {
-				GlobalFunctions.handleErrors(response, $scope);
-			});
-
-		$scope.changeExecution = function () {
-			if ($scope.execution.id && $scope.execution.create_date != 'Latest') {
-				$scope.links['Labels'] = "/labels/" + $stateParams.experimentId + '?exec=' + $scope.execution.id;
-				$scope.links['Input Data'] = "/inputdata/" + $stateParams.experimentId + '?exec=' + $scope.execution.id;
-				$scope.links['Sources'] = "/sources/" + $stateParams.experimentId + '?exec=' + $scope.execution.id;
-				$scope.links['Logs'] = "/logs/" + $stateParams.experimentId + '?exec=' + $scope.execution.id;
-			} else if ($scope.execution.create_date == 'Latest') {
-				$scope.links['Labels'] = "/labels/" + $stateParams.experimentId;
-				$scope.links['Input Data'] = "/inputdata/" + $stateParams.experimentId;
-				$scope.links['Sources'] = "/sources/" + $stateParams.experimentId;
-				$scope.links['Logs'] = "/logs/" + $stateParams.experimentId;
-			}
-		}
 	}])
 
 	/**
@@ -741,7 +732,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}])
 
 	//Runs in the results view
-	.controller('ResultsCtrl', ['$scope', '$http', '$stateParams', '$location', 'TreeViewFunctions', 'GlobalFunctions', function ($scope, $http, $stateParams, $location, TreeViewFunctions, GlobalFunctions) {
+	.controller('ExecutionsCtrl', ['$scope', '$http', '$stateParams', '$location', 'TreeViewFunctions', 'GlobalFunctions', function ($scope, $http, $stateParams, $location, TreeViewFunctions, GlobalFunctions) {
 		$scope.currentPath = '/';
 		$scope.currentFolder = '/';
 		$scope.subFolder = false;
@@ -749,7 +740,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//This function gets the output tree when the user launchs the experiment.
 		function getOutputTree() {
-			$http.get('/experiments/' + $stateParams.experimentId + '/output_tree?depth=0')
+			$http.get('/executions/' + $stateParams.executionId + '/output_tree?depth=0')
 				.then(function (response) {
 					$scope.experiment = response.data;
 				}, function (response) {
@@ -760,12 +751,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Dowload the results of the experiment execution
 		$scope.downloadResults = function (id) {
-			window.open('/experiments/downloadresults/' + id);
+			window.open('/executions/' + id + '/downloadresults');
 		};
 
 		//When the experiment in launched the output tree will be showed and then, the user will be able to download any file generated. This function allow the user download such file selected.
 		$scope.downloadFile = function (file) {
-			window.open('/experiments/' + $stateParams.experimentId + '/download?file=' + file.id);
+			window.open('/executions/' + $stateParams.executionId + '/download?file=' + file.id);
 		};
 
 		//This function is executed when the user selects an item in the output tree showed when an experiment is launched. In this case, if the user selects a folder, the output tree will be reloaded and will show the contain of the folder selected
@@ -782,10 +773,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//When the user selects a folder in the output tree, this function gets the contain of the folder selected
 		function getFolderData(folder) {
-			var url = folder == '/' ? '/experiments/' + $stateParams.experimentId + "/output_tree?depth=0" : '/experiments/' + $stateParams.experimentId + "/output_tree?folder=" + folder + '&depth=0';
+			var url = folder == '/' ? '/executions/' + $stateParams.executionId + "/output_tree?depth=0" : '/executions/' + $stateParams.executionId + "/output_tree?folder=" + folder + '&depth=0';
 			$http.get(url)
 				.then(function (response) {
-					$scope.experiment = response.data;
+					console.log(response.data);
 				}, function (response) {
 					GlobalFunctions.handleErrors(response, $scope);
 				});

@@ -1,8 +1,7 @@
 <div class="col-sm-2 col-md-2 sidebar">
-	<select ng-show="executions.length > 0" class="form-control" id="executions" ng-model="execution" ng-options="exec as exec.create_date for exec in executions" ng-change="changeExecution()"></select>
 	<ul class="nav nav-sidebar">
-		<li ng-repeat="(key, value) in links" ng-class="{active:isActive(value)}">
-			<a href="#{{value}}"> {{key}}</a>
+		<li ng-repeat="link in links" ng-class="{active:isActive(link.url), disabled:link.disabled}">
+			<a href="#{{link.url}}"> {{link.name}}</a>
 		</li>
 	</ul>
 </div>

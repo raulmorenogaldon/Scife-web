@@ -196,20 +196,8 @@
 						<div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}">
 							<div class="panel-body">
 								<p class="text-center">
-									<a href="#/labels/{{experiment.id}}?exec={{exec.id}}" class="btn btn-info" aria-label="Left Align" title="Labels">
-										<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-									</a>
-									<a href="#/inputdata/{{experiment.id}}?exec={{exec.id}}" class="btn btn-info" aria-label="Left Align" title="Input Data">
-										<span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-									</a>
-									<a href="#/sources/{{experiment.id}}?exec={{exec.id}}" class="btn btn-info" aria-label="Left Align" title="Sources">
-										<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-									</a>
-									<a href="#/results/{{experiment.id}}?exec={{exec.id}}" class="btn btn-success" aria-label="Left Align" title="Download Results">
-										<span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-									</a>
-									<a href="#/logs/{{experiment.id}}?exec={{exec.id}}" class="btn btn-warning" aria-label="Left Align" title="View logs">
-										<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
+									<a href="#/executions/{{exec.id}}" class="btn btn-info" aria-label="Left Align" title="Labels">
+										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 									</a>
 								</p>
 								<table class="table table-hover table-striped table-bordered">
