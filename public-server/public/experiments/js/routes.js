@@ -41,7 +41,7 @@ var app = angular.module('Experiments')
 
 		//Defines the html templates and the controller when te user acces to the labels route /labels. Return the labels and the sidebar htmls, and their controllers
 		$stateProvider.state('labels', {
-			url: '/labels/:experimentId',
+			url: '/labels/:experimentId?exec',
 			views: {
 				'content': {
 					templateUrl: "/experiments/views/labels.html",
@@ -91,6 +91,20 @@ var app = angular.module('Experiments')
 				'content': {
 					templateUrl: "/experiments/views/logs.html",
 					controller: "LogsCtrl"
+				},
+				'sidebar': {
+					controller: "SidebarCtrl",
+					templateUrl: "/experiments/views/sidebar.html"
+				}
+			}
+		});
+
+		$stateProvider.state('results', {
+			url: '/results/:experimentId?exec',
+			views: {
+				'content': {
+					templateUrl: "/experiments/views/results.html",
+					controller: "ResultsCtrl"
 				},
 				'sidebar': {
 					controller: "SidebarCtrl",
