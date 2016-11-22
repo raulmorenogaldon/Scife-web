@@ -234,6 +234,14 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$scope.limitInstances = Math.min(($scope.imageSelected.quotas.instances.limit - $scope.imageSelected.quotas.instances.in_use), Math.floor(($scope.imageSelected.quotas.cores.limit - $scope.imageSelected.quotas.cores.in_use) / $scope.sizeSelected.cpus), Math.floor(($scope.imageSelected.quotas.ram.limit - $scope.imageSelected.quotas.ram.in_use) / $scope.sizeSelected.ram));
 		};
 
+		$http.get('/experiments/' + $stateParams.experimentId + '/executions')
+			.then(function (response) {
+				$scope.experiment.executions = response.data;
+				console.log($scope.experiment)
+			}, function (response) {
+				GlobalFunctions.handleErrors(response, $scope);
+			});
+
 		/*
 		//Dowload the results of the experiment execution
 		$scope.downloadResults = function (id) {
