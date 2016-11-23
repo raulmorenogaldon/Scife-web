@@ -36,6 +36,7 @@ module.exports = function () {
 	require('../app/routes/images.js')(app);
 	require('../app/routes/applications.js')(app);
 	app.use('/experiments', require('../app/routes/experiments.js'));//In this case the routes are implemented with the Router object of the express.
+	app.use('/executions', require('../app/routes/executions.js'));//In this case the routes are implemented with the Router object of the express.
 
 	//Set the folder where are the public files
 	app.use(express.static('./public'));

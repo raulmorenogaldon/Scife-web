@@ -26,8 +26,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				url: "/map/" + $stateParams.experimentId,
 				disabled: true
 			}];
-
-		console.log($scope.links)
 		//This function allow the sidebar options know if they are selected.
 		$scope.isActive = function (route) {
 			return route === $location.path();
@@ -115,6 +113,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 						$scope.experiment.app = app.data;
 					}, function (app) {
 						GlobalFunctions.handleErrors(app, $scope);
+					});
+				$http.get('/executions?exp=' + $stateParams.experimentId)
+					.then(function (response) {
+						$scope.experiment.executions = response.data;
+					}, function (response) {
+						GlobalFunctions.handleErrors(response, $scope);
 					});
 			}, function (response) {
 				GlobalFunctions.handleErrors(response, $scope);
@@ -225,14 +229,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$scope.limitInstances = Math.min(($scope.imageSelected.quotas.instances.limit - $scope.imageSelected.quotas.instances.in_use), Math.floor(($scope.imageSelected.quotas.cores.limit - $scope.imageSelected.quotas.cores.in_use) / $scope.sizeSelected.cpus), Math.floor(($scope.imageSelected.quotas.ram.limit - $scope.imageSelected.quotas.ram.in_use) / $scope.sizeSelected.ram));
 		};
 
-		$http.get('/experiments/' + $stateParams.experimentId + '/executions')
-			.then(function (response) {
-				$scope.experiment.executions = response.data;
-				console.log($scope.experiment)
-			}, function (response) {
-				GlobalFunctions.handleErrors(response, $scope);
-			});
-
 		/*
 		//Dowload the results of the experiment execution
 		$scope.downloadResults = function (id) {
@@ -300,7 +296,6 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	 * This controler is executed in the labels view
 	 */
 	.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'GlobalFunctions', function ($scope, $http, $stateParams, GlobalFunctions) {
-		console.log($stateParams.exec);
 		$scope.showForm = false;
 		//Get the experiment info and when the info is available gets the application info of the experiment
 		$http.get('/experiments/details/' + $stateParams.experimentId)
@@ -732,71 +727,91 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	}])
 
 	//Runs in the results view
-	.controller('ExecutionsCtrl', ['$scope', '$http', '$stateParams', '$location', 'TreeViewFunctions', 'GlobalFunctions', function ($scope, $http, $stateParams, $location, TreeViewFunctions, GlobalFunctions) {
+	.controller('ExecutionsCtrl', ['$scope', '$http', '$stateParams', '$location', 'TreeViewFunctions', 'GlobalFunctions','PanelColors', function ($scope, $http, $stateParams, $location, TreeViewFunctions, GlobalFunctions,PanelColors) {
 		$scope.currentPath = '/';
 		$scope.currentFolder = '/';
 		$scope.subFolder = false;
 		var folderParentList = ['/'];
+		$scope.pageSelected = 'Overview';
+		$scope.panelColors = PanelColors;
 
-		//This function gets the output tree when the user launchs the experiment.
-		function getOutputTree() {
-			$http.get('/executions/' + $stateParams.executionId + '/output_tree?depth=0')
-				.then(function (response) {
-					$scope.experiment = response.data;
-				}, function (response) {
-					GlobalFunctions.handleErrors(response, $scope);
-				});
-		}
-		getOutputTree();
+		$http.get('/executions/' + $stateParams.executionId)
+			.then(function (response) {
+				$scope.execution = response.data;
+				console.log($scope.execution)
+			}, function (response) {
+				GlobalFunctions.handleErrors(response, $scope);
+			});
 
-		//Dowload the results of the experiment execution
-		$scope.downloadResults = function (id) {
-			window.open('/executions/' + id + '/downloadresults');
-		};
-
-		//When the experiment in launched the output tree will be showed and then, the user will be able to download any file generated. This function allow the user download such file selected.
-		$scope.downloadFile = function (file) {
-			window.open('/executions/' + $stateParams.executionId + '/download?file=' + file.id);
-		};
-
-		//This function is executed when the user selects an item in the output tree showed when an experiment is launched. In this case, if the user selects a folder, the output tree will be reloaded and will show the contain of the folder selected
-		$scope.select = function (node) {
-			if (node.children.length || node.id.slice(-1) == '/') {
-				folderParentList.push(node.id);
-				$scope.currentPath = node.id;
-				$scope.currentFolder = node.label;
-				TreeViewFunctions.getFolderFromPath(node.id);
-				getFolderData(node.id);
-				$scope.subFolder = true;
-			}
-		};
-
-		//When the user selects a folder in the output tree, this function gets the contain of the folder selected
-		function getFolderData(folder) {
-			var url = folder == '/' ? '/executions/' + $stateParams.executionId + "/output_tree?depth=0" : '/executions/' + $stateParams.executionId + "/output_tree?folder=" + folder + '&depth=0';
-			$http.get(url)
-				.then(function (response) {
-					console.log(response.data);
-				}, function (response) {
-					GlobalFunctions.handleErrors(response, $scope);
-				});
+		$scope.selectPagination = function (select) {
+			$scope.pageSelected = select;
 		}
 
-		//This function allow the user return to the previous folder in the output tree.
-		$scope.folderUp = function () {
-			if (folderParentList.length > 1) {
-				folderParentList.pop();
-				$scope.currentPath = folderParentList[folderParentList.length - 1];
-				if (folderParentList[folderParentList.length - 1] === '/') {
-					getOutputTree();
-					$scope.subFolder = false;
-					$scope.currentFolder = '/';
-				} else {
-					getFolderData(folderParentList[folderParentList.length - 1], 0);
-					$scope.currentFolder = TreeViewFunctions.getFolderFromPath($scope.currentPath);
+		$scope.isActive = function (page) {
+			return page == $scope.pageSelected;
+		};
+
+		/*
+				//This function gets the output tree when the user launchs the experiment.
+				function getOutputTree() {
+					$http.get('/executions/' + $stateParams.executionId + '/outputtree?depth=0')
+						.then(function (response) {
+							console.log(response.data);
+						}, function (response) {
+							GlobalFunctions.handleErrors(response, $scope);
+						});
 				}
-			}
-		};
+				getOutputTree();
+		
+				//Dowload the results of the experiment execution
+				$scope.downloadResults = function (id) {
+					window.open('/executions/' + id + '/downloadresults');
+				};
+		
+				//When the experiment in launched the output tree will be showed and then, the user will be able to download any file generated. This function allow the user download such file selected.
+				$scope.downloadFile = function (file) {
+					window.open('/executions/' + $stateParams.executionId + '/download?file=' + file.id);
+				};
+		
+				//This function is executed when the user selects an item in the output tree showed when an experiment is launched. In this case, if the user selects a folder, the output tree will be reloaded and will show the contain of the folder selected
+				$scope.select = function (node) {
+					if (node.children.length || node.id.slice(-1) == '/') {
+						folderParentList.push(node.id);
+						$scope.currentPath = node.id;
+						$scope.currentFolder = node.label;
+						TreeViewFunctions.getFolderFromPath(node.id);
+						getFolderData(node.id);
+						$scope.subFolder = true;
+					}
+				};
+		
+				//When the user selects a folder in the output tree, this function gets the contain of the folder selected
+				function getFolderData(folder) {
+					var url = folder == '/' ? '/executions/' + $stateParams.executionId + "/outputtree?depth=0" : '/executions/' + $stateParams.executionId + "/outputtree?folder=" + folder + '&depth=0';
+					$http.get(url)
+						.then(function (response) {
+							console.log(response.data);
+						}, function (response) {
+							GlobalFunctions.handleErrors(response, $scope);
+						});
+				}
+		
+				//This function allow the user return to the previous folder in the output tree.
+				$scope.folderUp = function () {
+					if (folderParentList.length > 1) {
+						folderParentList.pop();
+						$scope.currentPath = folderParentList[folderParentList.length - 1];
+						if (folderParentList[folderParentList.length - 1] === '/') {
+							getOutputTree();
+							$scope.subFolder = false;
+							$scope.currentFolder = '/';
+						} else {
+							getFolderData(folderParentList[folderParentList.length - 1], 0);
+							$scope.currentFolder = TreeViewFunctions.getFolderFromPath($scope.currentPath);
+						}
+					}
+				};
+		*/
 	}])
 
 	//Runs in the logs view
