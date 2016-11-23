@@ -48,9 +48,7 @@ angular.module('Experiments')
 		};
 	})
 
-	//This service implements some functions used in the treeview library
 	.service('TreeViewFunctions', function () {
-		//This function is not used because now, the nodes of the trees does not show any children, the deep tree is 0.
 		function addCollapse(obj) {
 			obj.forEach(function (o) {
 				if (o.children.length > 0) {
@@ -60,7 +58,6 @@ angular.module('Experiments')
 			});
 		}
 
-		//This function get the folder from a path passed as parameter
 		function getFolderFromPathFunction(path) {
 			var folders = path.substring(0, path.length - 1).split('/');
 			return folders[folders.length - 1];
@@ -72,8 +69,6 @@ angular.module('Experiments')
 		};
 	})
 
-
-	//This directive is used in the input file functionality, because the file can't be passed as json object
 	.directive('fileModel', ['$parse', function ($parse) {
 		return {
 			restrict: 'A',

@@ -105,10 +105,6 @@ var app = angular.module('Experiments')
 				'content': {
 					templateUrl: "/experiments/views/executions.html",
 					controller: "ExecutionsCtrl"
-				},
-				'sidebar': {
-					controller: "SidebarCtrl",
-					templateUrl: "/experiments/views/sidebar.html"
 				}
 			}
 		});

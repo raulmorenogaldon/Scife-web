@@ -41,13 +41,11 @@ exports.list = function (req, res) {
  * Get the details of the experiment as a Json object
  */
 exports.details = function (req, res) {
-	console.log(privateServer + '/executions/' + req.params.executionId)
 	request({
 		headers: { "x-access-token": req.cookies.token },
 		url: privateServer + '/executions/' + req.params.executionId,
 		method: 'GET'
 	}, function (err, response, body) {
-			console.log(body)
 		if (err) {
 			res.json({
 				errors: err
@@ -139,7 +137,7 @@ exports.logs = function (req, res) {
 exports.download = function (req, res) {
 	request({
 		headers: { "x-access-token": req.cookies.token },
-		"url": privateServer + '/experiments/' + req.params.executionId + "/download?file=" + req.query.file
+		"url": privateServer + '/executions/' + req.params.executionId + "/download?file=" + req.query.file
 	}).pipe(res);
 };
 
@@ -150,13 +148,13 @@ exports.download = function (req, res) {
 exports.getOutputTree = function (req, res) {
 	var url;
 	if (req.query.folder && req.query.depth) {
-		url = privateServer + '/executions/' + req.params.experimentId + "/outputtree?folder=" + req.query.folder + '&depth=' + req.query.depth;
+		url = privateServer + '/executions/' + req.params.executionId + "/outputtree?folder=" + req.query.folder + '&depth=' + req.query.depth;
 	} else if (!req.query.folder && req.query.depth) {
-		url = privateServer + '/executions/' + req.params.experimentId + "/outputtree?depth=" + req.query.depth;
+		url = privateServer + '/executions/' + req.params.executionId + "/outputtree?depth=" + req.query.depth;
 	} else if (req.query.folder && !req.query.depth) {
-		url = privateServer + '/executions/' + req.params.experimentId + "/outputtree?folder=" + req.query.folder;
+		url = privateServer + '/executions/' + req.params.executionId + "/outputtree?folder=" + req.query.folder;
 	} else {
-		url = privateServer + '/executions/' + req.params.experimentId + "/outputtree";
+		url = privateServer + '/executions/' + req.params.executionId + "/outputtree";
 	}
 	request({
 		headers: { "x-access-token": req.cookies.token },

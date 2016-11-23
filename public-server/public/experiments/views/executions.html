@@ -1,6 +1,5 @@
-<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main">
-	<h3><strong>{{execution.name}}</strong> - Execution</h3>
-	<hr>
+<div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+	<h3><strong>{{execution.exp_name}}</strong> - Execution</h3>
 	<div class="row">
 		<alert-messages></alert-messages>
 	</div>
@@ -14,9 +13,8 @@
 			</ul>
 		</nav>
 	</div>
-	<div class="col-md-10 col-md-offset-1">
-
-		<div ng-show="pageSelected == 'Overview'">
+	<div class="col-md-12">
+		<div ng-show="pageSelected == 'Overview'" class="col-md-10 col-md-offset-1">
 			<div class="panel" ng-class="panelColors.getColorClass(execution.status)">
 				<div class="panel-heading text-center" role="tab">
 					<h3 class="panel-title">{{execution.name || "Nombre"}}</strong>
@@ -24,7 +22,7 @@
 				</div>
 				<div class="panel-body">
 					<p class="text-center">
-						<a href="#/executions/{{execution.id}}" class="btn btn-info" aria-label="Left Align" title="Labels">
+						<a href="#/overview/{{execution.id}}" class="btn btn-info" aria-label="Left Align" title="Labels">
 							<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 						</a>
 					</p>
@@ -37,7 +35,7 @@
 						<tbody>
 							<tr>
 								<td>Name</td>
-								<td>{{execution.name}}</td>
+								<td>{{execution.exp_name}}</td>
 							</tr>
 							<tr>
 								<td>Create Date</td>
@@ -57,24 +55,23 @@
 			</div>
 		</div>
 
-		<div ng-show="pageSelected == 'Output Tree'">
-			<div ng-show="!experiment.output_tree || experiment.output_tree.length <= 0" class="alert alert-warning col-md-10 col-md-offset-1">
-				No results yet. Please run the experiment first.
+		<div class="col-md-10 col-md-offset-1" ng-show="pageSelected == 'Labels'">
+			<div ng-show="!execution.labels || execution.labels <= 0" class="alert alert-warning col-md-10 col-md-offset-1 text-center">
+				There is no labels of this execution, please create it first.
 			</div>
 		</div>
 
-
-
-
-
-
-
-		<div ng-show="pageSelected == 'Logs'">
-			<div class="row" ng-show="!errors && experiment.output_tree.length > 0">
+		<div ng-show="pageSelected == 'Output Tree'" class="col-md-10 col-md-offset-1">
+			<div ng-show="!execution.output_tree || execution.output_tree.length <= 0" class="alert alert-warning col-md-10 col-md-offset-1 text-center">
+				No output files yet. Please run the experiment first.
+			</div>
+			<div class="row" ng-show="execution.output_tree.length > 0">
 				<div class="text-center">
-					<button ng-disabled='experiment.status != "done"' class="btn btn-lg btn-success" ng-click="downloadResults(experiment.id)">Dowload Results</button>
+					<!--
+					<button ng-disabled='execution.status != "done"' class="btn btn-lg btn-success" ng-click="downloadResults(execution.id)">Dowload Results</button>
+					-->
 				</div>
-				<div class="col-md-6 col-md-offset-3">
+				<div class="col-md-8 col-md-offset-2">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title text-center"><strong>Output data</strong></h4>
@@ -88,12 +85,31 @@
 							</div>
 						</div>
 						<div class="panel-body">
-							<div class="treeview tree-model-download" data-angular-treeview="true" data-tree-id="output_tree" data-tree-model="experiment.output_tree"
+							<div class="treeview tree-model-download" data-angular-treeview="true" data-tree-id="output_tree" data-tree-model="execution.output_tree"
 								data-node-id="id" data-node-label="label" data-node-children="children" data-node-select-function="select" data-node-download-function="downloadFile">
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div ng-show="pageSelected == 'Logs'" class="col-md-12">
+			<div ng-show="!execution.logs || execution.logs <= 0" class="alert alert-warning col-md-10 col-md-offset-1 text-center">
+				No logs yet. Please run the experiment first.
+			</div>
+			<div class="col-md-6 col-md-offset-3 text-center" ng-show="execution.logs > 0">
+				<div class="input-group ">
+					<select class="form-control" data-ng-show="execution.logs.length" name="logs" id="logs" ng-model="logSelected" ng-options="log as log.name for log in execution.logs"></select>
+					<span class="input-group-btn">
+			<button class="btn btn-primary" data-ng-click="getLogs()">Refresh logs</button>
+		</span>
+				</div>
+			</div>
+			<div class="col-md-12 max-height-650" data-ng-show="execution.logs.length">
+				<h4 class="text-center">{{logSelected.content.name}}</h4>
+				<pre>
+					{{logSelected.content}}
+				</pre>
 			</div>
 		</div>
 	</div>
