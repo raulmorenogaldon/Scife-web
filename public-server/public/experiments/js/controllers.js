@@ -101,10 +101,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		*/
 
 		//Get the experiment info and its application.
-		$http.get('/experiments/details/' + $stateParams.experimentId)
+		$http.get('/experiments/' + $stateParams.experimentId)
 			.then(function (response) {
 				$scope.experiment = response.data;
-				$http.get('/applications/details/' + response.data.app_id)
+				$http.get('/applications/' + response.data.app_id)
 					.then(function (app) {
 						$scope.experiment.app = app.data;
 					}, function (app) {
@@ -148,7 +148,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Get the experiment info and updates its status
 		$scope.refreshStatus = function () {
-			$http.get('/experiments/details/' + $stateParams.experimentId)
+			$http.get('/experiments/' + $stateParams.experimentId)
 				.then(function (response) {
 					$scope.experiment.status = response.data.status;
 				}, function (response) {
@@ -181,7 +181,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Sends the request to launch an experiment by its ID, the data required to launch the experiment (nodes, image and size) is passed in the body.
 		$scope.launchSubmit = function () {
-			$http.post('/experiments/launch/' + $scope.experiment.id, {
+			$http.post('/experiments/' + $scope.experiment.id + '/launch', {
 				'nodes': $scope.nodesSelected,
 				'image_id': $scope.imageSelected.id,
 				'size_id': $scope.sizeSelected.id
@@ -197,7 +197,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Sends the request to reset the experiment whose ID is passed in the url
 		$scope.reset = function () {
-			$http.post('/experiments/reset/' + $scope.experiment.id)
+			$http.post('/experiments/' + $scope.experiment.id + '/reset')
 				.then(function (response) {
 					$scope.message = response.data.message;
 					activateInterval();
@@ -228,7 +228,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		/*
 		//Dowload the results of the experiment execution
 		$scope.downloadResults = function (id) {
-			window.open('/experiments/downloadresults/' + id);
+			window.open('/experiments/' + id+'downloadresults/');
 		};
 
 		//When the experiment in launched the output tree will be showed and then, the user will be able to download any file generated. This function allow the user download such file selected.
@@ -294,11 +294,11 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	.controller('LabelsCtrl', ['$scope', '$http', '$stateParams', 'GlobalFunctions', function ($scope, $http, $stateParams, GlobalFunctions) {
 		$scope.showForm = false;
 		//Get the experiment info and when the info is available gets the application info of the experiment
-		$http.get('/experiments/details/' + $stateParams.experimentId)
+		$http.get('/experiments/' + $stateParams.experimentId)
 			.then(function (response) {
 				$scope.experiment = response.data;
 				$scope.oldLabels = angular.copy(response.data.labels);//Backups the current labes before modifiying
-				$http.get('/applications/details/' + $scope.experiment.app_id)
+				$http.get('/applications/' + $scope.experiment.app_id)
 					.then(function (data) {
 						$scope.experiment.app = data.data;
 					}, function (data) {
@@ -702,7 +702,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		$scope.getLog = function () {
 			selectedName = $scope.selected ? $scope.selected.name : null;
-			$http.get('/experiments/logs/' + $stateParams.experimentId)
+			$http.get('/experiments/' + $stateParams.experimentId + '/logs')
 				.then(function (response) {
 					$scope.experiment = response.data;
 					if (response.data.logs) {
@@ -733,6 +733,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		$http.get('/executions/' + $stateParams.executionId)
 			.then(function (response) {
+				console.log(response.data)
 				$scope.execution = response.data;
 				getOutputTree();
 				$scope.getLogs();
@@ -836,7 +837,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 	//Runs in the logs view
 	.controller('MapCtrl', ['$scope', '$http', '$stateParams', '$location', 'GlobalFunctions', function ($scope, $http, $stateParams, $location, GlobalFunctions) {
 		//Get the experiment info and its application.
-		$http.get('/experiments/details/' + $stateParams.experimentId)
+		$http.get('/experiments/' + $stateParams.experimentId)
 			.then(function (response) {
 				$scope.experiment = response.data;
 			}, function (response) {

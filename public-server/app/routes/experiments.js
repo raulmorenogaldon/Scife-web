@@ -21,13 +21,13 @@ router.get('/', function (req, res) {
 	res.render('experiments/index');
 });
 router.get('/list', expCtrl.list);
-router.get('/details/:experimentId', expCtrl.details);
-router.get('/logs/:experimentId', expCtrl.logs);
-router.get('/downloadresults/:experimentId', expCtrl.downloadResults);
+router.get('/:experimentId', expCtrl.details);
+router.get('/:experimentId/logs', expCtrl.logs);
+router.get('/:experimentId/downloadresults', expCtrl.downloadResults);
 router.post('/create', expCtrl.create);
 router.put('/:experimentId', expCtrl.update);
-router.post('/launch/:experimentId', expCtrl.launch);
-router.post('/reset/:experimentId', expCtrl.reset);
+router.post('/:experimentId/launch', expCtrl.launch);
+router.post('/:experimentId/reset', expCtrl.reset);
 router.delete('/:experimentId', expCtrl.delete);
 router.get('/:experimentId/code', expCtrl.getCode);
 router.post('/:experimentId/code', expCtrl.saveCode);

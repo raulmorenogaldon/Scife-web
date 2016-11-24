@@ -103,7 +103,7 @@ var app = angular.module('Experiments')
 			url: '/executions/:executionId',
 			views: {
 				'content': {
-					templateUrl: "/experiments/views/executions.html",
+					templateUrl: "/experiments/views/execution.html",
 					controller: "ExecutionsCtrl"
 				}
 			}

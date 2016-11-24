@@ -1,5 +1,5 @@
 <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
-	<h3><strong>{{execution.exp_name}}</strong> - Execution</h3>
+	<h3><strong>{{execution.name}}</strong> - Execution</h3>
 	<div class="row">
 		<alert-messages></alert-messages>
 	</div>
@@ -10,6 +10,11 @@
 				<li ng-class="{active:isActive('Labels')}"><a href="" ng-click="selectPagination('Labels')">Labels</a></li>
 				<li ng-class="{active:isActive('Output Tree')}"><a href="" ng-click="selectPagination('Output Tree')">Output Tree</a></li>
 				<li ng-class="{active:isActive('Logs')}"><a href="" ng-click="selectPagination('Logs')">Logs</a></li>
+				<li>
+					<a href="#/overview/{{execution.exp_id}}" class="btn btn-lg btn-default" aria-label="Left Align" title="Go back to the experiment">
+						<span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+					</a>
+				</li>
 			</ul>
 		</nav>
 	</div>
@@ -21,11 +26,6 @@
 					</h3>
 				</div>
 				<div class="panel-body">
-					<p class="text-center">
-						<a href="#/overview/{{execution.id}}" class="btn btn-info" aria-label="Left Align" title="Labels">
-							<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-						</a>
-					</p>
 					<table class="table table-hover table-striped table-bordered">
 						<thead>
 							<tr>
@@ -35,14 +35,18 @@
 						<tbody>
 							<tr>
 								<td>Name</td>
-								<td>{{execution.exp_name}}</td>
+								<td>{{execution.name}}</td>
 							</tr>
 							<tr>
-								<td>Create Date</td>
-								<td>{{execution.create_date}}</td>
+								<td>Creation Date</td>
+								<td>{{execution.create_date || 'Not creation date yet.'}}</td>
 							</tr>
 							<tr>
-								<td>Finish Data</td>
+								<td>Launch Date</td>
+								<td>{{execution.launch_date || 'Not launch date yet.'}}</td>
+							</tr>
+							<tr>
+								<td>Finish Date</td>
 								<td>{{execution.finish_date || 'Not finish date yet.'}}</td>
 							</tr>
 							<tr>
