@@ -296,6 +296,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//Get the experiment info and when the info is available gets the application info of the experiment
 		$http.get('/experiments/' + $stateParams.experimentId)
 			.then(function (response) {
+				console.log(response.data.labels)
 				$scope.experiment = response.data;
 				$scope.oldLabels = angular.copy(response.data.labels);//Backups the current labes before modifiying
 				$http.get('/applications/' + $scope.experiment.app_id)
@@ -788,7 +789,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			var url = folder == '/' ? '/executions/' + $stateParams.executionId + "/outputtree?depth=0" : '/executions/' + $stateParams.executionId + "/outputtree?folder=" + folder + '&depth=0';
 			$http.get(url)
 				.then(function (response) {
-					console.log(response.data);
+					$scope.execution.output_tree = response.data.output_tree;
 				}, function (response) {
 					GlobalFunctions.handleErrors(response, $scope);
 				});
