@@ -128,12 +128,12 @@
 			<div ng-show="!execution.logs || execution.logs <= 0" class="alert alert-warning col-md-10 col-md-offset-1 text-center">
 				No logs yet. Please run the experiment first.
 			</div>
-			<div class="col-md-6 col-md-offset-3 text-center" ng-show="execution.logs > 0">
+			<div class="col-md-6 col-md-offset-3 text-center" ng-show="execution.logs.length">
 				<div class="input-group ">
 					<select class="form-control" data-ng-show="execution.logs.length" name="logs" id="logs" ng-model="logSelected" ng-options="log as log.name for log in execution.logs"></select>
 					<span class="input-group-btn">
-			<button class="btn btn-primary" data-ng-click="getLogs()">Refresh logs</button>
-		</span>
+						<button class="btn btn-primary" data-ng-click="getLogs()">Refresh logs</button>
+					</span>
 				</div>
 			</div>
 			<div class="col-md-12 max-height-650" data-ng-show="execution.logs.length">
