@@ -3,6 +3,43 @@
 	<div class="row">
 		<alert-messages></alert-messages>
 	</div>
+	<div class="row">
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="deleteModalLabel">Confirm Deletion</h4>
+					</div>
+					<div class="modal-body">
+						<p class="text-justified">
+							Are you sure, you want to delete the execution?
+						</p>
+						<dl class="dl-horizontal">
+							<dt>Name</dt>
+							<dd>{{execution.name}}</dd>
+							<dt>Creation Date</dt>
+							<dd>{{execution.create_date || 'Not creation date yet.'}}</dd>
+							<dt>Launch Date</dt>
+							<dd>{{execution.launch_date || 'Not launch date yet.'}}</dd>
+							<dt>Finish Date</dt>
+							<dd>{{execution.finish_date || 'Not finish date yet.'}}</dd>
+							<dt>Execution Status</dt>
+							<dd>{{execution.status}}</dd>
+						</dl>
+						<div class="modal-footer">
+							<form ng-submit="deleteSubmit()" class="form form-horizontal col-md-12">
+								<div class="col-md-12 text-center">
+									<input type="submit" class="btn btn-danger" value="I Agree">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="col-md-10 col-md-offset-1 text-center">
 		<nav aria-label="...">
 			<ul class="pagination pagination-lg">
@@ -14,6 +51,11 @@
 					<a href="#/overview/{{execution.exp_id}}" class="btn btn-lg btn-default" aria-label="Left Align" title="Go back to the experiment">
 						<span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
 					</a>
+				</li>
+				<li>
+					<button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deleteModal">
+						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+						</button>
 				</li>
 			</ul>
 		</nav>

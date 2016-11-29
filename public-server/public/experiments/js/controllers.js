@@ -831,6 +831,20 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				});
 		};
 
+		//Request delete the experiment whose ID is passed in the url
+		$scope.deleteSubmit = function () {
+			$http.delete('/executions/' + $scope.execution.id)
+				.then(function (response) {
+					jQuery('#deleteModal').modal('hide');
+					jQuery('#deleteModal').on('hidden.bs.modal', function () {
+						$scope.$apply(function () { $location.path('/overview/' + $scope.execution.exp_id); });
+					});
+				},
+				function (response) {
+					GlobalFunctions.handleErrors(response, $scope);
+				});
+		};
+
 	}])
 
 	//Runs in the logs view
