@@ -9,7 +9,7 @@ var request = require('request'),
 exports.list = function (req, res) {
 	request({
 		headers: { "x-access-token": req.cookies.token },
-		url: privateServer + '/executions' + (req.query.exp ? '?exec='+req.query.exp : ""),
+		url: privateServer + '/executions' + (req.query.exp ? '?exp='+req.query.exp : ""),
 		method: 'GET'
 	}, function (err, response, body) {
 		if (err) {

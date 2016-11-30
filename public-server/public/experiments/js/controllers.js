@@ -110,12 +110,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 					}, function (app) {
 						GlobalFunctions.handleErrors(app, $scope);
 					});
-				$http.get('/executions?exp=' + $stateParams.experimentId)
-					.then(function (response) {
-						$scope.experiment.executions = response.data;
-					}, function (response) {
-						GlobalFunctions.handleErrors(response, $scope);
-					});
+				$scope.getExecutions();
 			}, function (response) {
 				GlobalFunctions.handleErrors(response, $scope);
 			});
@@ -139,22 +134,24 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		//This function starts the counter to run the function $scope.refreshStatus() each 5 seconds while the experiment status wouldn't be "failed_*", "done" or "created"
 		function activateInterval() {
 			interval = window.setInterval(function () {
-				$scope.refreshStatus();
+				$scope.getExecutions();
 				if (/^failed.*/.test($scope.experiment.status) || $scope.experiment.status == 'done' || $scope.experiment.status == 'created') {
 					window.clearInterval(interval);
 				}
-			}, 5000);
+			}, 20000);
 		}
 
-		//Get the experiment info and updates its status
-		$scope.refreshStatus = function () {
-			$http.get('/experiments/' + $stateParams.experimentId)
-				.then(function (response) {
-					$scope.experiment.status = response.data.status;
-				}, function (response) {
-					GlobalFunctions.handleErrors(response, $scope);
-				});
-		};
+		/*
+				//Get the experiment info and updates its status
+				$scope.refreshStatus = function () {
+					$http.get('/experiments/' + $stateParams.experimentId)
+						.then(function (response) {
+							$scope.experiment.status = response.data.status;
+						}, function (response) {
+							GlobalFunctions.handleErrors(response, $scope);
+						});
+				};
+				*/
 
 		//Filter the sizes and leaves only the sizes compatible with the image selected
 		$scope.getSizesOfImage = function () {
@@ -187,6 +184,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				'size_id': $scope.sizeSelected.id
 			}).then(function (response) {
 				$scope.message = response.data.message;
+				$scope.getExecutions();
 				activateInterval();
 			}, function (response) {
 				GlobalFunctions.handleErrors(response, $scope);
@@ -195,17 +193,18 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			activateInterval();
 		};
 
-		//Sends the request to reset the experiment whose ID is passed in the url
-		$scope.reset = function () {
-			$http.post('/experiments/' + $scope.experiment.id + '/reset')
-				.then(function (response) {
-					$scope.message = response.data.message;
-					activateInterval();
-				}, function (response) {
-					GlobalFunctions.handleErrors(response, $scope);
-				});
-		};
-
+		/*
+				//Sends the request to reset the experiment whose ID is passed in the url
+				$scope.reset = function () {
+					$http.post('/experiments/' + $scope.experiment.id + '/reset')
+						.then(function (response) {
+							$scope.message = response.data.message;
+							activateInterval();
+						}, function (response) {
+							GlobalFunctions.handleErrors(response, $scope);
+						});
+				};
+		*/
 		//Request delete the experiment whose ID is passed in the url
 		$scope.deleteSubmit = function () {
 			$http.delete('/experiments/' + $scope.experiment.id)
@@ -224,6 +223,32 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.getLimitInstances = function () {
 			$scope.limitInstances = Math.min(($scope.imageSelected.quotas.instances.limit - $scope.imageSelected.quotas.instances.in_use), Math.floor(($scope.imageSelected.quotas.cores.limit - $scope.imageSelected.quotas.cores.in_use) / $scope.sizeSelected.cpus), Math.floor(($scope.imageSelected.quotas.ram.limit - $scope.imageSelected.quotas.ram.in_use) / $scope.sizeSelected.ram));
 		};
+
+		$scope.getExecutions = function () {
+			$http.get('/executions?exp=' + $stateParams.experimentId)
+				.then(function (response) {
+					$scope.experiment.executions = response.data;
+				}, function (response) {
+					GlobalFunctions.handleErrors(response, $scope);
+				});
+		}
+
+		$scope.deleteExecutionSubmit = function () {
+			$http.delete('/executions/' + $scope.executionToDelete.id)
+				.then(function (response) {
+					jQuery('#deleteExecutionModal').modal('hide');
+					jQuery('#deleteExecutionModal').on('hidden.bs.modal', function () {
+						$scope.getExecutions();
+					});
+				},
+				function (response) {
+					GlobalFunctions.handleErrors(response, $scope);
+				});
+		};
+
+		$scope.setExecutionToDelete = function (exec) {
+			$scope.executionToDelete = exec;
+		}
 
 		/*
 		//Dowload the results of the experiment execution

@@ -106,139 +106,180 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="deleteModalLabel">Confirm Deletion</h4>
-						</div>
-						<div class="modal-body">
-							<p class="text-justified">
-								Are you sure, you want to delete the experiment?
-							</p>
-							<dl class="dl-horizontal">
-								<dt>Name</dt>
-								<dd>{{experiment.name}}</dd>
-								<dt>Description</dt>
-								<dd>{{experiment.desc}}</dd>
-								<dt>Application</dt>
-								<dd>{{experiment.app.name}}</dd>
-							</dl>
-							<div class="modal-footer">
-								<form ng-submit="deleteSubmit()" class="form form-horizontal col-md-12">
-									<div class="col-md-12 text-center">
-										<input type="submit" class="btn btn-danger" value="I Agree">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									</div>
-								</form>
-							</div>
+	</div>
+	<div class="row">
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="deleteModalLabel">Confirm Deletion</h4>
+					</div>
+					<div class="modal-body">
+						<p class="text-justified">
+							Are you sure, you want to delete the experiment?
+						</p>
+						<dl class="dl-horizontal">
+							<dt>Name</dt>
+							<dd>{{experiment.name}}</dd>
+							<dt>Description</dt>
+							<dd>{{experiment.desc}}</dd>
+							<dt>Application</dt>
+							<dd>{{experiment.app.name}}</dd>
+						</dl>
+						<div class="modal-footer">
+							<form ng-submit="deleteSubmit()" class="form form-horizontal col-md-12">
+								<div class="col-md-12 text-center">
+									<input type="submit" class="btn btn-danger" value="I Agree">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="text-center col-md-12">
-				<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#launchModal">Launch</button>
-				<!--
+	</div>
+	<div class="row">
+		<div class="modal fade" id="deleteExecutionModal" tabindex="-1" role="dialog" aria-labelledby="deleteExecutionModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="deleteExecutionModalLabel">Confirm Deletion</h4>
+					</div>
+					<div class="modal-body">
+						<p class="text-justified">
+							Are you sure, you want to delete the execution?
+						</p>
+						<dl class="dl-horizontal">
+							<dt>Name</dt>
+							<dd>{{executionToDelete.name}}</dd>
+							<dt>Creation Date</dt>
+							<dd>{{executionToDelete.create_date || 'Not creation date yet.'}}</dd>
+							<dt>Launch Date</dt>
+							<dd>{{executionToDelete.launch_date || 'Not launch date yet.'}}</dd>
+							<dt>Finish Date</dt>
+							<dd>{{executionToDelete.finish_date || 'Not finish date yet.'}}</dd>
+							<dt>Execution Status</dt>
+							<dd>{{executionToDelete.status}}</dd>
+						</dl>
+						<div class="modal-footer">
+							<form ng-submit="deleteExecutionSubmit()" class="form form-horizontal col-md-12">
+								<div class="col-md-12 text-center">
+									<input type="submit" class="btn btn-danger" value="I Agree">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="text-center col-md-12">
+			<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#launchModal">Launch</button>
+			<!--
 					<button class="btn btn-warning btn-lg" ng-click="reset()">Reset</button>
 					<button class="btn btn-info btn-lg" ng-click="refreshStatus()">Update Status</button>
 				-->
-				<button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deleteModal">Delete</button>
-			</div>
+			<button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deleteModal">Delete</button>
 		</div>
-		<br>
-		<div class="row">
-			<div class="col-md-offset-1 col-md-10">
-				<div class="panel" ng-class="panelColors.getColorClass(experiment.status)">
-					<div class="panel-heading text-center">
-						<strong>Experiment Information</strong>
-					</div>
-					<table class="table table-hover table-striped table-bordered">
-						<thead>
-							<tr>
-								<th>Concept</th>
-								<th>Value</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Description</td>
-								<td>{{experiment.desc}}</td>
-							</tr>
-							<tr>
-								<td>Application</td>
-								<td>{{experiment.app.name}}</td>
-							</tr>
-						</tbody>
-					</table>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<div class="panel" ng-class="panelColors.getColorClass(experiment.status)">
+				<div class="panel-heading text-center">
+					<strong>Experiment Information</strong>
 				</div>
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Concept</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Description</td>
+							<td>{{experiment.desc}}</td>
+						</tr>
+						<tr>
+							<td>Application</td>
+							<td>{{experiment.app.name}}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
-		<div class="row" data-ng-show="experiment.executions.length">
-			<div class="col-md-offset-2 col-md-8">
-				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-					<div class="panel" ng-class="panelColors.getColorClass(exec.status)" ng-repeat="exec in experiment.executions">
-						<div class="panel-heading" role="tab" id="heading{{$index}}">
-							<div class="row">
-								<div class="col-md-8 col-md-offset-2">
-									<h3 class="panel-title text-center">
-										<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="false"
-											aria-controls="collapse{{$index}}">
-											<strong>{{exec.create_date}}</strong>
-										</a>
-									</h3>
-								</div>
-								<div class="col-md-1 col-md-offset-1">
-									<a href="#/executions/{{exec.id}}" class="btn btn-xs btn-default" aria-label="Left Align" title="Go to execution view">
-										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+	</div>
+	<div class="row" data-ng-show="experiment.executions.length">
+		<div class="col-md-offset-2 col-md-8">
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="panel" ng-class="panelColors.getColorClass(exec.status)" ng-repeat="exec in experiment.executions">
+					<div class="panel-heading" role="tab" id="heading{{$index}}">
+						<div class="row">
+							<div class="col-md-8 col-md-offset-2">
+								<h3 class="panel-title text-center">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="false"
+										aria-controls="collapse{{$index}}">
+										<strong>{{exec.create_date}}</strong>
 									</a>
-								</div>
+								</h3>
+							</div>
+							<div class="col-md-1 col-md-offset-1">
+								<a href="#/executions/{{exec.id}}" class="btn btn-xs btn-default" aria-label="Left Align" title="Go to execution view">
+									<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+								</a>
+								<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteExecutionModal" ng-click="setExecutionToDelete(exec)">
+						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+						</button>
 							</div>
 						</div>
-						<div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}">
-							<div class="panel-body">
-								<p class="text-center">
+					</div>
+					<div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}">
+						<div class="panel-body">
+							<p class="text-center">
 
-								</p>
-								<table class="table table-hover table-striped table-bordered">
-									<thead>
-										<tr>
-											<th class="text-center" colspan="2">Information</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>Name</td>
-											<td>{{exec.name}}</td>
-										</tr>
-										<tr>
-											<td>Creation Date</td>
-											<td>{{exec.create_date || 'Not creation date yet.'}}</td>
-										</tr>
-										<tr>
-											<td>Launch Date</td>
-											<td>{{exec.launch_date || 'Not launch date yet.'}}</td>
-										</tr>
-										<tr>
-											<td>Finish Date</td>
-											<td>{{exec.finish_date || 'Not finish date yet.'}}</td>
-										</tr>
-										<tr>
-											<td>Status</td>
-											<td>{{exec.status}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+							</p>
+							<table class="table table-hover table-striped table-bordered">
+								<thead>
+									<tr>
+										<th class="text-center" colspan="2">Information</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Name</td>
+										<td>{{exec.name}}</td>
+									</tr>
+									<tr>
+										<td>Creation Date</td>
+										<td>{{exec.create_date || 'Not creation date yet.'}}</td>
+									</tr>
+									<tr>
+										<td>Launch Date</td>
+										<td>{{exec.launch_date || 'Not launch date yet.'}}</td>
+									</tr>
+									<tr>
+										<td>Finish Date</td>
+										<td>{{exec.finish_date || 'Not finish date yet.'}}</td>
+									</tr>
+									<tr>
+										<td>Status</td>
+										<td>{{exec.status}}</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!--
+	</div>
+	<!--
 		<div class="row" ng-show="!errors && experiment.output_tree.length > 0">
 			<div class="text-center">
 				<button ng-disabled='experiment.status != "done"' class="btn btn-lg btn-success" ng-click="downloadResults(experiment.id)">Dowload Results</button>
@@ -265,8 +306,8 @@
 			</div>
 		</div>
 		-->
-	</div>
-	<script type="text/javascript">
+</div>
+<script type="text/javascript">
 $(document).ready(function(){
 	$('#launchModal').on('shown.bs.modal', function(){
 		$('#nodes').focus();
