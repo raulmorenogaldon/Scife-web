@@ -231,7 +231,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				}, function (response) {
 					GlobalFunctions.handleErrors(response, $scope);
 				});
-		}
+		};
 
 		$scope.deleteExecutionSubmit = function () {
 			$http.delete('/executions/' + $scope.executionToDelete.id)
@@ -248,7 +248,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		$scope.setExecutionToDelete = function (exec) {
 			$scope.executionToDelete = exec;
-		}
+		};
 
 		/*
 		//Dowload the results of the experiment execution
@@ -756,7 +756,8 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.pageSelected = 'Overview';
 		$scope.panelColors = PanelColors;
 
-		$http.get('/executions/' + $stateParams.executionId)
+		$scope.getData = function(){
+			$http.get('/executions/' + $stateParams.executionId)
 			.then(function (response) {
 				$scope.execution = response.data;
 				getOutputTree();
@@ -764,10 +765,12 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			}, function (response) {
 				GlobalFunctions.handleErrors(response, $scope);
 			});
+		};
+		$scope.getData();
 
 		$scope.selectPagination = function (select) {
 			$scope.pageSelected = select;
-		}
+		};
 
 		$scope.isActive = function (page) {
 			return page == $scope.pageSelected;

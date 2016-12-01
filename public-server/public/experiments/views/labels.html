@@ -4,7 +4,7 @@
 	<div class="row">
 		<alert-messages></alert-messages>
 	</div>
-	<div class="row">
+	<div class="row" data-ng-show="!showForm && (experiment.labels)">
 		<div class="col-md-offset-1 col-md-10">
 			<div class="row">
 				<div class="col-md-12">
@@ -26,8 +26,8 @@
 							</thead>
 							<tbody>
 								<tr ng-repeat="(label, value) in oldLabels" ng-show="value.value">
-									<td>{{label}}</td>
-									<td>
+									<td style="vertical-align: middle;">{{label}}</td>
+									<td >
 										<pre>{{value.value}}</pre>
 									</td>
 								</tr>

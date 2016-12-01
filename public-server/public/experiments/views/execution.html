@@ -21,8 +21,18 @@
 							<dd>{{execution.launch_date || 'Not launch date yet.'}}</dd>
 							<dt>Finish Date</dt>
 							<dd>{{execution.finish_date || 'Not finish date yet.'}}</dd>
-							<dt>Execution Status</dt>
-							<dd>{{execution.status}}</dd>
+							<dt>Status</dt>
+							<dd>{{execution.status || 'Not info date yet.'}}</dd>
+							<dt>Nodes Used</dt>
+							<dd>{{execution.launch_opts.nodes || 'Not info date yet.'}}</dd>
+							<dt>Image Name</dt>
+							<dd>{{execution.launch_opts.image.name || 'Not info date yet.'}}</dd>
+							<dt>Size Name</dt>
+							<dd>{{execution.launch_opts.size.name || 'Not info date yet.'}}</dd>
+							<dt>Size CPUs</dt>
+							<dd>{{execution.launch_opts.size.cpus || 'Not info date yet.'}}</dd>
+							<dt>Size Ram</dt>
+							<dd>{{execution.launch_opts.size.ram || 'Not info date yet.'}}</dd>
 						</dl>
 						<div class="modal-footer">
 							<form ng-submit="deleteSubmit()" class="form form-horizontal col-md-12">
@@ -45,8 +55,13 @@
 				<li ng-class="{active:isActive('Output Tree')}"><a href="" ng-click="selectPagination('Output Tree')">Output Tree</a></li>
 				<li ng-class="{active:isActive('Logs')}"><a href="" ng-click="selectPagination('Logs')">Logs</a></li>
 				<li>
-					<a href="#/overview/{{execution.exp_id}}" class="btn btn-lg btn-default" aria-label="Left Align" title="Go back to the experiment">
+					<a href="#/overview/{{execution.exp_id}}" aria-label="Left Align" title="Go back to the experiment">
 						<span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+					</a>
+				</li>
+				<li>
+					<a class="btn btn-lg" href="" data-ng-click="getData()">
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 					</a>
 				</li>
 				<li>
@@ -90,7 +105,27 @@
 							</tr>
 							<tr>
 								<td>Status</td>
-								<td>{{execution.status}}</td>
+								<td>{{execution.status || 'Not info date yet.'}}</td>
+							</tr>
+							<tr>
+								<td>Nº Nodes</td>
+								<td>{{execution.launch_opts.nodes || 'Not info date yet.'}}</td>
+							</tr>
+							<tr>
+								<td>Image Name</td>
+								<td>{{execution.launch_opts.image.name || 'Not info date yet.'}}</td>
+							</tr>
+							<tr>
+								<td>Size Name</td>
+								<td>{{execution.launch_opts.size.name || 'Not info date yet.'}}</td>
+							</tr>
+							<tr>
+								<td>Size CPUs</td>
+								<td>{{execution.launch_opts.size.cpus || 'Not info date yet.'}}</td>
+							</tr>
+							<tr>
+								<td>Size RAM</td>
+								<td>{{execution.launch_opts.size.ram || 'Not info date yet.'}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -118,7 +153,9 @@
 					<tbody>
 						<tr ng-repeat="(label, value) in execution.labels" ng-show="value.value">
 							<td>{{label}}</td>
-							<td><pre>{{value.value}}</pre></td>
+							<td>
+								<pre>{{value.value}}</pre>
+							</td>
 						</tr>
 					</tbody>
 				</table>

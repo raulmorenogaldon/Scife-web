@@ -156,7 +156,17 @@
 							<dt>Finish Date</dt>
 							<dd>{{executionToDelete.finish_date || 'Not finish date yet.'}}</dd>
 							<dt>Execution Status</dt>
-							<dd>{{executionToDelete.status}}</dd>
+							<dd>{{executionToDelete.status  || 'Not info date yet.'}}</dd>
+							<dt>Nodes Used</dt>
+							<dd>{{executionToDelete.launch_opts.nodes  || 'Not info date yet.'}}</dd>
+							<dt>Image Name</dt>
+							<dd>{{executionToDelete.launch_opts.image.name  || 'Not info date yet.'}}</dd>
+							<dt>Size Name</dt>
+							<dd>{{executionToDelete.launch_opts.size.name  || 'Not info date yet.'}}</dd>
+							<dt>Size CPUs</dt>
+							<dd>{{executionToDelete.launch_opts.size.cpus  || 'Not info date yet.'}}</dd>
+							<dt>Size Ram</dt>
+							<dd>{{executionToDelete.launch_opts.size.ram  || 'Not info date yet.'}}</dd>
 						</dl>
 						<div class="modal-footer">
 							<form ng-submit="deleteExecutionSubmit()" class="form form-horizontal col-md-12">
@@ -210,12 +220,12 @@
 		</div>
 	</div>
 	<div class="row" data-ng-show="experiment.executions.length">
-		<div class="col-md-offset-2 col-md-8">
+		<div class="col-md-offset-2 col-md-8 col-sm-12">
 			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 				<div class="panel" ng-class="panelColors.getColorClass(exec.status)" ng-repeat="exec in experiment.executions">
 					<div class="panel-heading" role="tab" id="heading{{$index}}">
 						<div class="row">
-							<div class="col-md-8 col-md-offset-2">
+							<div class="col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8">
 								<h3 class="panel-title text-center">
 									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="false"
 										aria-controls="collapse{{$index}}">
@@ -223,7 +233,7 @@
 									</a>
 								</h3>
 							</div>
-							<div class="col-md-1 col-md-offset-1">
+							<div class="col-md-2 col-sm-2 btn-group" role="group">
 								<a href="#/executions/{{exec.id}}" class="btn btn-xs btn-default" aria-label="Left Align" title="Go to execution view">
 									<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 								</a>
@@ -263,7 +273,27 @@
 									</tr>
 									<tr>
 										<td>Status</td>
-										<td>{{exec.status}}</td>
+										<td>{{exec.status  || 'Not info date yet.'}}</td>
+									</tr>
+									<tr>
+										<td>Nº Nodes</td>
+										<td>{{exec.launch_opts.nodes  || 'Not info date yet.'}}</td>
+									</tr>
+									<tr>
+										<td>Image Name</td>
+										<td>{{exec.launch_opts.image.name  || 'Not info date yet.'}}</td>
+									</tr>
+									<tr>
+										<td>Size Name</td>
+										<td>{{exec.launch_opts.size.name  || 'Not info date yet.'}}</td>
+									</tr>
+									<tr>
+										<td>Size CPUs</td>
+										<td>{{exec.launch_opts.size.cpus  || 'Not info date yet.'}}</td>
+									</tr>
+									<tr>
+										<td>Size RAM</td>
+										<td>{{exec.launch_opts.size.ram  || 'Not info date yet.'}}</td>
 									</tr>
 								</tbody>
 							</table>

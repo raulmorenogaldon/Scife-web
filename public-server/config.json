@@ -1,6 +1,6 @@
 {
 	"sessionSecret": "SesionSecretFormScife",
-	"privateServer": "http://scife.ddns.net:4000",
+	"privateServer": "http://161.67.133.198:4000",
 	"domainServer": "localhost",
 	"publicHttpServerPort": "3000",
 	"publicHttpsServerPort": "3003",
