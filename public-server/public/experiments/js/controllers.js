@@ -138,7 +138,7 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 				if (/^failed.*/.test($scope.experiment.status) || $scope.experiment.status == 'done' || $scope.experiment.status == 'created') {
 					window.clearInterval(interval);
 				}
-			}, 20000);
+			}, 15000);
 		}
 
 		/*
@@ -207,12 +207,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		*/
 		//Request delete the experiment whose ID is passed in the url
 		$scope.deleteSubmit = function () {
+			jQuery('#deleteModal').modal('hide');
+			jQuery('#loadingModal').modal('show');
 			$http.delete('/experiments/' + $scope.experiment.id)
 				.then(function (response) {
-					jQuery('#deleteModal').modal('hide');
-					jQuery('#deleteModal').on('hidden.bs.modal', function () {
+					jQuery('#loadingModal').modal('hide');
+					jQuery('#loadingModal').on('hidden.bs.modal', function () {
 						$scope.$apply(function () { $location.path('/'); });
 					});
+					if (interval) window.clearInterval(interval);
 				},
 				function (response) {
 					GlobalFunctions.handleErrors(response, $scope);
@@ -234,15 +237,16 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		};
 
 		$scope.deleteExecutionSubmit = function () {
+			jQuery('#deleteExecutionModal').modal('hide');
+			jQuery('#loadingModal').modal('show');
 			$http.delete('/executions/' + $scope.executionToDelete.id)
 				.then(function (response) {
-					jQuery('#deleteExecutionModal').modal('hide');
-					jQuery('#deleteExecutionModal').on('hidden.bs.modal', function () {
-						$scope.getExecutions();
-					});
+					jQuery('#loadingModal').modal('hide');
+					$scope.getExecutions();
 				},
 				function (response) {
 					GlobalFunctions.handleErrors(response, $scope);
+					jQuery('#loadingModal').modal('hide');
 				});
 		};
 
@@ -756,15 +760,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 		$scope.pageSelected = 'Overview';
 		$scope.panelColors = PanelColors;
 
-		$scope.getData = function(){
+		$scope.getData = function () {
 			$http.get('/executions/' + $stateParams.executionId)
-			.then(function (response) {
-				$scope.execution = response.data;
-				getOutputTree();
-				$scope.getLogs();
-			}, function (response) {
-				GlobalFunctions.handleErrors(response, $scope);
-			});
+				.then(function (response) {
+					$scope.execution = response.data;
+					getOutputTree();
+					$scope.getLogs();
+				}, function (response) {
+					GlobalFunctions.handleErrors(response, $scope);
+				});
 		};
 		$scope.getData();
 

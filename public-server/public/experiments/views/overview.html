@@ -6,6 +6,25 @@
 		<alert-messages></alert-messages>
 	</div>
 	<div class="row">
+		<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" data-keyboard="false"
+			data-backdrop="static">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="loadingModalLabel">Please, wait...</h4>
+					</div>
+					<div class="modal-body">
+						<div class="progress">
+							<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+								aria-valuemax="100" style="width: 100%">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
 		<div class="modal fade" id="launchModal" tabindex="-1" role="dialog" aria-labelledby="launchModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -156,17 +175,17 @@
 							<dt>Finish Date</dt>
 							<dd>{{executionToDelete.finish_date || 'Not finish date yet.'}}</dd>
 							<dt>Execution Status</dt>
-							<dd>{{executionToDelete.status  || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.status || 'Not info date yet.'}}</dd>
 							<dt>Nodes Used</dt>
-							<dd>{{executionToDelete.launch_opts.nodes  || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.nodes || 'Not info date yet.'}}</dd>
 							<dt>Image Name</dt>
-							<dd>{{executionToDelete.launch_opts.image.name  || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.image.name || 'Not info date yet.'}}</dd>
 							<dt>Size Name</dt>
-							<dd>{{executionToDelete.launch_opts.size.name  || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.size.name || 'Not info date yet.'}}</dd>
 							<dt>Size CPUs</dt>
-							<dd>{{executionToDelete.launch_opts.size.cpus  || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.size.cpus || 'Not info date yet.'}}</dd>
 							<dt>Size Ram</dt>
-							<dd>{{executionToDelete.launch_opts.size.ram  || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.size.ram || 'Not info date yet.'}}</dd>
 						</dl>
 						<div class="modal-footer">
 							<form ng-submit="deleteExecutionSubmit()" class="form form-horizontal col-md-12">
@@ -229,7 +248,7 @@
 								<h3 class="panel-title text-center">
 									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="false"
 										aria-controls="collapse{{$index}}">
-										<strong>{{exec.create_date}}</strong>
+										<strong>{{exec.name}}</strong>
 									</a>
 								</h3>
 							</div>
@@ -273,27 +292,27 @@
 									</tr>
 									<tr>
 										<td>Status</td>
-										<td>{{exec.status  || 'Not info date yet.'}}</td>
+										<td>{{exec.status || 'Not info date yet.'}}</td>
 									</tr>
 									<tr>
 										<td>Nº Nodes</td>
-										<td>{{exec.launch_opts.nodes  || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.nodes || 'Not info date yet.'}}</td>
 									</tr>
 									<tr>
 										<td>Image Name</td>
-										<td>{{exec.launch_opts.image.name  || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.image.name || 'Not info date yet.'}}</td>
 									</tr>
 									<tr>
 										<td>Size Name</td>
-										<td>{{exec.launch_opts.size.name  || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.size.name || 'Not info date yet.'}}</td>
 									</tr>
 									<tr>
 										<td>Size CPUs</td>
-										<td>{{exec.launch_opts.size.cpus  || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.size.cpus || 'Not info date yet.'}}</td>
 									</tr>
 									<tr>
 										<td>Size RAM</td>
-										<td>{{exec.launch_opts.size.ram  || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.size.ram || 'Not info date yet.'}}</td>
 									</tr>
 								</tbody>
 							</table>
