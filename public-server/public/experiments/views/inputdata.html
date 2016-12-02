@@ -67,13 +67,13 @@
 		<div class="col-md-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4 class="panel-title text-center"><strong>Input Data</strong></h4>
+					<h4 class="panel-title text-center"><strong>{{currentFolder}}</strong></h4>
 					<div class="row">
 						<div class="col-md-2">
 							<button data-ng-disabled="!subFolder" class="btn btn-primary btn-xs" data-ng-click="folderUp()" title="Return"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>
 						</div>
-						<div class="col-md-8 text-center" data-toggle="tooltip" data-placement="bottom" title="{{currentPath}}">
-							{{currentFolder}}
+						<div class="col-md-8 text-center" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
+							{{currentPath}}
 						</div>
 						<div class="col-md-2">
 							<button class="btn btn-primary btn-xs" data-ng-click="launchCreateFolderModal()" title="New Folder"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
@@ -143,9 +143,6 @@ $(document).ready(function(){
 			return false;
 		}
 	});
-	$(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
 	$('#newFolderModal').on('shown.bs.modal', function(){
 		$('#folderName').focus();
 	});
