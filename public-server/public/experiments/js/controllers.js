@@ -71,14 +71,16 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Asks the server delete an experiment identified by its ID
 		$scope.deleteSubmit = function () {
+			jQuery('#loadingModal').modal('show');
 			$http.delete('/experiments/' + $scope.deleteExpSelect.id)
 				.then(function (response) {
+					jQuery('#loadingModal').modal('hide');
 					getList();
 					$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
 				}, function (response) {
+					jQuery('#deleteModal').modal('hide');
 					GlobalFunctions.handleErrors(response, $scope);
 				});
-			jQuery('#deleteModal').modal('hide');
 		};
 
 		$scope.panelColors = PanelColors;
@@ -212,10 +214,10 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 			$http.delete('/experiments/' + $scope.experiment.id)
 				.then(function (response) {
 					jQuery('#loadingModal').modal('hide');
+					if (interval) window.clearInterval(interval);
 					jQuery('#loadingModal').on('hidden.bs.modal', function () {
 						$scope.$apply(function () { $location.path('/'); });
 					});
-					if (interval) window.clearInterval(interval);
 				},
 				function (response) {
 					GlobalFunctions.handleErrors(response, $scope);
