@@ -56,8 +56,8 @@
 						<input type="text" id="{{label}}" class="form-control" ng-model="experiment.labels[label].value">
 					</div>
 					<div class="col-md-9" ng-if="value.type == 'MULTITEXT'">
-						<textarea id="{{label}}" class="form-control" ng-model="experiment.labels[label].value" placeholder="{{experiment.labels[label].default_value}}"
-							onmouseup="setSizeTextArea(this)" oninput="setSizeTextArea(this)" onkeyup="setSizeTextArea(this)"></textarea>
+						<pre><textarea id="{{label}}" class="form-control" ng-model="experiment.labels[label].value" placeholder="{{experiment.labels[label].default_value}}"
+							onmouseup="setSizeTextArea(this)" oninput="setSizeTextArea(this)" onkeyup="setSizeTextArea(this)"></textarea></pre>
 					</div>
 				</div>
 				<div class="text-center">

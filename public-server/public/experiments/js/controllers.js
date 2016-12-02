@@ -71,12 +71,15 @@ var app = angular.module('Experiments', ['ui.router', 'angularTreeview'])
 
 		//Asks the server delete an experiment identified by its ID
 		$scope.deleteSubmit = function () {
-			jQuery('#loadingModal').modal('show');
+			jQuery('#deleteModal').modal('hide');
+			jQuery('#deleteModalProgress').modal('show');
 			$http.delete('/experiments/' + $scope.deleteExpSelect.id)
 				.then(function (response) {
-					jQuery('#loadingModal').modal('hide');
-					getList();
-					$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
+					jQuery('#deleteModalProgress').modal('hide');
+					jQuery('#deleteModalProgress').on('hidden.bs.modal', function () {
+						getList();
+						$scope.message = "Experiment " + $scope.deleteExpSelect.name + " delete successfuly.";
+					})
 				}, function (response) {
 					jQuery('#deleteModal').modal('hide');
 					GlobalFunctions.handleErrors(response, $scope);
