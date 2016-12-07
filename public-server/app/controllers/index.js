@@ -39,6 +39,7 @@ exports.signIn = function (req, res) {
 			"password": SHA(req.body.password).toString()
 		}
 	}, function (err, response, body) {
+		console.log(response.statusCode)
 		if (err) {
 			res.status(505).json({
 				errors: err
@@ -47,8 +48,6 @@ exports.signIn = function (req, res) {
 			switch (response.statusCode) {
 				case 500:
 				case 401:
-					res.status(response.statusCode).json(typeof body == 'string' ? JSON.parse(body) : body);
-					break;
 				case 404:
 				case 400:
 					res.render('index/login', typeof body == 'string' ? JSON.parse(body) : body);
