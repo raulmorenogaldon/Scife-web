@@ -4,7 +4,7 @@ var request = require('request'),
 
 /** 
  * Method: GET
- * Return a json list with the brief info of the expreiments
+ * Return a json list with a brief info of the executions whose id is passed as a parameter
 */
 exports.list = function (req, res) {
 	request({
@@ -38,7 +38,7 @@ exports.list = function (req, res) {
 
 /**
  * Method: GET
- * Get the details of the experiment as a Json object
+ * Get the details of the execution as a Json object
  */
 exports.details = function (req, res) {
 	request({
@@ -70,6 +70,10 @@ exports.details = function (req, res) {
 	});
 };
 
+/**
+ * Method: DELETE
+ * Delete an execution whose id is passed as a parameter
+ */
 exports.delete = function (req, res) {
 	request({
 		headers: { "x-access-token": req.cookies.token },
@@ -102,7 +106,7 @@ exports.delete = function (req, res) {
 
 /**
  * Method: GET
- * Get a brief info of the experiment and its logs
+ * Get a brief info of the executions and its logs
  */
 exports.logs = function (req, res) {
 	request({
@@ -134,6 +138,10 @@ exports.logs = function (req, res) {
 	});
 };
 
+/**
+ * Method: GET
+ * Download a file of the execution whose path is passed as a parameter
+ */
 exports.download = function (req, res) {
 	request({
 		headers: { "x-access-token": req.cookies.token },

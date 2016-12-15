@@ -84,21 +84,6 @@ var app = angular.module('Experiments')
 			}
 		});
 
-		//Defines the html templates and the controller when te user acces to the logs route /logs. Return the log and the sidebar htmls, and their controllers
-		$stateProvider.state('logs', {
-			url: '/logs/:experimentId',
-			views: {
-				'content': {
-					templateUrl: "/experiments/views/logs.html",
-					controller: "LogsCtrl"
-				},
-				'sidebar': {
-					controller: "SidebarCtrl",
-					templateUrl: "/experiments/views/sidebar.html"
-				}
-			}
-		});
-
 		$stateProvider.state('executions', {
 			url: '/executions/:executionId',
 			views: {
