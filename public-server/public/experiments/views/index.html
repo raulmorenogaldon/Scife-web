@@ -4,11 +4,11 @@
 			<h3>Experiments</h3>
 		</div>
 		<p>
-			<a href="#/create" class="btn btn-primary">New Experiment</a>
-		</p>
-		<div class="row">
-			<alert-messages></alert-messages>
-		</div>
+		<a href="#!/create" target="_self" class="btn btn-primary">New Experiment</a>
+	</p>
+	<div class="row">
+		<alert-messages></alert-messages>
+	</div>
 	</div>
 </div>
 <div class="row">
@@ -100,19 +100,19 @@
 				<div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}">
 					<div class="panel-body">
 						<p class="text-center">
-							<a href="#/overview/{{exp.id}}" class="btn btn-info" aria-label="Left Align" title="Overview">
+							<a href="#!/overview/{{exp.id}}" class="btn btn-info" aria-label="Left Align" title="Overview">
 								<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 							</a>
-							<a href="#/labels/{{exp.id}}" class="btn btn-info" aria-label="Left Align" title="Labels">
+							<a href="#!/labels/{{exp.id}}" class="btn btn-info" aria-label="Left Align" title="Labels">
 								<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
 							</a>
-							<a href="#/inputdata/{{exp.id}}" class="btn btn-info" aria-label="Left Align" title="Input Data">
+							<a href="#!/inputdata/{{exp.id}}" class="btn btn-info" aria-label="Left Align" title="Input Data">
 								<span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
 							</a>
-							<a href="#/sources/{{exp.id}}" class="btn btn-info" aria-label="Left Align" title="Sources">
+							<a href="#!/sources/{{exp.id}}" class="btn btn-info" aria-label="Left Align" title="Sources">
 								<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
 							</a>
-							<a href="#/logs/{{exp.id}}" class="btn btn-warning" aria-label="Left Align" title="View logs">
+							<a href="#!/logs/{{exp.id}}" class="btn btn-warning" aria-label="Left Align" title="View logs">
 								<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
 							</a>
 							<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="selectExpToDelete(exp)" title="Delete">
