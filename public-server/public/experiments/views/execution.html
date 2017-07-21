@@ -16,23 +16,23 @@
 							<dt>Name</dt>
 							<dd>{{execution.name}}</dd>
 							<dt>Creation Date</dt>
-							<dd>{{execution.create_date || 'Not creation date yet.'}}</dd>
+							<dd>{{execution.create_date || 'Not created yet.'}}</dd>
 							<dt>Launch Date</dt>
-							<dd>{{execution.launch_date || 'Not launch date yet.'}}</dd>
+							<dd>{{execution.launch_date || 'Not launched yet.'}}</dd>
 							<dt>Finish Date</dt>
-							<dd>{{execution.finish_date || 'Not finish date yet.'}}</dd>
+							<dd>{{execution.finish_date || 'Not finished yet.'}}</dd>
 							<dt>Status</dt>
-							<dd>{{execution.status || 'Not info date yet.'}}</dd>
+							<dd>{{execution.status || 'Unavailable'}}</dd>
 							<dt>Nodes Used</dt>
-							<dd>{{execution.launch_opts.nodes || 'Not info date yet.'}}</dd>
+							<dd>{{execution.launch_opts.nodes || 'Unavailable'}}</dd>
 							<dt>Image Name</dt>
-							<dd>{{execution.launch_opts.image.name || 'Not info date yet.'}}</dd>
+							<dd>{{execution.launch_opts.image.name || 'Unavailable'}}</dd>
 							<dt>Size Name</dt>
-							<dd>{{execution.launch_opts.size.name || 'Not info date yet.'}}</dd>
+							<dd>{{execution.launch_opts.size.name || 'Unavailable'}}</dd>
 							<dt>Size CPUs</dt>
-							<dd>{{execution.launch_opts.size.cpus || 'Not info date yet.'}}</dd>
+							<dd>{{execution.launch_opts.size.cpus || 'Unavailable'}}</dd>
 							<dt>Size Ram</dt>
-							<dd>{{execution.launch_opts.size.ram || 'Not info date yet.'}}</dd>
+							<dd>{{execution.launch_opts.size.ram || 'Unavailable'}}</dd>
 						</dl>
 						<div class="modal-footer">
 							<form ng-submit="deleteSubmit()" class="form form-horizontal col-md-12">
@@ -55,7 +55,7 @@
 				<li ng-class="{active:isActive('Output Tree')}"><a href="" ng-click="selectPagination('Output Tree')">Output Tree</a></li>
 				<li ng-class="{active:isActive('Logs')}"><a href="" ng-click="selectPagination('Logs')">Logs</a></li>
 				<li>
-					<a href="#/overview/{{execution.exp_id}}" aria-label="Left Align" title="Go back to the experiment">
+					<a href="#/overview/{{execution.exp_id}}" aria-label="Left Align" title="Go back to experiment view">
 						<span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
 					</a>
 				</li>
@@ -83,7 +83,7 @@
 					<table class="table table-hover table-striped table-bordered">
 						<thead>
 							<tr>
-								<th class="text-center" colspan="2">Execution Information</th>
+								<th class="text-center" colspan="2">Execution information</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -93,39 +93,39 @@
 							</tr>
 							<tr>
 								<td>Creation Date</td>
-								<td>{{execution.create_date || 'Not creation date yet.'}}</td>
+								<td>{{execution.create_date || 'Not created yet.'}}</td>
 							</tr>
 							<tr>
 								<td>Launch Date</td>
-								<td>{{execution.launch_date || 'Not launch date yet.'}}</td>
+								<td>{{execution.launch_date || 'Not launched yet.'}}</td>
 							</tr>
 							<tr>
 								<td>Finish Date</td>
-								<td>{{execution.finish_date || 'Not finish date yet.'}}</td>
+								<td>{{execution.finish_date || 'Not finished yet.'}}</td>
 							</tr>
 							<tr>
 								<td>Status</td>
-								<td>{{execution.status || 'Not info date yet.'}}</td>
+								<td>{{execution.status || 'Unavailable'}}</td>
 							</tr>
 							<tr>
 								<td>Nº Nodes</td>
-								<td>{{execution.launch_opts.nodes || 'Not info date yet.'}}</td>
+								<td>{{execution.launch_opts.nodes || 'Unavailable'}}</td>
 							</tr>
 							<tr>
 								<td>Image Name</td>
-								<td>{{execution.launch_opts.image.name || 'Not info date yet.'}}</td>
+								<td>{{execution.launch_opts.image.name || 'Unavailable'}}</td>
 							</tr>
 							<tr>
 								<td>Size Name</td>
-								<td>{{execution.launch_opts.size.name || 'Not info date yet.'}}</td>
+								<td>{{execution.launch_opts.size.name || 'Unavailable'}}</td>
 							</tr>
 							<tr>
 								<td>Size CPUs</td>
-								<td>{{execution.launch_opts.size.cpus || 'Not info date yet.'}}</td>
+								<td>{{execution.launch_opts.size.cpus || 'Unavailable'}}</td>
 							</tr>
 							<tr>
 								<td>Size RAM</td>
-								<td>{{execution.launch_opts.size.ram || 'Not info date yet.'}}</td>
+								<td>{{execution.launch_opts.size.ram || 'Unavailable'}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -135,12 +135,12 @@
 
 		<div class="col-md-10 col-md-offset-1" ng-show="pageSelected == 'Labels'">
 			<div ng-show="!execution.labels" class="alert alert-warning col-md-10 col-md-offset-1 text-center">
-				There is no labels of this execution, please create it first.
+				There are no labels for this execution, please create them first.
 			</div>
 			<div ng-show="execution.labels" class="panel panel-primary">
 				<div class="panel-heading verticallyAdjust">
 					<div class="col-md-11 text-center">
-						<strong>Labels usen in execution: {{execution.name}}</strong>
+						<strong>Labels used in execution: {{execution.name}}</strong>
 					</div>
 				</div>
 				<table class="table table-hover table-striped table-bordered">
@@ -170,7 +170,7 @@
 
 		<div ng-show="pageSelected == 'Output Tree'" class="col-md-10 col-md-offset-1">
 			<div ng-show="!execution.output_tree || execution.output_tree.length <= 0" class="alert alert-warning col-md-10 col-md-offset-1 text-center">
-				No output files yet. Please run the experiment first.
+				No output files yet, please run the experiment first.
 			</div>
 			<div class="row" ng-show="execution.output_tree.length > 0">
 				<div class="text-center">
@@ -202,7 +202,7 @@
 		</div>
 		<div ng-show="pageSelected == 'Logs'" class="col-md-12">
 			<div ng-show="!execution.logs || execution.logs <= 0" class="alert alert-warning col-md-10 col-md-offset-1 text-center">
-				No logs yet. Please run the experiment first.
+				No logs yet, please run the experiment first.
 			</div>
 			<div class="col-md-6 col-md-offset-3 text-center" ng-show="execution.logs.length">
 				<div class="input-group ">

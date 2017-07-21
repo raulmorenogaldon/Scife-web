@@ -61,7 +61,7 @@
 										</div>
 									</div>
 									<p class="text-center">
-										<a type="a" role="button" data-toggle="collapse" data-target="#advance">Advance Otions</a>
+										<a type="a" role="button" data-toggle="collapse" data-target="#advance">Advanced options</a>
 									</p>
 									<div id="advance" class="collapse col-md-12">
 										<div class="form-group">
@@ -169,23 +169,23 @@
 							<dt>Name</dt>
 							<dd>{{executionToDelete.name}}</dd>
 							<dt>Creation Date</dt>
-							<dd>{{executionToDelete.create_date || 'Not creation date yet.'}}</dd>
+							<dd>{{executionToDelete.create_date || 'Not created yet.'}}</dd>
 							<dt>Launch Date</dt>
-							<dd>{{executionToDelete.launch_date || 'Not launch date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_date || 'Not launched yet.'}}</dd>
 							<dt>Finish Date</dt>
-							<dd>{{executionToDelete.finish_date || 'Not finish date yet.'}}</dd>
+							<dd>{{executionToDelete.finish_date || 'Not finished yet.'}}</dd>
 							<dt>Execution Status</dt>
-							<dd>{{executionToDelete.status || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.status || 'Unavailable'}}</dd>
 							<dt>Nodes Used</dt>
-							<dd>{{executionToDelete.launch_opts.nodes || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.nodes || 'Unavailable'}}</dd>
 							<dt>Image Name</dt>
-							<dd>{{executionToDelete.launch_opts.image.name || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.image.name || 'Unavailable'}}</dd>
 							<dt>Size Name</dt>
-							<dd>{{executionToDelete.launch_opts.size.name || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.size.name || 'Unavailable'}}</dd>
 							<dt>Size CPUs</dt>
-							<dd>{{executionToDelete.launch_opts.size.cpus || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.size.cpus || 'Unavailable'}}</dd>
 							<dt>Size Ram</dt>
-							<dd>{{executionToDelete.launch_opts.size.ram || 'Not info date yet.'}}</dd>
+							<dd>{{executionToDelete.launch_opts.size.ram || 'Unavailable'}}</dd>
 						</dl>
 						<div class="modal-footer">
 							<form ng-submit="deleteExecutionSubmit()" class="form form-horizontal col-md-12">
@@ -215,7 +215,7 @@
 		<div class="col-md-offset-1 col-md-10">
 			<div class="panel" ng-class="panelColors.getColorClass(experiment.status)">
 				<div class="panel-heading text-center">
-					<strong>Experiment Information</strong>
+					<strong>Experiment information</strong>
 				</div>
 				<table class="table table-hover table-striped table-bordered">
 					<thead>
@@ -280,39 +280,39 @@
 									</tr>
 									<tr>
 										<td>Creation Date</td>
-										<td>{{exec.create_date || 'Not creation date yet.'}}</td>
+										<td>{{exec.create_date || 'Not created yet.'}}</td>
 									</tr>
 									<tr>
 										<td>Launch Date</td>
-										<td>{{exec.launch_date || 'Not launch date yet.'}}</td>
+										<td>{{exec.launch_date || 'Not launched yet.'}}</td>
 									</tr>
 									<tr>
 										<td>Finish Date</td>
-										<td>{{exec.finish_date || 'Not finish date yet.'}}</td>
+										<td>{{exec.finish_date || 'Not finished yet.'}}</td>
 									</tr>
 									<tr>
 										<td>Status</td>
-										<td>{{exec.status || 'Not info date yet.'}}</td>
+										<td>{{exec.status || 'Unavailable'}}</td>
 									</tr>
 									<tr>
 										<td>Nº Nodes</td>
-										<td>{{exec.launch_opts.nodes || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.nodes || 'Unavailable'}}</td>
 									</tr>
 									<tr>
 										<td>Image Name</td>
-										<td>{{exec.launch_opts.image.name || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.image.name || 'Unavailable'}}</td>
 									</tr>
 									<tr>
 										<td>Size Name</td>
-										<td>{{exec.launch_opts.size.name || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.size.name || 'Unavailable'}}</td>
 									</tr>
 									<tr>
 										<td>Size CPUs</td>
-										<td>{{exec.launch_opts.size.cpus || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.size.cpus || 'Unavailable'}}</td>
 									</tr>
 									<tr>
 										<td>Size RAM</td>
-										<td>{{exec.launch_opts.size.ram || 'Not info date yet.'}}</td>
+										<td>{{exec.launch_opts.size.ram || 'Unavailable'}}</td>
 									</tr>
 								</tbody>
 							</table>
